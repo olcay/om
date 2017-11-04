@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OtomatikMuhendis.Kutuphane.Web.Data;
 using OtomatikMuhendis.Kutuphane.Web.Models;
 using OtomatikMuhendis.Kutuphane.Web.Services;
+using System;
 
 namespace OtomatikMuhendis.Kutuphane.Web
 {
@@ -27,7 +24,7 @@ namespace OtomatikMuhendis.Kutuphane.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(new Connection(Environment.GetEnvironmentVariable("DATABASE_URL")).String));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
