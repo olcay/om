@@ -26,12 +26,17 @@ namespace OtomatikMuhendis.Kutuphane.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(new Connection(Environment.GetEnvironmentVariable("DATABASE_URL")).String));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+                {
+                    config.SignIn.RequireConfirmedEmail = true;
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+
+            services.Configure<WebsiteOptions>(Configuration.GetSection("Website"));
 
             services.AddMvc();
         }

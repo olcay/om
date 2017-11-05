@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using OtomatikMuhendis.Kutuphane.Web.Models;
 using OtomatikMuhendis.Kutuphane.Web.Models.AccountViewModels;
 using OtomatikMuhendis.Kutuphane.Web.Services;
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 {
@@ -230,7 +226,6 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
                     return RedirectToLocal(returnUrl);
                 }
