@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OtomatikMuhendis.Kutuphane.Web.Data;
 using OtomatikMuhendis.Kutuphane.Web.ViewModels;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using OtomatikMuhendis.Kutuphane.Web.Extensions;
+using OtomatikMuhendis.Kutuphane.Web.Models;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 {
@@ -15,18 +19,59 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
             _context = context;
         }
 
+        [Authorize]
         public IActionResult Create()
         {
+            var userId = User.GetUserId();
+
             var viewModel = new BookFormViewModel
             {
-                Shelves = _context.Shelves.Select(p => new SelectListItem
-                {
-                    Text = p.Title,
-                    Value = p.Id.ToString()
-                }).ToList()
+                Shelves = _context.Shelves.Where(s => s.CreatedById == userId)
+                    .Select(p => new SelectListItem
+                    {
+                        Text = p.Title,
+                        Value = p.Id.ToString()
+                    }).ToList()
             };
 
             return View(viewModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Create(BookFormViewModel viewModel)
+        {
+            var userId = User.GetUserId();
+
+            var book = new Book
+            {
+                CreationDate = DateTime.Now,
+                Title = viewModel.Title,
+                CreatedById = userId
+            };
+            
+            if (viewModel.ShelfId > 0)
+            {
+                book.ShelfId = viewModel.ShelfId;
+            }
+            else
+            {
+                var shelf = new Shelf
+                {
+                    CreatedById = userId,
+                    CreationDate = DateTime.Now,
+                    Title = "Default"
+                };
+
+                _context.Shelves.Add(shelf);
+
+                book.Shelf = shelf;
+            }
+
+            _context.Books.Add(book);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

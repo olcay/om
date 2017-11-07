@@ -7,8 +7,10 @@ namespace OtomatikMuhendis.Kutuphane.Web.Models
     {
         public int Id { get; set; }
 
-        [Required]
         public ApplicationUser CreatedBy { get; set; }
+
+        [Required]
+        public string CreatedById { get; set; }
 
         public DateTime CreationDate { get; set; }
 
@@ -16,7 +18,9 @@ namespace OtomatikMuhendis.Kutuphane.Web.Models
         [StringLength(255)]
         public string Title { get; set; }
 
-        [Required]
         public Shelf Shelf { get; set; }
+
+        [Required]
+        public int ShelfId { get; set; }
     }
 }

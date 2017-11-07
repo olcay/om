@@ -11,8 +11,10 @@ namespace OtomatikMuhendis.Kutuphane.Web.Models
         [StringLength(255)]
         public string Title { get; set; }
 
-        [Required]
         public ApplicationUser CreatedBy { get; set; }
+
+        [Required]
+        public string CreatedById { get; set; }
 
         public DateTime CreationDate { get; set; }
     }
