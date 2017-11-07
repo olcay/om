@@ -11,9 +11,10 @@ using System;
 namespace OtomatikMuhendis.Kutuphane.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171107212940_CreateBookTable")]
+    partial class CreateBookTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,16 +183,13 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CreatedById")
-                        .IsRequired();
+                    b.Property<string>("CreatedById");
 
                     b.Property<DateTime>("CreationDate");
 
-                    b.Property<int>("ShelfId");
+                    b.Property<int?>("ShelfId");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(255);
+                    b.Property<string>("Title");
 
                     b.HasKey("Id");
 
@@ -207,14 +205,11 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CreatedById")
-                        .IsRequired();
+                    b.Property<string>("CreatedById");
 
                     b.Property<DateTime>("CreationDate");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(255);
+                    b.Property<string>("Title");
 
                     b.HasKey("Id");
 
@@ -272,21 +267,18 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data.Migrations
                 {
                     b.HasOne("OtomatikMuhendis.Kutuphane.Web.Models.ApplicationUser", "CreatedBy")
                         .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CreatedById");
 
                     b.HasOne("OtomatikMuhendis.Kutuphane.Web.Models.Shelf", "Shelf")
                         .WithMany()
-                        .HasForeignKey("ShelfId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ShelfId");
                 });
 
             modelBuilder.Entity("OtomatikMuhendis.Kutuphane.Web.Models.Shelf", b =>
                 {
                     b.HasOne("OtomatikMuhendis.Kutuphane.Web.Models.ApplicationUser", "CreatedBy")
                         .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CreatedById");
                 });
 #pragma warning restore 612, 618
         }
