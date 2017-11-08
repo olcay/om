@@ -1,11 +1,12 @@
-﻿using OtomatikMuhendis.Kutuphane.Web.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace OtomatikMuhendis.Kutuphane.Web.ViewModels
 {
     public class BookFormViewModel
     {
+        [Required]
         public string Title { get; set; }
 
         public int ShelfId { get; set; }

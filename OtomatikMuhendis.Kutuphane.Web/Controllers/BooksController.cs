@@ -10,6 +10,7 @@ using OtomatikMuhendis.Kutuphane.Web.Models;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 {
+    [AutoValidateAntiforgeryToken]
     public class BooksController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -43,13 +44,24 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
         {
             var userId = User.GetUserId();
 
+            if (!ModelState.IsValid)
+            {
+                viewModel.Shelves = _context.Shelves.Where(s => s.CreatedById == userId)
+                    .Select(p => new SelectListItem
+                    {
+                        Text = p.Title,
+                        Value = p.Id.ToString()
+                    }).ToList();
+                return View(viewModel);
+            }
+
             var book = new Book
             {
                 CreationDate = DateTime.Now,
                 Title = viewModel.Title,
                 CreatedById = userId
             };
-            
+
             if (viewModel.ShelfId > 0)
             {
                 book.ShelfId = viewModel.ShelfId;
