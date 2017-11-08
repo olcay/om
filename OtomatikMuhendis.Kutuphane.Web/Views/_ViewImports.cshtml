@@ -1,6 +1,8 @@
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.Extensions.Options
 @using OtomatikMuhendis.Kutuphane.Web
 @using OtomatikMuhendis.Kutuphane.Web.Models
 @using OtomatikMuhendis.Kutuphane.Web.Models.AccountViewModels
 @using OtomatikMuhendis.Kutuphane.Web.Models.ManageViewModels
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject IOptions<WebsiteOptions> WebsiteOptionAccessor

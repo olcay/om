@@ -33,3 +33,36 @@
         display: none;
     }
 }
+
+/* Bootstrap Overrides */
+.navbar-inverse {
+    background-color: #158CBA;
+    border-color: #127ba3;
+    border-style: solid;
+    border-width: 0 1px 4px 1px;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #fff;
+    font-weight: 700;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #ddd;
+}
+
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:focus {
+    background-color: #127ba3;
+}
+
+.dropdown-menu {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: 'Noto Sans', sans-serif;
+}
+
