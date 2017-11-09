@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Models
@@ -17,5 +18,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Models
         public string CreatedById { get; set; }
 
         public DateTime CreationDate { get; set; }
+
+        public IEnumerable<Book> Books { get; set; }
     }
 }

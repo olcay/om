@@ -56,6 +56,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 
             var model = new IndexViewModel
             {
+                Name = user.Name,
                 Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
@@ -79,6 +80,17 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
             if (user == null)
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var name = user.Name;
+            if (model.Name != name)
+            {
+                user.Name = model.Name;
+                var updateResult = await _userManager.UpdateAsync(user);
+                if (!updateResult.Succeeded)
+                {
+                    throw new ApplicationException($"Unexpected error occurred setting name for user with ID '{user.Id}'.");
+                }
             }
 
             var email = user.Email;
