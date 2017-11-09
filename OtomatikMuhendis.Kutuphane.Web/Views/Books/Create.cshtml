@@ -6,26 +6,29 @@
 
 <h2>Add a Book</h2>
 
+<p class="alert alert-info">All fields are <strong>required</strong>.</p>
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
+            
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+                <input asp-for="Title" class="form-control" autofocus="autofocus"/>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             @if (Model.Shelves.Any())
             {
                 <div class="form-group">
-                    <label asp-for="ShelfId" class="control-label"></label>
-                    <select asp-for="ShelfId" asp-items="Model.Shelves" class="form-control"></select>
-                    <span asp-validation-for="ShelfId" class="text-danger"></span>
+                    <label asp-for="Shelf" class="control-label"></label>
+                    <select asp-for="Shelf" asp-items="Model.Shelves" class="form-control"></select>
+                    <span asp-validation-for="Shelf" class="text-danger"></span>
                 </div>
             }
-            
+
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary"/>
             </div>
         </form>
     </div>

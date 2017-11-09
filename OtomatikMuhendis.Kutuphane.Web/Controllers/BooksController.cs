@@ -62,9 +62,9 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 CreatedById = userId
             };
 
-            if (viewModel.ShelfId > 0)
+            if (viewModel.Shelf > 0)
             {
-                book.ShelfId = viewModel.ShelfId;
+                book.ShelfId = viewModel.Shelf;
             }
             else
             {

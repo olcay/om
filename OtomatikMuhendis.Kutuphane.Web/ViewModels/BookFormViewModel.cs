@@ -8,8 +8,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.ViewModels
     {
         [Required]
         public string Title { get; set; }
-
-        public int ShelfId { get; set; }
+        
+        public int Shelf { get; set; }
 
         public IEnumerable<SelectListItem> Shelves { get; set; }
     }
