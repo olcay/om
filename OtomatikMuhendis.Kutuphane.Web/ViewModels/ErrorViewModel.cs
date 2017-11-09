@@ -1,6 +1,4 @@
-using System;
-
-namespace OtomatikMuhendis.Kutuphane.Web.Models
+namespace OtomatikMuhendis.Kutuphane.Web.ViewModels
 {
     public class ErrorViewModel
     {

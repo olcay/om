@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OtomatikMuhendis.Kutuphane.Web.Models.ManageViewModels
+namespace OtomatikMuhendis.Kutuphane.Web.ViewModels.ManageViewModels
 {
     public class IndexViewModel
     {
