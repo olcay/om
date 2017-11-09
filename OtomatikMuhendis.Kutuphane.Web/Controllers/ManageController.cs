@@ -495,7 +495,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
         {
             return string.Format(
                 AuthenicatorUriFormat,
-                _urlEncoder.Encode("OtomatikMuhendis.Kutuphane.Web"),
+                _urlEncoder.Encode("Otomatik Muhendis"),
                 _urlEncoder.Encode(email),
                 unformattedKey);
         }
