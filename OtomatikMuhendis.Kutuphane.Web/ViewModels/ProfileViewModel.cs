@@ -14,5 +14,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.ViewModels
         public bool IsProfileOwner { get; set; }
 
         public bool ShowActions { get; set; }
+
+        public string Tab { get; set; }
     }
 }

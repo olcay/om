@@ -1,56 +1,56 @@
-﻿@model OtomatikMuhendis.Kutuphane.Web.ViewModels.ProfileViewModel
+﻿@using OtomatikMuhendis.Kutuphane.Web.Enums
+@model OtomatikMuhendis.Kutuphane.Web.ViewModels.ProfileViewModel
 @{
-    ViewData["Title"] = "Profile";
+    Layout = "_ProfileLayout";
+    ViewData[ViewDataParameters.Title] = Model.User.Name;
+    ViewData[ViewDataParameters.UserId] = Model.User.Id;
+    ViewData[ViewDataParameters.Tab] = Model.Tab;
 }
-<h2></h2>
-<div class="row">
-    <div class="col-md-3">
-        <h2>@Model.User.Name</h2>
-        @if (Model.ShowActions && !Model.IsProfileOwner)
-        {
-            <button type="button" data-user-id="@Model.User.Id" class="btn btn-@Html.Raw(Model.IsFollowing ? "success":"default") btn-lg js-toggle-follow">Follow</button>
-        }
-    </div>
-    <div class="col-md-6">
-        @foreach (var shelf in Model.Shelves)
-        {
-            <div class="panel panel-default">
-                <!-- Default panel contents -->
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-md-10">
-                            <h3 class="panel-title">@shelf.Title</h3>
-                        </div>
-                        <div class="col-md-2">
-                            @if (Model.ShowActions)
-                            {
-                                <button data-shelf-id="@shelf.Id" type="button" class="btn btn-default btn-xs pull-right js-toggle-star">
-                                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                                </button>
-                            }
-                        </div>
-                    </div>
+
+@section UserInfo
+{
+    <h2>@Model.User.Name</h2>
+    @if (Model.ShowActions && !Model.IsProfileOwner)
+    {
+        <button type="button" data-user-id="@Model.User.Id" class="btn btn-@Html.Raw(Model.IsFollowing ? "success" : "default") btn-lg js-toggle-follow">Follow</button>
+    }
+}
+
+@foreach (var shelf in Model.Shelves)
+{
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-10">
+                    <h3 class="panel-title">@shelf.Title</h3>
                 </div>
-                <div class="panel-body">
-                    <p>@shelf.CreatedBy.Name on @shelf.CreationDate.ToLongDateString()</p>
+                <div class="col-md-2">
+                    @if (Model.ShowActions)
+                    {
+                        <button data-shelf-id="@shelf.Id" type="button" class="btn btn-default btn-xs pull-right js-toggle-star">
+                            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                        </button>
+                    }
                 </div>
-                <!-- Table -->
-                <table class="table table-hover">
-                    <thead> <tr> <th>#</th> <th>Book</th> </tr> </thead>
-                    <tbody>
-                        @{ var i = 0;}
-                        @foreach (var book in shelf.Books)
-                        {
-                            <tr> <th class="col-md-1" scope="row">@Html.Raw(++i)</th> <td>@book.Title</td> </tr>
-                        }
-                    </tbody>
-                </table>
             </div>
-                            }
+        </div>
+        <div class="panel-body">
+            <p><a asp-controller="Profiles" asp-action="Index" asp-route-userId="@shelf.CreatedById">@shelf.CreatedBy.Name</a> on @shelf.CreationDate.ToLongDateString()</p>
+        </div>
+        <!-- Table -->
+        <table class="table table-hover">
+            <thead> <tr> <th>#</th> <th>Book</th> </tr> </thead>
+            <tbody>
+            @{ var i = 0;}
+            @foreach (var book in shelf.Books)
+            {
+                <tr> <th class="col-md-1" scope="row">@Html.Raw(++i)</th> <td>@book.Title</td> </tr>
+            }
+            </tbody>
+        </table>
     </div>
-    <div class="col-md-3">
-    </div>
-</div>
+}
 
 @section Scripts{
     <script>

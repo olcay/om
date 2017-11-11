@@ -4,6 +4,7 @@ using OtomatikMuhendis.Kutuphane.Web.Data;
 using OtomatikMuhendis.Kutuphane.Web.ViewModels;
 using System.Diagnostics;
 using System.Linq;
+using OtomatikMuhendis.Kutuphane.Web.Enums;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers
@@ -17,8 +18,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
             _context = context;
         }
 
-        [HttpGet("/profile/{userId}")]
-        public IActionResult Index(string userId)
+        [HttpGet("/profile/{userId}/{tab?}")]
+        public IActionResult Index(string userId, string tab = ProfileTabs.Shelves)
         {
             var isUserAuthenticated = User.Identity.IsAuthenticated;
             var loggedInUserId = User.GetUserId();
@@ -45,7 +46,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
             {
                 ShowActions = isUserAuthenticated,
                 User = profileUser,
-                IsProfileOwner = loggedInUserId == userId
+                IsProfileOwner = loggedInUserId == userId,
+                Tab = tab
             };
 
             if (!viewModel.IsProfileOwner)
@@ -55,12 +57,25 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                         .Any(f => f.FollowerId == loggedInUserId
                             && f.FolloweeId == userId);
             }
-
-            viewModel.Shelves = _context.Shelves
-                .Include(b => b.Books)
-                .Include(b => b.CreatedBy)
-                .Where(s => s.CreatedById == userId)
-                .OrderByDescending(b => b.CreationDate);
+            
+            if (tab == ProfileTabs.Stars)
+            {
+                viewModel.Shelves = _context.Stars
+                    .Where(s => s.UserId == userId)
+                    .Select(s => s.Shelf)
+                    .Include(s => s.CreatedBy)
+                    .Include(s => s.Books)
+                    .ToList();
+            }
+            else
+            {
+                viewModel.Shelves = _context.Shelves
+                    .Include(b => b.Books)
+                    .Include(b => b.CreatedBy)
+                    .Where(s => s.CreatedById == userId)
+                    .OrderByDescending(b => b.CreationDate)
+                    .ToList();
+            }
 
             return View(viewModel);
         }

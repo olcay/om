@@ -23,7 +23,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 .Include(b => b.CreatedBy)
                 .OrderByDescending(b => b.CreationDate);
 
-            var viewModel = new HomeViewModel
+            var viewModel = new ShelvesViewModel
             {
                 Shelves = shelves,
                 ShowActions = User.Identity.IsAuthenticated

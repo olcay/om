@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace OtomatikMuhendis.Kutuphane.Web.ViewModels
 {
-    public class HomeViewModel
+    public class ShelvesViewModel
     {
         public IEnumerable<Shelf> Shelves { get; set; }
 
