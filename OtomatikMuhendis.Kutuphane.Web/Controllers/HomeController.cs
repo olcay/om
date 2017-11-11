@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OtomatikMuhendis.Kutuphane.Web.Data;
 using OtomatikMuhendis.Kutuphane.Web.ViewModels;
 using System.Diagnostics;
+using System.Linq;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 {
@@ -19,7 +20,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
         {
             var shelves = _context.Shelves
                 .Include(b => b.Books)
-                .Include(b => b.CreatedBy);
+                .Include(b => b.CreatedBy)
+                .OrderByDescending(b => b.CreationDate);
 
             return View(shelves);
         }

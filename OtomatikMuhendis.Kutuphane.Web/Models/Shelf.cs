@@ -20,5 +20,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Models
         public DateTime CreationDate { get; set; }
 
         public IEnumerable<Book> Books { get; set; }
+
+        public IEnumerable<Star> Stars { get; set; }
     }
 }
