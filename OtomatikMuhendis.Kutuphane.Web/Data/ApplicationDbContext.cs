@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using OtomatikMuhendis.Kutuphane.Web.Models;
+using OtomatikMuhendis.Kutuphane.Web.Persistence.EntityConfigurations;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Data
 {
@@ -9,6 +10,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data
         public DbSet<Book> Books { get; set; }
         public DbSet<Shelf> Shelves { get; set; }
         public DbSet<Star> Stars { get; set; }
+        public DbSet<Following> Followings { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -18,8 +20,11 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Star>().HasKey(s => new {s.ShelfId, s.UserId});
+            builder.Entity<Following>().HasKey(f => new { f.FollowerId, f.FolloweeId });
 
             base.OnModelCreating(builder);
+
+            new ApplicationUserConfiguration(builder.Entity<ApplicationUser>());
         }
     }
 }

@@ -11,13 +11,14 @@
            
             
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@UserManager.GetUserName(User) <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.Name <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li>
                         <a asp-area="" asp-controller="Manage" asp-action="Index" title="Account">Account</a>
                     </li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
+                    <li>
+                        <a asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-userId=" " title="Profile">Profile</a>
+                    </li>
                     <li role="separator" class="divider"></li>
                     <li>
                         <a href="javascript:document.getElementById('logoutForm').submit()">Log out</a>

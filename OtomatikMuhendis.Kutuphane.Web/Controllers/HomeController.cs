@@ -23,7 +23,13 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 .Include(b => b.CreatedBy)
                 .OrderByDescending(b => b.CreationDate);
 
-            return View(shelves);
+            var viewModel = new HomeViewModel
+            {
+                Shelves = shelves,
+                ShowActions = User.Identity.IsAuthenticated
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Error()

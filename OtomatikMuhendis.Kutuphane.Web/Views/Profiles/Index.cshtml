@@ -1,10 +1,15 @@
-﻿@model OtomatikMuhendis.Kutuphane.Web.ViewModels.HomeViewModel
+﻿@model OtomatikMuhendis.Kutuphane.Web.ViewModels.ProfileViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Profile";
 }
 <h2></h2>
 <div class="row">
     <div class="col-md-3">
+        <h2>@Model.User.Name</h2>
+        @if (Model.ShowActions && !Model.IsProfileOwner)
+        {
+            <button type="button" data-user-id="@Model.User.Id" class="btn btn-@Html.Raw(Model.IsFollowing ? "success":"default") btn-lg js-toggle-follow">Follow</button>
+        }
     </div>
     <div class="col-md-6">
         @foreach (var shelf in Model.Shelves)
@@ -27,37 +32,52 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <p><a asp-controller="Profiles" asp-action="Index" asp-route-userId="@shelf.CreatedById">@shelf.CreatedBy.Name</a> on @shelf.CreationDate.ToLongDateString()</p>
+                    <p>@shelf.CreatedBy.Name on @shelf.CreationDate.ToLongDateString()</p>
                 </div>
                 <!-- Table -->
                 <table class="table table-hover">
                     <thead> <tr> <th>#</th> <th>Book</th> </tr> </thead>
                     <tbody>
-                    @{ var i = 0;}
-                    @foreach (var book in shelf.Books)
-                    {
-                        <tr> <th class="col-md-1" scope="row">@Html.Raw(++i)</th> <td>@book.Title</td> </tr>
-                    }
+                        @{ var i = 0;}
+                        @foreach (var book in shelf.Books)
+                        {
+                            <tr> <th class="col-md-1" scope="row">@Html.Raw(++i)</th> <td>@book.Title</td> </tr>
+                        }
                     </tbody>
                 </table>
             </div>
-        }
+                            }
     </div>
     <div class="col-md-3">
     </div>
 </div>
 
-@section Scripts{ 
+@section Scripts{
     <script>
         $(document).ready(function() {
             $(".js-toggle-star").click(function(e) {
                 var button = $(this);
-                debugger;
-                $.post("/api/stars", { "ShelfId": button.data("shelf-id") })
+                
+                $.post("/api/stars", { shelfId: button.data("shelf-id") })
                     .done(function() {
                         button
                             .removeClass("btn-default")
                             .addClass("btn-warning");
+                    })
+                    .fail(function () {
+                        //TODO Clean up javascript
+                        alert("Something failed!");
+                    });
+            });
+
+            $(".js-toggle-follow").click(function (e) {
+                var button = $(this);
+
+                $.post("/api/followings", { followeeId: button.data("user-id") })
+                    .done(function () {
+                        button
+                            .removeClass("btn-default")
+                            .addClass("btn-success");
                     })
                     .fail(function () {
                         //TODO Clean up javascript
