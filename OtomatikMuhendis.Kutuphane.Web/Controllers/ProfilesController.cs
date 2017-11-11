@@ -18,33 +18,29 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
             _context = context;
         }
 
-        [HttpGet("/profile/{userId}/{tab?}")]
-        public IActionResult Index(string userId, string tab = ProfileTabs.Shelves)
+        [HttpGet("/p/{userName}/{tab?}")]
+        public IActionResult Index(string userName, string tab = ProfileTabs.Shelves)
         {
-            var isUserAuthenticated = User.Identity.IsAuthenticated;
-            var loggedInUserId = User.GetUserId();
-
-            if (string.IsNullOrWhiteSpace(userId))
+            if (string.IsNullOrWhiteSpace(userName))
             {
-                if (!isUserAuthenticated)
-                {
-                    return Error();
-                }
-
-                userId = loggedInUserId;
+                return Error();
             }
 
             var profileUser = _context.Users
-                .SingleOrDefault(p => p.Id == userId);
+                .SingleOrDefault(p => p.Name == userName);
 
             if (profileUser == null)
             {
                 return Error();
             }
+            
+            var loggedInUserId = User.GetUserId();
+
+            var userId = profileUser.Id;
 
             var viewModel = new ProfileViewModel
             {
-                ShowActions = isUserAuthenticated,
+                ShowActions = User.Identity.IsAuthenticated,
                 User = profileUser,
                 IsProfileOwner = loggedInUserId == userId,
                 Tab = tab
@@ -65,6 +61,20 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                     .Select(s => s.Shelf)
                     .Include(s => s.CreatedBy)
                     .Include(s => s.Books)
+                    .ToList();
+            }
+            else if (tab == ProfileTabs.Followers)
+            {
+                viewModel.Users = _context.Followings
+                    .Where(f => f.FolloweeId == userId)
+                    .Select(f => f.Follower)
+                    .ToList();
+            }
+            else if (tab == ProfileTabs.Following)
+            {
+                viewModel.Users = _context.Followings
+                    .Where(f => f.FollowerId == userId)
+                    .Select(f => f.Followee)
                     .ToList();
             }
             else

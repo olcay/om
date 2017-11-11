@@ -36,5 +36,10 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        
+        public JsonResult IsUserExists(string name)
+        { 
+            return Json(!_context.Users.Any(x => x.Name == name));
+        }
     }
 }

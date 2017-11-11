@@ -1,0 +1,34 @@
+﻿@model OtomatikMuhendis.Kutuphane.Web.ViewModels.ShelfViewModel
+
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-md-10">
+                <h3 class="panel-title">@Model.Shelf.Title</h3>
+            </div>
+            <div class="col-md-2">
+                @if (Model.ShowActions)
+                {
+                    <button data-shelf-id="@Model.Shelf.Id" type="button" class="btn btn-default btn-xs pull-right js-toggle-star">
+                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <p><a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Shelf.CreatedBy.Name">@Model.Shelf.CreatedBy.Name</a> on @Model.Shelf.CreationDate.ToLongDateString()</p>
+    </div>
+    <!-- Table -->
+    <table class="table table-hover">
+        <thead> <tr> <th>#</th> <th>Book</th> </tr> </thead>
+        <tbody>
+        @{ var i = 0;}
+        @foreach (var book in Model.Shelf.Books)
+        {
+            <tr> <th class="col-md-1" scope="row">@Html.Raw(++i)</th> <td>@book.Title</td> </tr>
+        }
+        </tbody>
+    </table>
+</div>

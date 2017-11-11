@@ -1,4 +1,4 @@
-﻿@model OtomatikMuhendis.Kutuphane.Web.ViewModels.ShelvesViewModel
+﻿@model ShelvesViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -9,38 +9,7 @@
     <div class="col-md-6">
         @foreach (var shelf in Model.Shelves)
         {
-            <div class="panel panel-default">
-                <!-- Default panel contents -->
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-md-10">
-                            <h3 class="panel-title">@shelf.Title</h3>
-                        </div>
-                        <div class="col-md-2">
-                            @if (Model.ShowActions)
-                            {
-                                <button data-shelf-id="@shelf.Id" type="button" class="btn btn-default btn-xs pull-right js-toggle-star">
-                                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                                </button>
-                            }
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <p><a asp-controller="Profiles" asp-action="Index" asp-route-userId="@shelf.CreatedById">@shelf.CreatedBy.Name</a> on @shelf.CreationDate.ToLongDateString()</p>
-                </div>
-                <!-- Table -->
-                <table class="table table-hover">
-                    <thead> <tr> <th>#</th> <th>Book</th> </tr> </thead>
-                    <tbody>
-                    @{ var i = 0;}
-                    @foreach (var book in shelf.Books)
-                    {
-                        <tr> <th class="col-md-1" scope="row">@Html.Raw(++i)</th> <td>@book.Title</td> </tr>
-                    }
-                    </tbody>
-                </table>
-            </div>
+            @Html.Partial("_ShelfPartial", new ShelfViewModel { Shelf = shelf, ShowActions = Model.ShowActions })
         }
     </div>
     <div class="col-md-3">

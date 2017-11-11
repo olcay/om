@@ -11,16 +11,16 @@
            
             
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.Name <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.GetUserName() <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li>
                         <a asp-area="" asp-controller="Manage" asp-action="Index" title="Account">Account</a>
                     </li>
                     <li>
-                        <a asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-userId="@User.GetUserId()" title="Profile">Your profile</a>
+                        <a asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" title="Profile">Your profile</a>
                     </li>
                     <li>
-                        <a asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-userId="@User.GetUserId()" asp-route-tab="@ProfileTabs.Stars" title="Stars">Your stars</a>
+                        <a asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" asp-route-tab="@ProfileTabs.Stars" title="Stars">Your stars</a>
                     </li>
                     <li role="separator" class="divider"></li>
                     <li>

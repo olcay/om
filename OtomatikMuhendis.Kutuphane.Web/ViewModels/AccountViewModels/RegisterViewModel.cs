@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace OtomatikMuhendis.Kutuphane.Web.ViewModels.AccountViewModels
 {
@@ -6,7 +7,9 @@ namespace OtomatikMuhendis.Kutuphane.Web.ViewModels.AccountViewModels
     {
         [Required]
         [StringLength(100)]
-        [Display(Name = "Name")]
+        [RegularExpression("^[a-zA-Z0-9]*$", ErrorMessage = "Username may only contain alphanumeric characters.")]
+        [Display(Name = "Username")]
+        [Remote("IsUserExists", "Home", ErrorMessage = "Username is already taken.")]
         public string Name { get; set; }
 
         [Required]

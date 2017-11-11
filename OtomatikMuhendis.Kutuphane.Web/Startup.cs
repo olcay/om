@@ -8,6 +8,7 @@ using OtomatikMuhendis.Kutuphane.Web.Data;
 using OtomatikMuhendis.Kutuphane.Web.Models;
 using OtomatikMuhendis.Kutuphane.Web.Services;
 using System;
+using OtomatikMuhendis.Kutuphane.Web.Extensions;
 
 namespace OtomatikMuhendis.Kutuphane.Web
 {
@@ -32,6 +33,8 @@ namespace OtomatikMuhendis.Kutuphane.Web
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppClaimsPrincipalFactory>();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
