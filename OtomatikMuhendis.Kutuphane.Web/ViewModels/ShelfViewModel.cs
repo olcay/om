@@ -7,5 +7,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.ViewModels
         public Shelf Shelf { get; set; }
 
         public bool ShowActions { get; set; }
+
+        public bool IsShelfOwner { get; set; }
     }
 }
