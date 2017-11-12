@@ -7,6 +7,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.ViewModels
     public class BookFormViewModel
     {
         [Required]
+        [StringLength(255)]
         public string Title { get; set; }
         
         public int Shelf { get; set; }

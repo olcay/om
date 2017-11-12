@@ -3,7 +3,19 @@
     ViewData["Title"] = Model.Shelf.Title;
 }
 
-<h2>@Model.Shelf.Title <small>by <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Shelf.CreatedBy.Name">@Model.Shelf.CreatedBy.Name</a></small></h2>
+<h2>
+    @if (Model.IsShelfOwner)
+    {
+        <span class="js-editable" data-type="text" data-pk="@Model.Shelf.Id" data-url="@Url.Action("Edit", "Shelves")" data-title="Rename shelf">@Model.Shelf.Title</span>
+    }
+    else
+    {
+        @Model.Shelf.Title
+    } 
+    <small>by
+        <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Shelf.CreatedBy.Name">@Model.Shelf.CreatedBy.Name</a>
+    </small>
+</h2>
 
 <div class="row top-buffer">
     <div class="col-md-12">
@@ -22,3 +34,11 @@
     </div>
 </div>
 
+@section Scripts{
+    <script>
+        $.fn.editable.defaults.mode = "inline";
+        $(document).ready(function() {
+            $(".js-editable").editable();
+        });
+    </script>
+}
