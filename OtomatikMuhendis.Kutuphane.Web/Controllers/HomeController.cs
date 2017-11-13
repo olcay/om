@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using OtomatikMuhendis.Kutuphane.Web.Data;
+using OtomatikMuhendis.Kutuphane.Web.Models;
 using OtomatikMuhendis.Kutuphane.Web.ViewModels;
 using System.Diagnostics;
 using System.Linq;
@@ -18,10 +18,17 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 
         public IActionResult Index()
         {
-            var shelves = _context.Shelves
-                .Include(b => b.Books)
-                .Include(b => b.CreatedBy)
-                .OrderByDescending(b => b.CreationDate);
+            var shelves = _context.Shelves.Select(s => new Shelf
+            {
+                Id = s.Id,
+                Books = s.Books.Where(b => !b.IsDeleted).Take(5).ToList(),
+                Title = s.Title,
+                CreatedById = s.CreatedById,
+                CreatedBy = s.CreatedBy,
+                IsPublic = s.IsPublic
+            })
+            .Where(s => !s.IsDeleted && s.IsPublic)
+            .OrderByDescending(b => b.UpdateDate);
 
             var viewModel = new ShelvesViewModel
             {

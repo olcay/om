@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using OtomatikMuhendis.Kutuphane.Web.Data;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
+using OtomatikMuhendis.Kutuphane.Web.Models;
 using OtomatikMuhendis.Kutuphane.Web.ViewModels;
 using System.Linq;
 
@@ -28,12 +28,18 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 
             var userId = User.GetUserId();
 
-            var shelf = _context.Shelves
-                .Include(b => b.Books)
-                .Include(b => b.CreatedBy)
-                .FirstOrDefault(s => s.Id == shelfId);
+            var shelf = _context.Shelves.Select(s => new Shelf
+            {
+                Id = s.Id,
+                Books = s.Books.Where(b => !b.IsDeleted).ToList(),
+                Title = s.Title,
+                CreatedById = s.CreatedById,
+                CreatedBy = s.CreatedBy,
+                IsPublic = s.IsPublic
+            }).FirstOrDefault(s => s.Id == shelfId
+                                   && !s.IsDeleted);
 
-            if (shelf == null)
+            if (shelf == null || shelf.IsDeleted || (!shelf.IsPublic && shelf.CreatedById != userId))
             {
                 return RedirectToAction("Error", "Home");
             }

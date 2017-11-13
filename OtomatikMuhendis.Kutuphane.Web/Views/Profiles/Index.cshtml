@@ -9,6 +9,7 @@
 
 @section UserInfo
 {
+    <img src="@Model.ImageUrl" class="img-rounded img-responsive"/>
     <h2>@Model.User.Name</h2>
     @if (Model.ShowActions && !Model.IsProfileOwner)
     {
@@ -35,32 +36,44 @@
         $(document).ready(function() {
             $(".js-toggle-star").click(function(e) {
                 var button = $(this);
-                
-                $.post("/api/stars", { shelfId: button.data("shelf-id") })
-                    .done(function() {
-                        button
-                            .removeClass("btn-default")
-                            .addClass("btn-warning");
-                    })
-                    .fail(function () {
-                        //TODO Clean up javascript
-                        alert("Something failed!");
-                    });
+
+                $.post({
+                    url: "/api/stars",
+                    data: { shelfId: button.data("shelf-id") },
+                    headers:
+                    {
+                        RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    }
+                })
+                .done(function() {
+                    button
+                        .removeClass("btn-default")
+                        .addClass("btn-warning");
+                })
+                .fail(function() {
+                    swal("Something failed!", "We could not process your request.", "error");
+                });
             });
 
-            $(".js-toggle-follow").click(function (e) {
+            $(".js-toggle-follow").click(function(e) {
                 var button = $(this);
 
-                $.post("/api/followings", { followeeId: button.data("user-id") })
-                    .done(function () {
-                        button
-                            .removeClass("btn-default")
-                            .addClass("btn-success");
-                    })
-                    .fail(function () {
-                        //TODO Clean up javascript
-                        alert("Something failed!");
-                    });
+                $.post({
+                    url: "/api/followings",
+                    data: { followeeId: button.data("user-id") },
+                    headers:
+                    {
+                        RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    }
+                })
+                .done(function() {
+                    button
+                        .removeClass("btn-default")
+                        .addClass("btn-success");
+                })
+                .fail(function() {
+                    swal("Something failed!", "We could not process your request.", "error");
+                });
             });
         });
     </script>

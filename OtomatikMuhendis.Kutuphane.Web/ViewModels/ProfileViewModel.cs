@@ -13,6 +13,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.ViewModels
 
         public string Tab { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public IEnumerable<ApplicationUser> Users { get; set; }
 
         public ProfileViewModel()

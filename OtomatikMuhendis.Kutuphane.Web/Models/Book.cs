@@ -22,5 +22,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Models
 
         [Required]
         public int ShelfId { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

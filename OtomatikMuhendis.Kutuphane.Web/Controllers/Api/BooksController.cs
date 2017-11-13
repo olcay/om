@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OtomatikMuhendis.Kutuphane.Web.Data;
-using OtomatikMuhendis.Kutuphane.Web.Dtos;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
-using OtomatikMuhendis.Kutuphane.Web.Models;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
 {
@@ -12,32 +10,36 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
     [Route("api/[controller]")]
     [Authorize]
     [AutoValidateAntiforgeryToken]
-    public class FollowingsController : Controller
+    public class BooksController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public FollowingsController(ApplicationDbContext context)
+        public BooksController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        [HttpPost]
-        public IActionResult Follow(FollowingDto dto)
+        [HttpDelete("{bookId}")]
+        public IActionResult Delete([FromRoute]int bookId)
         {
-            var userId = User.GetUserId();
-
-            if (_context.Followings.Any(a => a.FollowerId == userId && a.FollowerId == dto.FolloweeId))
+            if (bookId < 0)
             {
-                return BadRequest("Already following.");
+                return BadRequest();
             }
 
-            var following = new Following
-            {
-                FollowerId = userId,
-                FolloweeId = dto.FolloweeId
-            };
+            var userId = User.GetUserId();
 
-            _context.Followings.Add(following);
+            var book = _context.Books
+                .FirstOrDefault(s => s.Id == bookId
+                    && s.CreatedById == userId);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            book.IsDeleted = true;
+
             _context.SaveChanges();
 
             return Ok();

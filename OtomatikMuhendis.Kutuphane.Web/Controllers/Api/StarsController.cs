@@ -11,6 +11,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
     [Produces("application/json")]
     [Route("api/[controller]")]
     [Authorize]
+    [AutoValidateAntiforgeryToken]
     public class StarsController : Controller
     {
         private readonly ApplicationDbContext _context;

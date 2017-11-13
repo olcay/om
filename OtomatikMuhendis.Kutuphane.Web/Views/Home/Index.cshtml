@@ -19,19 +19,25 @@
 @section Scripts{ 
     <script>
         $(document).ready(function() {
-            $(".js-toggle-star").click(function(e) {
+            $(".js-toggle-star").click(function() {
                 var button = $(this);
-                debugger;
-                $.post("/api/stars", { "ShelfId": button.data("shelf-id") })
-                    .done(function() {
-                        button
-                            .removeClass("btn-default")
-                            .addClass("btn-warning");
-                    })
-                    .fail(function () {
-                        //TODO Clean up javascript
-                        alert("Something failed!");
-                    });
+
+                $.post({
+                    url: "/api/stars",
+                    data: { shelfId: button.data("shelf-id") },
+                    headers:
+                    {
+                        RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    }
+                })
+                .done(function() {
+                    button
+                        .removeClass("btn-default")
+                        .addClass("btn-warning");
+                })
+                .fail(function() {
+                    swal("Something failed!", "We could not process your request.", "error");
+                });
             });
         });
     </script>

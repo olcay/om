@@ -57,7 +57,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 
             var book = new Book
             {
-                CreationDate = DateTime.Now,
+                CreationDate = DateTime.UtcNow,
                 Title = viewModel.Title,
                 CreatedById = userId
             };
@@ -65,14 +65,31 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
             if (viewModel.Shelf > 0)
             {
                 book.ShelfId = viewModel.Shelf;
+
+                var shelf = _context.Shelves.FirstOrDefault(s => s.Id == book.ShelfId);
+
+                if (shelf == null)
+                {
+                    viewModel.Shelves = _context.Shelves.Where(s => s.CreatedById == userId)
+                        .Select(p => new SelectListItem
+                        {
+                            Text = p.Title,
+                            Value = p.Id.ToString()
+                        }).ToList();
+                    return View(viewModel);
+                }
+
+                shelf.UpdateDate = DateTime.UtcNow;
             }
             else
             {
                 var shelf = new Shelf
                 {
                     CreatedById = userId,
-                    CreationDate = DateTime.Now,
-                    Title = "Default"
+                    CreationDate = DateTime.UtcNow,
+                    UpdateDate = DateTime.UtcNow,
+                    Title = "Default",
+                    IsPublic = false
                 };
 
                 _context.Shelves.Add(shelf);
@@ -83,7 +100,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
             _context.Books.Add(book);
             _context.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Detail", "Shelves", new { shelfId = book.ShelfId });
         }
     }
 }

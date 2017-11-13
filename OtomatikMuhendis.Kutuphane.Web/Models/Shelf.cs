@@ -22,5 +22,11 @@ namespace OtomatikMuhendis.Kutuphane.Web.Models
         public IEnumerable<Book> Books { get; set; }
 
         public IEnumerable<Star> Stars { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public bool IsPublic { get; set; }
+
+        public DateTime UpdateDate { get; set; }
     }
 }
