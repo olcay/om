@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Models
 {
@@ -28,5 +29,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.Models
         public bool IsPublic { get; set; }
 
         public DateTime UpdateDate { get; set; }
+
+        [NotMapped]
+        public int StarsCount { get; set; }
     }
 }

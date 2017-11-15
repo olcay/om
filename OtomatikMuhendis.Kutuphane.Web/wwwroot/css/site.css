@@ -104,3 +104,19 @@ body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: 'Noto Sans', sans-serif;
 }
 
+
+/*Actions*/
+@media screen and (min-width: 769px) {
+    .book .actions {
+        font-size: 15px;
+        display: none;
+    }
+
+    .book:hover .actions {
+        display: block;
+    }
+}
+
+span[data-toggle="tooltip"] {
+    border-bottom: 1px dotted black;
+}

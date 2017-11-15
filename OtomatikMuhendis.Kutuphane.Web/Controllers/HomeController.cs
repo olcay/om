@@ -25,7 +25,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 Title = s.Title,
                 CreatedById = s.CreatedById,
                 CreatedBy = s.CreatedBy,
-                IsPublic = s.IsPublic
+                IsPublic = s.IsPublic,
+                CreationDate = s.CreationDate
             })
             .Where(s => !s.IsDeleted && s.IsPublic)
             .OrderByDescending(b => b.UpdateDate);

@@ -60,7 +60,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
                 .FirstOrDefault(s => s.Id == shelfId
                                      && s.CreatedById == userId);
 
-            if (shelf == null)
+            if (shelf == null || shelf.IsPublic)
             {
                 return NotFound();
             }
@@ -86,7 +86,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
                 .FirstOrDefault(s => s.Id == shelfId
                                      && s.CreatedById == userId);
 
-            if (shelf == null)
+            if (shelf == null || !shelf.IsPublic)
             {
                 return NotFound();
             }
@@ -112,7 +112,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
                 .FirstOrDefault(s => s.Id == shelfId
                                      && s.CreatedById == userId);
 
-            if (shelf == null)
+            if (shelf == null || shelf.IsDeleted)
             {
                 return NotFound();
             }

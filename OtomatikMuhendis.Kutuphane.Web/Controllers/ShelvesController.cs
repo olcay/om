@@ -35,7 +35,10 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 Title = s.Title,
                 CreatedById = s.CreatedById,
                 CreatedBy = s.CreatedBy,
-                IsPublic = s.IsPublic
+                IsPublic = s.IsPublic,
+                CreationDate = s.CreationDate,
+                UpdateDate = s.UpdateDate,
+                StarsCount = s.Stars.Count()
             }).FirstOrDefault(s => s.Id == shelfId
                                    && !s.IsDeleted);
 
