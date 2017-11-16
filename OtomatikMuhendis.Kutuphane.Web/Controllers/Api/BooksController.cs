@@ -1,8 +1,9 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OtomatikMuhendis.Kutuphane.Web.Data;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
+using System.Linq;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
 {
@@ -30,15 +31,21 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
             var userId = User.GetUserId();
 
             var book = _context.Books
-                .FirstOrDefault(s => s.Id == bookId
-                    && s.CreatedById == userId);
+                .Include(b => b.Shelf)
+                .Single(b => b.Id == bookId
+                    && b.CreatedById == userId);
 
-            if (book == null)
+            if (book == null || book.IsDeleted)
             {
                 return NotFound();
             }
 
-            book.IsDeleted = true;
+            var followers = _context.Followings
+                .Where(f => f.FolloweeId == userId)
+                .Select(f => f.Follower)
+                .ToList();
+
+            book.Delete(followers);
 
             _context.SaveChanges();
 

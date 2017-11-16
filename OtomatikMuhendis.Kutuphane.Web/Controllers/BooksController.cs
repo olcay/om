@@ -83,14 +83,12 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
             }
             else
             {
-                var shelf = new Shelf
-                {
-                    CreatedById = userId,
-                    CreationDate = DateTime.UtcNow,
-                    UpdateDate = DateTime.UtcNow,
-                    Title = "Default",
-                    IsPublic = false
-                };
+                var followers = _context.Followings
+                    .Where(f => f.FolloweeId == userId)
+                    .Select(f => f.Follower)
+                    .ToList();
+
+                var shelf = new Shelf(userId, string.Format("{0}'s shelf", User.GetUserName()), followers);
 
                 _context.Shelves.Add(shelf);
 
@@ -100,7 +98,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
             _context.Books.Add(book);
             _context.SaveChanges();
 
-            return RedirectToAction("Detail", "Shelves", new { shelfId = book.ShelfId });
+            return RedirectToAction("Detail", "Shelves", new {shelfId = book.ShelfId});
         }
     }
 }

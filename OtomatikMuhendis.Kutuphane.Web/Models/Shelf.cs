@@ -32,5 +32,26 @@ namespace OtomatikMuhendis.Kutuphane.Web.Models
 
         [NotMapped]
         public int StarsCount { get; set; }
+
+        public Shelf()
+        {
+            
+        }
+
+        public Shelf(string createdById, string title, List<ApplicationUser> usersToNotify)
+        {
+            CreatedById = createdById ?? throw new ArgumentNullException(nameof(createdById));
+            Title = title ?? throw new ArgumentNullException(nameof(createdById));
+
+            CreationDate = DateTime.UtcNow;
+            UpdateDate = DateTime.UtcNow;
+
+            var notification = Notification.ShelfCreated(this);
+
+            foreach (var follower in usersToNotify)
+            {
+                follower.Notify(notification);
+            }
+        }
     }
 }

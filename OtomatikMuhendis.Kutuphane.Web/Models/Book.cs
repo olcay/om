@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Models
@@ -23,6 +24,18 @@ namespace OtomatikMuhendis.Kutuphane.Web.Models
         [Required]
         public int ShelfId { get; set; }
 
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; private set; }
+
+        public void Delete(List<ApplicationUser> usersToNotify)
+        {
+            IsDeleted = true;
+
+            var notification = Notification.BookRemoved(this);
+
+            foreach (var follower in usersToNotify)
+            {
+                follower.Notify(notification);
+            }
+        }
     }
 }

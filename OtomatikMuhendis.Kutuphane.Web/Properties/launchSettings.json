@@ -13,18 +13,14 @@
       "launchBrowser": true,
       "launchUrl": "https://localhost:44306/",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "SENDGRID_KEY": "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",
-        "DATABASE_URL": "postgres://pppuihslxwzayf:3c9522566ced0b88337918d6b58688a4673bcd6d94e1f335f187fd89950f12dc@ec2-54-247-120-169.eu-west-1.compute.amazonaws.com:5432/d3duuvifk5rfmr"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "OtomatikMuhendis.Kutuphane.Web": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "SENDGRID_KEY": "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",
-        "DATABASE_URL": "postgres://pppuihslxwzayf:3c9522566ced0b88337918d6b58688a4673bcd6d94e1f335f187fd89950f12dc@ec2-54-247-120-169.eu-west-1.compute.amazonaws.com:5432/d3duuvifk5rfmr"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:53594/"
     }
