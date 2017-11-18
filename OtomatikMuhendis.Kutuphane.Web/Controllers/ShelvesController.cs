@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OtomatikMuhendis.Kutuphane.Web.Data;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
 using OtomatikMuhendis.Kutuphane.Web.Models;
@@ -55,6 +56,41 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
             };
 
             return View(viewModel);
+        }
+
+        [Authorize]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Create(ShelfFormViewModel viewModel)
+        {
+            var userId = User.GetUserId();
+
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var shelf = new Shelf(userId, viewModel.Title);
+
+            if (viewModel.IsPublic)
+            {
+                var followers = _context.Followings
+                    .Where(f => f.FolloweeId == userId)
+                    .Select(f => f.Follower)
+                    .ToList();
+
+                shelf.Publish(followers);
+            }
+
+            _context.Shelves.Add(shelf);
+            _context.SaveChanges();
+
+            return RedirectToAction("Detail", "Shelves", new { shelfId = shelf.Id });
         }
     }
 }

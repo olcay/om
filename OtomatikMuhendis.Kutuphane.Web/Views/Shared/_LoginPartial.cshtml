@@ -22,7 +22,7 @@
                         <a asp-area="" asp-controller="Manage" asp-action="Index" title="Account">Account</a>
                     </li>
                     <li>
-                        <a asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" title="Profile">Your profile</a>
+                        <a asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" asp-route-tab="" title="Profile">Your profile</a>
                     </li>
                     <li>
                         <a asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" asp-route-tab="@ProfileTabs.Stars" title="Stars">Your stars</a>

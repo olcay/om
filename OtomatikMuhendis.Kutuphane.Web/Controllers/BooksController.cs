@@ -21,7 +21,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
         }
 
         [Authorize]
-        public IActionResult Create()
+        public IActionResult Create([FromQuery]int shelfId = 0)
         {
             var userId = User.GetUserId();
 
@@ -32,7 +32,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                     {
                         Text = p.Title,
                         Value = p.Id.ToString()
-                    }).ToList()
+                    }).ToList(),
+                Shelf = shelfId
             };
 
             return View(viewModel);
@@ -83,12 +84,14 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
             }
             else
             {
+                var shelf = new Shelf(userId, string.Format("{0}'s shelf", User.GetUserName()));
+
                 var followers = _context.Followings
                     .Where(f => f.FolloweeId == userId)
                     .Select(f => f.Follower)
                     .ToList();
 
-                var shelf = new Shelf(userId, string.Format("{0}'s shelf", User.GetUserName()), followers);
+                shelf.Publish(followers);
 
                 _context.Shelves.Add(shelf);
 

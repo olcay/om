@@ -10,10 +10,19 @@
 @section UserInfo
 {
     <img src="@Model.ImageUrl" class="img-rounded img-responsive"/>
+    <p>Visit <a href="https://gravatar.com/" target="_blank">Gravatar <span class="glyphicon glyphicon-new-window"></span></a> to update your profile picture.</p>
     <h2>@Model.User.Name</h2>
-    @if (Model.ShowActions && !Model.IsProfileOwner)
+    @if (Model.ShowActions)
     {
-        <button type="button" data-user-id="@Model.User.Id" class="btn btn-@Html.Raw(Model.IsFollowing ? "success" : "default") btn-lg js-toggle-follow">Follow</button>
+        if (Model.IsProfileOwner)
+        {
+            <a asp-controller="Shelves" asp-action="Create" class="btn btn-success btn-lg">Add a Shelf</a>
+        }
+        else
+        {
+            <button type="button" data-user-id="@Model.User.Id" class="btn btn-@(Model.IsFollowing ? "success" : "default") btn-lg js-toggle-follow">Follow</button>
+        }
+
     }
 }
 
@@ -22,14 +31,19 @@
     @Html.Partial("_ShelfPartial", new ShelfViewModel {Shelf = shelf, ShowActions = Model.ShowActions})
 }
 
-@foreach (var user in Model.Users)
+@if (Model.Users.Any())
 {
-    <ul>
-        <li>
-            <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@user.Name">@user.Name</a>
-        </li>
+    <ul class="users">
+        @foreach (var user in Model.Users)
+        {
+            <li>
+                <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@user.Name">@user.Name</a>
+            </li>
+        }
     </ul>
 }
+
+
 
 @section Scripts{
     <script>

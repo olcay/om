@@ -38,20 +38,26 @@ namespace OtomatikMuhendis.Kutuphane.Web.Models
             
         }
 
-        public Shelf(string createdById, string title, List<ApplicationUser> usersToNotify)
+        public Shelf(string createdById, string title)
         {
             CreatedById = createdById ?? throw new ArgumentNullException(nameof(createdById));
             Title = title ?? throw new ArgumentNullException(nameof(createdById));
 
             CreationDate = DateTime.UtcNow;
             UpdateDate = DateTime.UtcNow;
+        }
 
+        public void Publish(IEnumerable<ApplicationUser> usersToNotify)
+        {
+            IsPublic = true;
+            
             var notification = Notification.ShelfCreated(this);
 
             foreach (var follower in usersToNotify)
             {
                 follower.Notify(notification);
             }
+            
         }
     }
 }

@@ -26,21 +26,32 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
         {
             var userId = User.GetUserId();
 
-            if (_context.Stars.Any(a => a.UserId == userId && a.ShelfId == dto.ShelfId))
+            var star = _context.Stars.FirstOrDefault(a => a.UserId == userId && a.ShelfId == dto.ShelfId);
+
+            string result;
+
+            if (star == null)
             {
-                return BadRequest("Already starred.");
+                star = new Star
+                {
+                    ShelfId = dto.ShelfId,
+                    UserId = User.GetUserId()
+                };
+
+                _context.Stars.Add(star);
+
+                result = "starred";
+            }
+            else
+            {
+                _context.Stars.Remove(star);
+
+                result = "unstarred";
             }
 
-            var star = new Star
-            {
-                ShelfId = dto.ShelfId,
-                UserId = User.GetUserId()
-            };
-
-            _context.Stars.Add(star);
             _context.SaveChanges();
 
-            return Ok();
+            return Ok(result);
         }
     }
 }

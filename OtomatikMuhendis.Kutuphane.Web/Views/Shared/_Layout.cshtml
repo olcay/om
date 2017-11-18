@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData[ViewDataParameters.Title] - @WebsiteOptionAccessor.Value.Name</title>
+    <title>@(!string.IsNullOrWhiteSpace(ViewData[ViewDataParameters.Title] as string) ? ViewData[ViewDataParameters.Title] + " -" : "") @WebsiteOptionAccessor.Value.Name</title>
     
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
 
@@ -35,9 +35,16 @@
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">@WebsiteOptionAccessor.Value.Name</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Books" asp-action="Create">Add a book</a></li>
-                </ul>
+                <form class="navbar-form navbar-left" asp-controller="Home" asp-action="Index" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="query" value="@ViewData[ViewDataParameters.Query]">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                    </div>
+                </form>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
         </div>

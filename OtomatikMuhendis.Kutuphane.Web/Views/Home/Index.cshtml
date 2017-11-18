@@ -1,18 +1,59 @@
-﻿@model ShelvesViewModel
+﻿@using OtomatikMuhendis.Kutuphane.Web.Enums
+@using OtomatikMuhendis.Kutuphane.Web.Extensions
+@model HomeViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData[ViewDataParameters.Title] = null;
+    ViewData[ViewDataParameters.Query] = Model.Query;
 }
 
 <div class="row top-buffer">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-6">
+    <div class="col-md-9">
         @foreach (var shelf in Model.Shelves)
         {
-            @Html.Partial("_ShelfPartial", new ShelfViewModel { Shelf = shelf, ShowActions = Model.ShowActions })
+            @Html.Partial("_ShelfPartial", new ShelfViewModel
+               {
+                   Shelf = shelf,
+                   ShowActions = Model.ShowActions,
+                   IsStarred = Model.Stars != null && Model.Stars.Contains(shelf.Id)
+               })
         }
     </div>
     <div class="col-md-3">
+        
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h3 class="panel-title">
+                            Your shelves
+                        </h3>
+                    </div>
+                    <div class="col-md-2">
+                        <a class="btn btn-success btn-xs pull-right" asp-controller="Shelves" asp-action="Create">Add a Shelf</a>
+                    </div>
+                </div>
+            </div>
+            @if (Model.ShowActions && Model.UserShelves.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var shelf in Model.UserShelves)
+                    {
+                        <li class="list-group-item @(!shelf.IsPublic ? "list-group-item-warning":"")">
+                            <span class="glyphicon @(!shelf.IsPublic ? "glyphicon-eye-close" : "glyphicon-align-right rotate90") "></span> 
+                            <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@shelf.Id">@shelf.Title</a>
+                        </li>
+                    }
+                </ul>
+                <div class="panel-footer">
+                    <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" title="Profile">Load more...</a>
+                </div>
+            }
+            else
+            {
+                <div class="arrowHeaded">You don't have any shelf to keep your books. Please, follow the arrow to add a new shelf.</div>
+            }
+        </div>
+        
     </div>
 </div>
 
@@ -30,10 +71,18 @@
                         RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
                     }
                 })
-                .done(function() {
-                    button
-                        .removeClass("btn-default")
-                        .addClass("btn-warning");
+                    .done(function (data) {
+
+                        if (data === "starred") {
+                            button
+                                .removeClass("btn-default")
+                                .addClass("btn-warning");
+                        } else {
+                            button
+                                .removeClass("btn-warning")
+                                .addClass("btn-default");
+                        }
+                    
                 })
                 .fail(function() {
                     swal("Something failed!", "We could not process your request.", "error");

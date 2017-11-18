@@ -15,7 +15,7 @@
             }
             
             <small>
-                <sup class="label label-warning" style="@Html.Raw(Model.Shelf.IsPublic ? "display: none;":"")" id="lblIsPublic">Private</sup>
+                <sup class="label label-warning" style="@(Model.Shelf.IsPublic ? "display: none;":"")" id="lblIsPublic">Private</sup>
                 
             </small>
         </h2>
@@ -31,27 +31,36 @@
     <div class="col-md-2 top-buffer" id="js-operation">
         @if (Model.IsShelfOwner)
         {
-            <!-- Single button -->
+            <!-- Split button -->
             <div class="btn-group pull-right">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="glyphicon glyphicon-menu-hamburger"></span>
+                <a asp-controller="Books" asp-action="Create" asp-route-shelfId="@Model.Shelf.Id" class="btn btn-success">Add a Book</a>
+                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu">
                     <li>
+                        <a asp-controller="Books" asp-action="Create" asp-route-shelfId="@Model.Shelf.Id">
+                            <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Add a Book
+                        </a>
+                    </li>
+                    <li>
 
-                        <a href="#" id="js-makePrivate-shelf" data-shelf-id="@Model.Shelf.Id" aria-label="Hide" style="@Html.Raw(!Model.Shelf.IsPublic ? "display: none;" : "")">
+                        <a href="#" id="js-makePrivate-shelf" data-shelf-id="@Model.Shelf.Id" aria-label="Hide" style="@(!Model.Shelf.IsPublic ? "display: none;" : "")">
                             <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span> Make private
                         </a>
 
-                        <a href="#" id="js-makePublic-shelf" data-shelf-id="@Model.Shelf.Id" aria-label="Show" style="@Html.Raw(Model.Shelf.IsPublic ? "display: none;" : "")">
+                        <a href="#" id="js-makePublic-shelf" data-shelf-id="@Model.Shelf.Id" aria-label="Show" style="@(Model.Shelf.IsPublic ? "display: none;" : "")">
                             <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Make public
                         </a>
 
                     </li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="#" id="js-remove-shelf" data-shelf-id="@Model.Shelf.Id" data-user-name="@Model.Shelf.CreatedBy.Name">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Remove shelf
-                    </a></li>
+                    <li>
+                        <a href="#" id="js-remove-shelf" data-shelf-id="@Model.Shelf.Id" data-user-name="@Model.Shelf.CreatedBy.Name">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Remove shelf
+                        </a>
+                    </li>
                 </ul>
             </div>
         }

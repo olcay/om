@@ -78,6 +78,17 @@
     -webkit-box-shadow: none;
 }
 
+.form-control {
+    -webkit-transition: none;
+    -o-transition: none;
+    transition: none;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
 .navbar-inverse {
     background-color: #158CBA;
     border-color: #127ba3;
@@ -160,3 +171,44 @@ body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     .popover-notifications ul.notifications .new {
         background-color: #d9edf7;
     }
+
+
+.rotate90 {
+
+    /* Safari */
+    -webkit-transform: rotate(90deg);
+
+    /* Firefox */
+    -moz-transform: rotate(90deg);
+
+    /* IE */
+    -ms-transform: rotate(90deg);
+
+    /* Opera */
+    -o-transform: rotate(90deg);
+
+    /* Internet Explorer */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+
+}
+
+.arrowHeaded {
+    background: url('../images/arrow.jpg') no-repeat right;
+    min-height: 103px;
+    padding-right: 58px;
+    margin: 10px;
+}
+
+ ul.users {
+    list-style: none;
+    padding-left: 0;
+}
+
+    ul.users > li {
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+    }
+
+        ul.users > li:last-child {
+            border-bottom: none;
+        }

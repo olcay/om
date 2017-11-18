@@ -3,7 +3,7 @@ using OtomatikMuhendis.Kutuphane.Web.Models;
 
 namespace OtomatikMuhendis.Kutuphane.Web.ViewModels
 {
-    public class ProfileViewModel : ShelvesViewModel
+    public class ProfileViewModel
     {
         public ApplicationUser User { get; set; }
 
@@ -16,6 +16,10 @@ namespace OtomatikMuhendis.Kutuphane.Web.ViewModels
         public string ImageUrl { get; set; }
 
         public IEnumerable<ApplicationUser> Users { get; set; }
+
+        public IEnumerable<Shelf> Shelves { get; set; }
+
+        public bool ShowActions { get; set; }
 
         public ProfileViewModel()
         {
