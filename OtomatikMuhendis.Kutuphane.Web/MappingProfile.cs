@@ -19,6 +19,9 @@ namespace OtomatikMuhendis.Kutuphane.Web
 
             CreateMap<Notification, NotificationDto>();
             CreateMap<NotificationDto, Notification>();
+
+            CreateMap<UserNotification, UserNotificationDto>();
+            CreateMap<UserNotificationDto, UserNotification>();
         }
     }
 }

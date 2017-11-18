@@ -156,3 +156,7 @@ body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .popover-notifications ul.notifications .highlight {
     font-weight: bold;
 }
+
+    .popover-notifications ul.notifications .new {
+        background-color: #d9edf7;
+    }

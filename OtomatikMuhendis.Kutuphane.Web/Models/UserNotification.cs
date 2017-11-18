@@ -12,7 +12,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Models
 
         public int NotificationId { get; private set; }
 
-        public bool IsRead { get; set; }
+        public bool IsRead { get; private set; }
 
         protected UserNotification()
         {
@@ -22,6 +22,11 @@ namespace OtomatikMuhendis.Kutuphane.Web.Models
         {
             User = user ?? throw new ArgumentNullException(nameof(user));
             Notification = notification ?? throw new ArgumentNullException(nameof(notification));
+        }
+
+        public void Read()
+        {
+            IsRead = true;
         }
     }
 }

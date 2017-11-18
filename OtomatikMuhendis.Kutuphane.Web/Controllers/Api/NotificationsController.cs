@@ -17,7 +17,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
     [AutoValidateAntiforgeryToken]
     public class NotificationsController : Controller
     {
-        public ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
 
         public NotificationsController(ApplicationDbContext context,
@@ -27,17 +27,33 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
             _mapper = mapper;
         }
 
-        public IEnumerable<NotificationDto> GetNewNotifications()
+        public IEnumerable<UserNotificationDto> GetNewNotifications()
         {
             var userId = User.GetUserId();
-            var notications = _context.UserNotifications
-                .Where(un => un.UserId == userId && !un.IsRead)
-                .Select(un => un.Notification)
-                .Include(n => n.Book)
-                .Include(n => n.Shelf.CreatedBy)
+            var notifications = _context.UserNotifications
+                .Where(un => un.UserId == userId)
+                .Include(n => n.Notification.Book)
+                .Include(n => n.Notification.Shelf.CreatedBy)
+                .OrderByDescending(n => n.Notification.DateTime)
+                .Take(10)
                 .ToList();
 
-            return notications.Select(_mapper.Map<Notification, NotificationDto>);
+            return notifications.Select(_mapper.Map<UserNotification, UserNotificationDto>);
+        }
+
+        [HttpPost]
+        public IActionResult MarkAsRead()
+        {
+            var userId = User.GetUserId();
+            var notifications = _context.UserNotifications
+                .Where(un => un.UserId == userId && !un.IsRead)
+                .ToList();
+
+            notifications.ForEach(n => n.Read());
+
+            _context.SaveChanges();
+
+            return Ok();
         }
     }
 }
