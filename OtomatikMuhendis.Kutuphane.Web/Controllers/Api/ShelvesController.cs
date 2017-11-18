@@ -31,7 +31,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
             var userId = User.GetUserId();
 
             var shelf = _context.Shelves
-                .FirstOrDefault(s => s.Id == dto.ShelfId
+                .FirstOrDefault(s => s.Id == dto.Id
                     && s.CreatedById == userId);
 
             if (shelf == null)

@@ -8,6 +8,7 @@ using OtomatikMuhendis.Kutuphane.Web.Data;
 using OtomatikMuhendis.Kutuphane.Web.Models;
 using OtomatikMuhendis.Kutuphane.Web.Services;
 using System;
+using AutoMapper;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
 
 namespace OtomatikMuhendis.Kutuphane.Web
@@ -42,6 +43,8 @@ namespace OtomatikMuhendis.Kutuphane.Web
             services.Configure<WebsiteOptions>(Configuration.GetSection("Website"));
 
             services.AddMvc();
+
+            services.AddAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

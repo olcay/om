@@ -10,6 +10,7 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/animate.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/js/dist/bootstrap3-editable/css/bootstrap-editable.css" />
     </environment>
@@ -54,6 +55,9 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/dist/salvattore.min.js"></script>
         <script src="~/js/dist/sweetalert.min.js"></script>
+        <script src="~/js/dist/moment.min.js"></script>
+        <script src="~/js/dist/moment-timezone-with-data.min.js"></script>
+        <script src="~/js/dist/underscore-min.js"></script>
         <script src="~/js/dist/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
@@ -76,5 +80,50 @@
     </environment>
 
     @RenderSection("Scripts", required: false)
+<script type="text/x-template" id="notifications-template">
+    <ul class="notifications">
+        <%
+            _.each(notifications, function(notification){
+                var date = moment.tz(notification.dateTime, "UTC").tz(moment.tz.guess()).format("D MMM HH:mm");
+                if(notification.type == 1){ %>
+                    <li><span class="highlight"><%= notification.shelf.createdBy.name %></span> created <a href="/shelves/detail/<%= notification.shelf.id %>"><%= notification.shelf.title %></a> on <%= date %></li> 
+                <% } if(notification.type == 2){ %>
+                    <li><span class="highlight"><%= notification.shelf.createdBy.name %></span> added <%= notification.book.title %> to <a href="/shelves/detail/<%= notification.shelf.id %>"><%= notification.shelf.title %></a> on <%= date %></li>
+                <% } if(notification.type == 3){ %>
+                    <li><span class="highlight"><%= notification.shelf.createdBy.name %></span> removed <%= notification.book.title %> from <a href="/shelves/detail/<%= notification.shelf.id %>"><%= notification.shelf.title %></a> on <%= date %></li>
+                <% }
+            })
+        %>
+        
+    </ul>
+</script>
+    <script>
+        $(document).ready(function() {
+            $.getJSON("/api/notifications",
+                function (notifications) {
+                    if (notifications.length === 0)
+                        return;
+
+                    $(".js-notifications-count")
+                        .text(notifications.length)
+                        .removeClass("hide")
+                        .addClass("animated wobble");
+
+                    $(".notifications").popover({
+                        html: true,
+                        title: "Notifications",
+                        trigger: "focus",
+                        content : function() {
+                            var compiled = _.template($("#notifications-template").html());
+                            return compiled({ notifications: notifications });
+                        },
+                        placement: "bottom",
+                        template: '<div class="popover popover-notifications" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+                    });
+                });
+
+            
+        });
+    </script>
 </body>
 </html>

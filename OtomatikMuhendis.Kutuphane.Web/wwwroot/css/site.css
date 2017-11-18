@@ -73,6 +73,11 @@
 }
 
 /* Bootstrap Overrides */
+.popover {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
 .navbar-inverse {
     background-color: #158CBA;
     border-color: #127ba3;
@@ -88,6 +93,19 @@
 .navbar-inverse .navbar-nav > li > a {
     color: #ddd;
 }
+
+    .navbar-inverse .notifications {
+        position: relative;
+        font-size: 18px;
+    }
+
+    .navbar-inverse .notifications .badge {
+        position: absolute;
+        top: 8px;
+        right: 4px;
+        background: #a80a0a;
+        font-size: 10px;
+    }
 
     .navbar-inverse .navbar-nav > .open > a,
     .navbar-inverse .navbar-nav > .open > a:hover,
@@ -117,6 +135,24 @@ body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     }
 }
 
-span[data-toggle="tooltip"] {
-    border-bottom: 1px dotted black;
+.popover-notifications .popover-content {
+    padding: 0;
+}
+
+.popover-notifications ul.notifications {
+    list-style: none;
+    padding-left: 0;
+}
+
+.popover-notifications ul.notifications > li {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+
+.popover-notifications ul.notifications > li:last-child {
+    border-bottom: none;
+}
+
+.popover-notifications ul.notifications .highlight {
+    font-weight: bold;
 }
