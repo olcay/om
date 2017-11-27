@@ -1,0 +1,14 @@
+﻿@model BookViewModel
+
+@{
+    ViewBag.Title = Model.Book.Title;
+}
+<div class="row top-buffer">
+    <div class="col-md-10">
+        <h2>@Model.Book.Title</h2>
+
+        <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.Book.ShelfId">@Model.Book.Shelf.Title</a>
+    </div>
+    <div class="col-md-2 top-buffer" id="js-operation">
+    </div>
+</div>

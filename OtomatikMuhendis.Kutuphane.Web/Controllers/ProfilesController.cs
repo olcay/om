@@ -48,6 +48,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 ImageUrl = GetGravatarUrl(profileUser.Email)
             };
 
+            viewModel.Stars = _context.Stars.Where(s => s.UserId == userId).ToLookup(s => s.ShelfId);
+
             if (!viewModel.IsProfileOwner)
             {
                 viewModel.IsFollowing =

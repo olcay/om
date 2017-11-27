@@ -26,21 +26,33 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
         {
             var userId = User.GetUserId();
 
-            if (_context.Followings.Any(a => a.FollowerId == userId && a.FollowerId == dto.FolloweeId))
+            var following =
+                _context.Followings.FirstOrDefault(a => a.FollowerId == userId && a.FolloweeId == dto.FolloweeId);
+
+            string result;
+
+            if (following == null)
             {
-                return BadRequest("Already following.");
+                following = new Following
+                {
+                    FollowerId = userId,
+                    FolloweeId = dto.FolloweeId
+                };
+
+                _context.Followings.Add(following);
+
+                result = "following";
+            }
+            else
+            {
+                _context.Followings.Remove(following);
+
+                result = "notfollowing";
             }
 
-            var following = new Following
-            {
-                FollowerId = userId,
-                FolloweeId = dto.FolloweeId
-            };
-
-            _context.Followings.Add(following);
             _context.SaveChanges();
 
-            return Ok();
+            return Ok(result);
         }
     }
 }

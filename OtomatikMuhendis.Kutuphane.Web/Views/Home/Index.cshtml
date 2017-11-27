@@ -7,7 +7,7 @@
 }
 
 <div class="row top-buffer">
-    <div class="col-md-9">
+    <div id="shelves" class="col-md-9">
         @foreach (var shelf in Model.Shelves)
         {
             @Html.Partial("_ShelfPartial", new ShelfViewModel
@@ -60,34 +60,7 @@
 @section Scripts{ 
     <script>
         $(document).ready(function() {
-            $(".js-toggle-star").click(function() {
-                var button = $(this);
-
-                $.post({
-                    url: "/api/stars",
-                    data: { shelfId: button.data("shelf-id") },
-                    headers:
-                    {
-                        RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-                    }
-                })
-                    .done(function (data) {
-
-                        if (data === "starred") {
-                            button
-                                .removeClass("btn-default")
-                                .addClass("btn-warning");
-                        } else {
-                            button
-                                .removeClass("btn-warning")
-                                .addClass("btn-default");
-                        }
-                    
-                })
-                .fail(function() {
-                    swal("Something failed!", "We could not process your request.", "error");
-                });
-            });
+            HomeController.init("#shelves");
         });
     </script>
 }

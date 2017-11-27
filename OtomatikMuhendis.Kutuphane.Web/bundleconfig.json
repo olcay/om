@@ -25,5 +25,23 @@
     },
     // Optionally generate .map file
     "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/app.min.js",
+    "inputFiles": [
+      "wwwroot/js/app/services/starService.js",
+      "wwwroot/js/app/services/followingService.js",
+      "wwwroot/js/app/modules/starModule.js",
+      "wwwroot/js/app/modules/followingModule.js",
+      "wwwroot/js/app/controllers/profileController.js",
+      "wwwroot/js/app/controllers/homeController.js"
+    ],
+    // Optionally specify minification options
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    // Optionally generate .map file
+    "sourceMap": true
   }
 ]

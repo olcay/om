@@ -5,12 +5,14 @@ using OtomatikMuhendis.Kutuphane.Web.Data;
 using OtomatikMuhendis.Kutuphane.Web.ViewModels;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
 using OtomatikMuhendis.Kutuphane.Web.Models;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 {
     [AutoValidateAntiforgeryToken]
+    [Route("[controller]")]
     public class BooksController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,6 +20,31 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
         public BooksController(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        [HttpGet("{bookId}")]
+        public IActionResult Detail(int bookId)
+        {
+            if (bookId == 0)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+            var book = _context.Books
+                .Include(b => b.Shelf)
+                .FirstOrDefault(b => b.Id == bookId && !b.IsDeleted);
+
+            if (book == null)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+            var viewModel = new BookViewModel()
+            {
+                Book = book
+            };
+
+            return View(viewModel);
         }
 
         [Authorize]

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using OtomatikMuhendis.Kutuphane.Web.Models;
 
 namespace OtomatikMuhendis.Kutuphane.Web.ViewModels
@@ -20,6 +21,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.ViewModels
         public IEnumerable<Shelf> Shelves { get; set; }
 
         public bool ShowActions { get; set; }
+
+        public ILookup<int, Star> Stars { get; set; }
 
         public ProfileViewModel()
         {
