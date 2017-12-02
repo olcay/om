@@ -10,6 +10,7 @@ using OtomatikMuhendis.Kutuphane.Web.Services;
 using System;
 using AutoMapper;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
+using OtomatikMuhendis.Kutuphane.Web.Persistence;
 
 namespace OtomatikMuhendis.Kutuphane.Web
 {
@@ -39,6 +40,7 @@ namespace OtomatikMuhendis.Kutuphane.Web
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.Configure<WebsiteOptions>(Configuration.GetSection("Website"));
 
