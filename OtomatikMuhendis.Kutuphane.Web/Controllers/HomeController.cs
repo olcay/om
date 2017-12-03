@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OtomatikMuhendis.Kutuphane.Web.Core.Models;
+using OtomatikMuhendis.Kutuphane.Web.Core.ViewModels;
 using OtomatikMuhendis.Kutuphane.Web.Data;
-using OtomatikMuhendis.Kutuphane.Web.Models;
-using OtomatikMuhendis.Kutuphane.Web.ViewModels;
+using OtomatikMuhendis.Kutuphane.Web.Extensions;
 using System.Diagnostics;
 using System.Linq;
-using OtomatikMuhendis.Kutuphane.Web.Extensions;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 {

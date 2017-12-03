@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using OtomatikMuhendis.Kutuphane.Web.Models;
 using OtomatikMuhendis.Kutuphane.Web.Services;
-using OtomatikMuhendis.Kutuphane.Web.ViewModels.AccountViewModels;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using OtomatikMuhendis.Kutuphane.Web.Core.Models;
+using OtomatikMuhendis.Kutuphane.Web.Core.ViewModels.AccountViewModels;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 {

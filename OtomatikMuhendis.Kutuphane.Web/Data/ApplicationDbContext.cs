@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using OtomatikMuhendis.Kutuphane.Web.Models;
-using OtomatikMuhendis.Kutuphane.Web.Persistence.EntityConfigurations;
+using OtomatikMuhendis.Kutuphane.Web.Core.Models;
+using OtomatikMuhendis.Kutuphane.Web.Data.EntityConfigurations;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Data
 {

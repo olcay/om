@@ -1,8 +1,8 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using OtomatikMuhendis.Kutuphane.Web.Models;
+using OtomatikMuhendis.Kutuphane.Web.Core.Models;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Extensions
 {

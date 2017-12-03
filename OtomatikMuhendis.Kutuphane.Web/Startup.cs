@@ -1,16 +1,18 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OtomatikMuhendis.Kutuphane.Web.Core;
+using OtomatikMuhendis.Kutuphane.Web.Core.Models;
 using OtomatikMuhendis.Kutuphane.Web.Data;
-using OtomatikMuhendis.Kutuphane.Web.Models;
+using OtomatikMuhendis.Kutuphane.Web.Extensions;
 using OtomatikMuhendis.Kutuphane.Web.Services;
 using System;
-using AutoMapper;
-using OtomatikMuhendis.Kutuphane.Web.Extensions;
-using OtomatikMuhendis.Kutuphane.Web.Persistence;
+using OtomatikMuhendis.Kutuphane.Web.Core.Repositories;
+using OtomatikMuhendis.Kutuphane.Web.Data.Repositories;
 
 namespace OtomatikMuhendis.Kutuphane.Web
 {
@@ -40,7 +42,13 @@ namespace OtomatikMuhendis.Kutuphane.Web
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+
+            //Persistence
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            
+            services.AddTransient<IFollowingRepository, FollowingRepository>();
+            services.AddTransient<IShelfRepository, ShelfRepository>();
+
 
             services.Configure<WebsiteOptions>(Configuration.GetSection("Website"));
 

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OtomatikMuhendis.Kutuphane.Web.Core;
+using OtomatikMuhendis.Kutuphane.Web.Core.Models;
+using OtomatikMuhendis.Kutuphane.Web.Core.ViewModels;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
-using OtomatikMuhendis.Kutuphane.Web.Models;
-using OtomatikMuhendis.Kutuphane.Web.Persistence;
-using OtomatikMuhendis.Kutuphane.Web.ViewModels;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 {

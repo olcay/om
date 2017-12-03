@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OtomatikMuhendis.Kutuphane.Web.Core.ViewModels;
 using OtomatikMuhendis.Kutuphane.Web.Data;
-using OtomatikMuhendis.Kutuphane.Web.Enums;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
-using OtomatikMuhendis.Kutuphane.Web.Helpers;
-using OtomatikMuhendis.Kutuphane.Web.ViewModels;
 using System.Diagnostics;
 using System.Linq;
+using OtomatikMuhendis.Kutuphane.Web.Core.Enums;
+using OtomatikMuhendis.Kutuphane.Web.Core.Helpers;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 {

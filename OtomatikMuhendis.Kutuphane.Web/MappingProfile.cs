@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using OtomatikMuhendis.Kutuphane.Web.Dtos;
-using OtomatikMuhendis.Kutuphane.Web.Models;
+using OtomatikMuhendis.Kutuphane.Web.Core.Dtos;
+using OtomatikMuhendis.Kutuphane.Web.Core.Models;
 
 namespace OtomatikMuhendis.Kutuphane.Web
 {

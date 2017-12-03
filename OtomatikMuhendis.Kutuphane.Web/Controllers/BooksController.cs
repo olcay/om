@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using OtomatikMuhendis.Kutuphane.Web.Data;
-using OtomatikMuhendis.Kutuphane.Web.ViewModels;
-using System.Linq;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using OtomatikMuhendis.Kutuphane.Web.Core.Models;
+using OtomatikMuhendis.Kutuphane.Web.Core.ViewModels;
+using OtomatikMuhendis.Kutuphane.Web.Data;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
-using OtomatikMuhendis.Kutuphane.Web.Models;
+using System;
+using System.Linq;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 {

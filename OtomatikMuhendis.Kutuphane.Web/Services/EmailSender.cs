@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using OtomatikMuhendis.Kutuphane.Web.Models;
+using OtomatikMuhendis.Kutuphane.Web.Core.Models;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System;

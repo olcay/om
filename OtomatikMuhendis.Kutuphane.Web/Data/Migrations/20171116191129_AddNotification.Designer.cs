@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using OtomatikMuhendis.Kutuphane.Web.Data;
-using OtomatikMuhendis.Kutuphane.Web.Models;
 using System;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Data.Migrations

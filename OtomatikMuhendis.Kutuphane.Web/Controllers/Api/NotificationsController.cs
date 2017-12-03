@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OtomatikMuhendis.Kutuphane.Web.Core.Dtos;
+using OtomatikMuhendis.Kutuphane.Web.Core.Models;
 using OtomatikMuhendis.Kutuphane.Web.Data;
-using OtomatikMuhendis.Kutuphane.Web.Dtos;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
-using OtomatikMuhendis.Kutuphane.Web.Models;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
 {
