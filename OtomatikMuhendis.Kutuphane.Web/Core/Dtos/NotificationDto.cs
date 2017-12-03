@@ -1,5 +1,5 @@
-﻿using System;
-using OtomatikMuhendis.Kutuphane.Web.Core.Models;
+﻿using OtomatikMuhendis.Kutuphane.Web.Core.Enums;
+using System;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Core.Dtos
 {

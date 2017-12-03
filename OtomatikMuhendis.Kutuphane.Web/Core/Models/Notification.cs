@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using OtomatikMuhendis.Kutuphane.Web.Core.Enums;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
 {
@@ -12,9 +12,10 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
         public NotificationType Type { get; private set; }
 
         public Book Book { get; private set; }
-
-        [Required]
+        
         public Shelf Shelf { get; private set; }
+
+        public int ShelfId { get; set; }
 
         protected Notification()
         {

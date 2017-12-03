@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
 {
     public class Shelf
     {
         public int Id { get; set; }
-
-        [Required]
-        [StringLength(255)]
+        
         public string Title { get; set; }
 
         public ApplicationUser CreatedBy { get; set; }
-
-        [Required]
+        
         public string CreatedById { get; set; }
 
         public DateTime CreationDate { get; set; }
@@ -29,8 +24,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
         public bool IsPublic { get; set; }
 
         public DateTime UpdateDate { get; set; }
-
-        [NotMapped]
+        
         public int StarsCount { get; set; }
 
         public Shelf()
@@ -41,7 +35,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
         public Shelf(string createdById, string title)
         {
             CreatedById = createdById ?? throw new ArgumentNullException(nameof(createdById));
-            Title = title ?? throw new ArgumentNullException(nameof(createdById));
+            Title = title ?? throw new ArgumentNullException(nameof(title));
 
             CreationDate = DateTime.UtcNow;
             UpdateDate = DateTime.UtcNow;

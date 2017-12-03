@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
 {
@@ -9,19 +8,15 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
         public int Id { get; set; }
 
         public ApplicationUser CreatedBy { get; set; }
-
-        [Required]
+        
         public string CreatedById { get; set; }
 
         public DateTime CreationDate { get; set; }
-
-        [Required]
-        [StringLength(255)]
+        
         public string Title { get; set; }
 
         public Shelf Shelf { get; set; }
-
-        [Required]
+        
         public int ShelfId { get; set; }
 
         public bool IsDeleted { get; private set; }

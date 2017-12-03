@@ -1,4 +1,4 @@
-﻿namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
+﻿namespace OtomatikMuhendis.Kutuphane.Web.Core.Enums
 {
     public enum NotificationType
     {

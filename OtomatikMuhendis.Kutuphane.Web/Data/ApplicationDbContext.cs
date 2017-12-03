@@ -21,13 +21,15 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Star>().HasKey(s => new {s.ShelfId, s.UserId});
-            builder.Entity<Following>().HasKey(f => new { f.FollowerId, f.FolloweeId });
-            builder.Entity<UserNotification>().HasKey(un => new { un.UserId, un.NotificationId });
+            new ShelfConfiguration(builder.Entity<Shelf>());
+            new BookConfiguration(builder.Entity<Book>());
+            new NotificationConfiguration(builder.Entity<Notification>());
+            new StarConfiguration(builder.Entity<Star>());
+            new FollowingConfiguration(builder.Entity<Following>());
+            new UserNotificationConfiguration(builder.Entity<UserNotification>());
+            new ApplicationUserConfiguration(builder.Entity<ApplicationUser>());
 
             base.OnModelCreating(builder);
-
-            new ApplicationUserConfiguration(builder.Entity<ApplicationUser>());
         }
     }
 }
