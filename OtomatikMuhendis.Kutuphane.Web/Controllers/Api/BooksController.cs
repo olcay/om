@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using OtomatikMuhendis.Kutuphane.Web.Data;
+using OtomatikMuhendis.Kutuphane.Web.Core;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
-using System.Linq;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
 {
@@ -13,11 +12,11 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
     [AutoValidateAntiforgeryToken]
     public class BooksController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BooksController(ApplicationDbContext context)
+        public BooksController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpDelete("{bookId}")]
@@ -30,24 +29,28 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
 
             var userId = User.GetUserId();
 
-            var book = _context.Books
-                .Include(b => b.Shelf)
-                .Single(b => b.Id == bookId
-                    && b.CreatedById == userId);
+            var book = _unitOfWork.Books.GetBook(bookId);
 
             if (book == null || book.IsDeleted)
             {
                 return NotFound();
             }
 
-            var followers = _context.Followings
-                .Where(f => f.FolloweeId == userId)
-                .Select(f => f.Follower)
-                .ToList();
+            if (book.CreatedById != userId)
+            {
+                return Unauthorized();
+            }
+            
+            book.Delete();
 
-            book.Delete(followers);
+            var followers = _unitOfWork.Followings.GetFollowers(userId);
 
-            _context.SaveChanges();
+            if (followers != null && followers.Any())
+            {
+                book.Notify(followers);
+            }
+
+            _unitOfWork.Complete();
 
             return Ok();
         }

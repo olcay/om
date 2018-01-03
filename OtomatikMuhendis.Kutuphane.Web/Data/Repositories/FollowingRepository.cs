@@ -14,7 +14,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data.Repositories
             _context = context;
         }
 
-        public IEnumerable<ApplicationUser> GetFollowers(string followeeId)
+        public IList<ApplicationUser> GetFollowers(string followeeId)
         {
             return _context.Followings
                 .Where(f => f.FolloweeId == followeeId)

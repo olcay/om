@@ -48,6 +48,7 @@ namespace OtomatikMuhendis.Kutuphane.Web
             
             services.AddTransient<IFollowingRepository, FollowingRepository>();
             services.AddTransient<IShelfRepository, ShelfRepository>();
+            services.AddTransient<IBookRepository, BookRepository>();
 
 
             services.Configure<WebsiteOptions>(Configuration.GetSection("Website"));

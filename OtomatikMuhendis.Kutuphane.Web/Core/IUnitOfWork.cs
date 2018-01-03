@@ -8,6 +8,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core
 
         IShelfRepository Shelves { get; }
 
+        IBookRepository Books { get; }
+
         void Complete();
     }
 }

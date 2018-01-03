@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using OtomatikMuhendis.Kutuphane.Web.Core.Models;
+﻿using OtomatikMuhendis.Kutuphane.Web.Core.Models;
+using System.Collections.Generic;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Core.Repositories
 {
     public interface IFollowingRepository
     {
-        IEnumerable<ApplicationUser> GetFollowers(string followeeId);
+        IList<ApplicationUser> GetFollowers(string followeeId);
     }
 }

@@ -21,10 +21,13 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
 
         public bool IsDeleted { get; private set; }
 
-        public void Delete(List<ApplicationUser> usersToNotify)
+        public void Delete()
         {
             IsDeleted = true;
+        }
 
+        public void Notify(IEnumerable<ApplicationUser> usersToNotify)
+        {
             var notification = Notification.BookRemoved(this);
 
             foreach (var follower in usersToNotify)

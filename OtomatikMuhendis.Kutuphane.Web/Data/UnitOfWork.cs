@@ -11,13 +11,17 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data
 
         public IShelfRepository Shelves { get; }
 
+        public IBookRepository Books { get; }
+
         public UnitOfWork(ApplicationDbContext context, 
             IShelfRepository shelfRepository, 
-            IFollowingRepository followingRepository)
+            IFollowingRepository followingRepository,
+            IBookRepository bookRepository)
         {
             _context = context;
             Shelves = shelfRepository;
             Followings = followingRepository;
+            Books = bookRepository;
         }
 
         public void Complete()
