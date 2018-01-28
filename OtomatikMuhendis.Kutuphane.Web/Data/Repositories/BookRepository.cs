@@ -1,14 +1,15 @@
 ﻿using OtomatikMuhendis.Kutuphane.Web.Core.Models;
 using OtomatikMuhendis.Kutuphane.Web.Core.Repositories;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Data.Repositories
 {
     public class BookRepository : IBookRepository
     {
-        private readonly IApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public BookRepository(IApplicationDbContext context)
+        public BookRepository(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -21,6 +22,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data.Repositories
         public Book GetBook(int bookId)
         {
             return _context.Books
+                .Include(b => b.Shelf)
                 .Single(b => b.Id == bookId);
         }
     }

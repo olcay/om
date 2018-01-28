@@ -12,5 +12,11 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data
         DbSet<Notification> Notifications { get; set; }
         DbSet<UserNotification> UserNotifications { get; set; }
         DbSet<ApplicationUser> Users { get; set; }
+
+        DbSet<Author> Authors { get; set; }
+        DbSet<BookDetail> BookDetails { get; set; }
+        DbSet<BookAuthor> BookAuthors { get; set; }
+
+
     }
 }

@@ -12,7 +12,21 @@
         .fail(fail);
     };
 
+    var add = function (gBookId, shelfId, title, done, fail) {
+        $.post({
+            url: "/api/books/",
+            data: { shelfId: shelfId, gBookId: gBookId, title: title },
+            headers:
+            {
+                RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+            }
+        })
+        .done(done)
+        .fail(fail);
+    };
+
     return {
-        remove: remove
+        remove: remove,
+        add: add
     };
 }();

@@ -39,7 +39,8 @@
       "wwwroot/js/app/controllers/profileController.js",
       "wwwroot/js/app/controllers/shelfController.js",
       "wwwroot/js/app/controllers/homeController.js",
-      "wwwroot/js/app/controllers/notificationController.js"
+      "wwwroot/js/app/controllers/notificationController.js",
+      "wwwroot/js/app/controllers/bookController.js"
     ],
     // Optionally specify minification options
     "minify": {

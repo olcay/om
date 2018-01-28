@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using OtomatikMuhendis.Kutuphane.Web.Core.Models;
 using OtomatikMuhendis.Kutuphane.Web.Core.ViewModels;
 using OtomatikMuhendis.Kutuphane.Web.Data;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
-using System;
+using OtomatikMuhendis.Kutuphane.Web.Services;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 {
@@ -15,11 +16,13 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
     [Route("[controller]")]
     public class BooksController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
+        private readonly IBookFinder _bookFinder;
 
-        public BooksController(ApplicationDbContext context)
+        public BooksController(IApplicationDbContext context, IBookFinder bookFinder)
         {
             _context = context;
+            _bookFinder = bookFinder;
         }
 
         [HttpGet("{bookId}")]
@@ -46,89 +49,51 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 
             return View(viewModel);
         }
-
+        
         [Authorize]
-        public IActionResult Create([FromQuery]int shelfId = 0)
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery]string query = null, [FromQuery]int shelfId = 0)
         {
-            var userId = User.GetUserId();
-
-            var viewModel = new BookFormViewModel
+            var model = new BookSearchViewModel()
             {
-                Shelves = _context.Shelves.Where(s => s.CreatedById == userId)
-                    .Select(p => new SelectListItem
-                    {
-                        Text = p.Title,
-                        Value = p.Id.ToString()
-                    }).ToList(),
-                Shelf = shelfId
+                BookList = new List<BookDetailViewModel>(),
+                Search = query,
+                ShelfId = shelfId
             };
-
-            return View(viewModel);
-        }
-
-        [Authorize]
-        [HttpPost]
-        public IActionResult Create(BookFormViewModel viewModel)
-        {
+            
             var userId = User.GetUserId();
 
-            if (!ModelState.IsValid)
+            model.UserShelves = _context.Shelves
+                .Where(s => !s.IsDeleted && s.CreatedById == userId)
+                .Select(p => new SelectListItem() { Text = p.Title, Value = p.Id.ToString() })
+                .ToList();
+
+            if (string.IsNullOrWhiteSpace(query))
             {
-                viewModel.Shelves = _context.Shelves.Where(s => s.CreatedById == userId)
-                    .Select(p => new SelectListItem
-                    {
-                        Text = p.Title,
-                        Value = p.Id.ToString()
-                    }).ToList();
-                return View(viewModel);
+                return View(model);
             }
 
-            var book = new Book
+            var volumeList = await _bookFinder.Search(query);
+
+            if (volumeList != null)
             {
-                CreationDate = DateTime.UtcNow,
-                Title = viewModel.Title,
-                CreatedById = userId
-            };
-
-            if (viewModel.Shelf > 0)
-            {
-                book.ShelfId = viewModel.Shelf;
-
-                var shelf = _context.Shelves.FirstOrDefault(s => s.Id == book.ShelfId);
-
-                if (shelf == null)
+                foreach (var volume in volumeList)
                 {
-                    viewModel.Shelves = _context.Shelves.Where(s => s.CreatedById == userId)
-                        .Select(p => new SelectListItem
-                        {
-                            Text = p.Title,
-                            Value = p.Id.ToString()
-                        }).ToList();
-                    return View(viewModel);
+                    model.BookList.Add(new BookDetailViewModel()
+                    {
+                        Title = volume.VolumeInfo.Title,
+                        Subtitle = volume.VolumeInfo.Subtitle,
+                        Description = volume.VolumeInfo.Description,
+                        GoogleBookId = volume.Id,
+                        PublishedYear = volume.VolumeInfo.PublishedDate,
+                        PublisherName = volume.VolumeInfo.Publisher,
+                        Authors = volume.VolumeInfo.Authors != null ? string.Join(", ", volume.VolumeInfo.Authors) : "",
+                        ImageLink = volume.VolumeInfo.ImageLinks != null ? volume.VolumeInfo.ImageLinks.Thumbnail : ""
+                    });
                 }
-
-                shelf.UpdateDate = DateTime.UtcNow;
-            }
-            else
-            {
-                var shelf = new Shelf(userId, string.Format("{0}'s shelf", User.GetUserName()));
-
-                var followers = _context.Followings
-                    .Where(f => f.FolloweeId == userId)
-                    .Select(f => f.Follower)
-                    .ToList();
-
-                shelf.Publish(followers);
-
-                _context.Shelves.Add(shelf);
-
-                book.Shelf = shelf;
             }
 
-            _context.Books.Add(book);
-            _context.SaveChanges();
-
-            return RedirectToAction("Detail", "Shelves", new {shelfId = book.ShelfId});
+            return View(model);
         }
     }
 }

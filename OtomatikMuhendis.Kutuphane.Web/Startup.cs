@@ -7,12 +7,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OtomatikMuhendis.Kutuphane.Web.Core;
 using OtomatikMuhendis.Kutuphane.Web.Core.Models;
+using OtomatikMuhendis.Kutuphane.Web.Core.Repositories;
 using OtomatikMuhendis.Kutuphane.Web.Data;
+using OtomatikMuhendis.Kutuphane.Web.Data.Repositories;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
 using OtomatikMuhendis.Kutuphane.Web.Services;
 using System;
-using OtomatikMuhendis.Kutuphane.Web.Core.Repositories;
-using OtomatikMuhendis.Kutuphane.Web.Data.Repositories;
 
 namespace OtomatikMuhendis.Kutuphane.Web
 {
@@ -42,6 +42,7 @@ namespace OtomatikMuhendis.Kutuphane.Web
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IBookFinder, BookFinder>();
 
             //Persistence
             services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -49,6 +50,9 @@ namespace OtomatikMuhendis.Kutuphane.Web
             services.AddTransient<IFollowingRepository, FollowingRepository>();
             services.AddTransient<IShelfRepository, ShelfRepository>();
             services.AddTransient<IBookRepository, BookRepository>();
+            services.AddTransient<IBookDetailRepository, BookDetailRepository>();
+            services.AddTransient<IBookAuthorRepository, BookAuthorRepository>();
+            services.AddTransient<IAuthorRepository, AuthorRepository>();
 
             services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
 

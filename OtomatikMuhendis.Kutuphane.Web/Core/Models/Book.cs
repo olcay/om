@@ -19,6 +19,10 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
         
         public int ShelfId { get; set; }
 
+        public BookDetail BookDetail { get; set; }
+
+        public int? BookDetailId { get; set; }
+
         public bool IsDeleted { get; private set; }
 
         public void Delete()

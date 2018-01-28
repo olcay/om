@@ -33,14 +33,14 @@
         {
             <!-- Split button -->
             <div class="btn-group pull-right">
-                <a asp-controller="Books" asp-action="Create" asp-route-shelfId="@Model.Shelf.Id" class="btn btn-success">Add a Book</a>
+                <a asp-controller="Books" asp-action="Search" asp-route-shelfId="@Model.Shelf.Id" class="btn btn-success">Add a Book</a>
                 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu">
                     <li>
-                        <a asp-controller="Books" asp-action="Create" asp-route-shelfId="@Model.Shelf.Id">
+                        <a asp-controller="Books" asp-action="Search" asp-route-shelfId="@Model.Shelf.Id">
                             <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Add a Book
                         </a>
                     </li>

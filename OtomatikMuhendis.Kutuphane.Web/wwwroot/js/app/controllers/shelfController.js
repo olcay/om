@@ -69,8 +69,10 @@
         window.location = "/p/" + username;
     };
 
+    var removedBook;
+
     var removeBook = function () {
-        var button = $(this);
+        removedBook = $(this);
 
         swal({
             title: "Are you sure?",
@@ -81,13 +83,13 @@
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    bookService.remove(button.data("book-id"), removeBookDone, fail);
+                    bookService.remove(removedBook.data("book-id"), removeBookDone, fail);
                 }
             });
     };
 
     var removeBookDone = function () {
-        button.parents(".thumbnail").fadeOut(function () {
+        removedBook.parents(".thumbnail").fadeOut(function () {
             $(this).remove();
             salvattore.recreateColumns(document.querySelector("#grid"));
         });

@@ -13,6 +13,9 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data
         public DbSet<Following> Followings { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<UserNotification> UserNotifications { get; set; }
+        public DbSet<Author> Authors { get; set; }
+        public DbSet<BookDetail> BookDetails { get; set; }
+        public DbSet<BookAuthor> BookAuthors { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -23,6 +26,9 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data
         {
             new ShelfConfiguration(builder.Entity<Shelf>());
             new BookConfiguration(builder.Entity<Book>());
+            new BookDetailConfiguration(builder.Entity<BookDetail>());
+            new BookAuthorConfiguration(builder.Entity<BookAuthor>());
+            new AuthorConfiguration(builder.Entity<Author>());
             new NotificationConfiguration(builder.Entity<Notification>());
             new StarConfiguration(builder.Entity<Star>());
             new FollowingConfiguration(builder.Entity<Following>());
