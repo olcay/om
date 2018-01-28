@@ -6,9 +6,9 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data.Repositories
 {
     public class BookRepository : IBookRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
 
-        public BookRepository(ApplicationDbContext context)
+        public BookRepository(IApplicationDbContext context)
         {
             _context = context;
         }

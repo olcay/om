@@ -50,6 +50,8 @@ namespace OtomatikMuhendis.Kutuphane.Web
             services.AddTransient<IShelfRepository, ShelfRepository>();
             services.AddTransient<IBookRepository, BookRepository>();
 
+            services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
+
 
             services.Configure<WebsiteOptions>(Configuration.GetSection("Website"));
 

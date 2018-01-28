@@ -5,7 +5,7 @@ using OtomatikMuhendis.Kutuphane.Web.Data.EntityConfigurations;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
     {
         public DbSet<Book> Books { get; set; }
         public DbSet<Shelf> Shelves { get; set; }
