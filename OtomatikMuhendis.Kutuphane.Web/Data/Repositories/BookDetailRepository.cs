@@ -1,6 +1,7 @@
 ﻿using OtomatikMuhendis.Kutuphane.Web.Core.Models;
 using OtomatikMuhendis.Kutuphane.Web.Core.Repositories;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Data.Repositories
 {
@@ -21,6 +22,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data.Repositories
         public BookDetail GetBookDetail(int bookDetailId)
         {
             return _context.BookDetails
+                .Include(bd => bd.BookAuthorList)
                 .Single(b => b.Id == bookDetailId);
         }
 

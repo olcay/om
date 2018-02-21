@@ -40,18 +40,18 @@
 
 @media screen and (max-width: 480px){
     #grid[data-columns]:before {
-        content: '1 .column.size-1of1';
+        content: '2 .column.size-1of2';
     }
 }
 
 @media screen and (min-width: 481px) and (max-width: 768px) {
     #grid[data-columns]:before {
-        content: '2 .column.size-1of2';
+        content: '3 .column.size-1of3';
     }
 }
 @media screen and (min-width: 769px) {
     #grid[data-columns]:before {
-        content: '3 .column.size-1of3';
+        content: '4 .column.size-1of4';
     }
 }
 
@@ -70,6 +70,10 @@
 
 .size-1of3 {
     width: 33.333%;
+}
+
+.size-1of4 {
+    width: 25%;
 }
 
 /* Bootstrap Overrides */

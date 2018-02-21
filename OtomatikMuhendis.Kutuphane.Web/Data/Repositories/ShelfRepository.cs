@@ -1,6 +1,6 @@
 ﻿using OtomatikMuhendis.Kutuphane.Web.Core.Models;
-using System.Linq;
 using OtomatikMuhendis.Kutuphane.Web.Core.Repositories;
+using System.Linq;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Data.Repositories
 {

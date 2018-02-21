@@ -82,7 +82,7 @@
                 foreach (var book in Model.BookList)
                 {
                     <div class="thumbnail book">
-                        <img src="@book.ImageLink" alt="@book.Title" class="img-responsive" />
+                        <img src="@Html.Raw(!string.IsNullOrWhiteSpace(book.ImageLink) ? book.ImageLink : "/images/book.jpg")" alt="@book.Title" class="img-responsive" />
                         <div class="caption">
                             <div class="row">
                                 <div class="col-md-9">

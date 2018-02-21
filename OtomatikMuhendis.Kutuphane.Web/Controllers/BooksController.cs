@@ -35,6 +35,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 
             var book = _context.Books
                 .Include(b => b.Shelf)
+                .Include(b => b.Shelf.CreatedBy)
+                .Include(b => b.BookDetail)
                 .FirstOrDefault(b => b.Id == bookId && !b.IsDeleted);
 
             if (book == null)

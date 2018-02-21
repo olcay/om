@@ -3,6 +3,14 @@
     ViewData["Title"] = Model.Shelf.Title;
 }
 <div class="row top-buffer">
+    <div class="col-md-12">
+        <small>
+            <a asp-controller="Home" asp-action="Index">Library</a> >
+            <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Shelf.CreatedBy.Name">Shelves of @Model.Shelf.CreatedBy.Name</a>
+        </small>
+    </div>
+</div>
+<div class="row top-buffer">
     <div class="col-md-10">
         <h2>
             @if (Model.IsShelfOwner)
@@ -13,18 +21,18 @@
             {
                 @Model.Shelf.Title
             }
-            
+
             <small>
-                <sup class="label label-warning" style="@(Model.Shelf.IsPublic ? "display: none;":"")" id="lblIsPublic">Private</sup>
-                
+                <sup class="label label-warning" style="@(Model.Shelf.IsPublic ? "display: none;" : "")" id="lblIsPublic">Private</sup>
+
             </small>
         </h2>
-        <p>Created by <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Shelf.CreatedBy.Name">@Model.Shelf.CreatedBy.Name</a> on 
+        <p>Created by <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Shelf.CreatedBy.Name">@Model.Shelf.CreatedBy.Name</a> on
             <span data-toggle="tooltip" title="@Model.Shelf.CreationDate.ToLongDateString()" data-placement="bottom">@Model.Shelf.CreationDate.DayOfWeek.ToString()</span>
             @if (Model.Shelf.CreationDate.Date != Model.Shelf.UpdateDate.Date)
             {
                 <text> and updated on </text>
-                <span data-toggle="tooltip" title="@Model.Shelf.UpdateDate.ToLongDateString()" data-placement="bottom" > @Model.Shelf.UpdateDate.DayOfWeek.ToString() </span>
+                <span data-toggle="tooltip" title="@Model.Shelf.UpdateDate.ToLongDateString()" data-placement="bottom"> @Model.Shelf.UpdateDate.DayOfWeek.ToString() </span>
             }
         </p>
     </div>
@@ -72,16 +80,19 @@
             @foreach (var book in Model.Shelf.Books)
             {
                 <div class="thumbnail book">
-                    <img src="~/images/book.jpg" alt="@book.Title" class="img-responsive" />
+                    <img src="@Html.Raw(book.BookDetail.ImageLink ?? "/images/book.jpg")" alt="@book.Title" class="img-responsive" />
                     <div class="caption">
                         <div class="row">
                             <div class="col-md-9">
-                                <h3>
+                                <h4>
                                     <a asp-controller="Books" asp-action="Detail" asp-route-bookId="@book.Id">
                                         @book.Title
                                     </a>
-                                    
-                                </h3>
+                                </h4>
+                                <h5>@book.BookDetail.Subtitle</h5>
+                                <p>
+                                    <span>@String.Join(", ", book.BookDetail.BookAuthorList.Select(b => b.Author.Name))</span>
+                                </p>
                             </div>
                             <div class="col-md-3 top-buffer">
                                 <div class="actions">
@@ -94,7 +105,6 @@
                                 </div>
                             </div>
                         </div>
-                        <p>...</p>
                     </div>
                 </div>
             }

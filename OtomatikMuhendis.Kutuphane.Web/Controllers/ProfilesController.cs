@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using OtomatikMuhendis.Kutuphane.Web.Core.Enums;
 using OtomatikMuhendis.Kutuphane.Web.Core.Helpers;
+using OtomatikMuhendis.Kutuphane.Web.Core.Models;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 {
@@ -63,9 +64,18 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 viewModel.Shelves = _context.Stars
                     .Where(s => s.UserId == userId)
                     .Select(s => s.Shelf)
-                    .Include(s => s.CreatedBy)
-                    .Include(s => s.Books)
-                    .ToList();
+                    .Select(s => new Shelf
+                    {
+                        Id = s.Id,
+                        Books = s.Books.Where(b => !b.IsDeleted).Take(5).ToList(),
+                        Title = s.Title,
+                        CreatedById = s.CreatedById,
+                        CreatedBy = s.CreatedBy,
+                        IsPublic = s.IsPublic,
+                        CreationDate = s.CreationDate
+                    })
+                    .Where(s => s.CreatedById == userId && (s.IsPublic || userId == loggedInUserId) && !s.IsDeleted)
+                    .OrderByDescending(b => b.UpdateDate);
             }
             else if (tab == ProfileTabs.Followers)
             {
@@ -83,12 +93,18 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
             }
             else
             {
-                viewModel.Shelves = _context.Shelves
-                    .Include(b => b.Books)
-                    .Include(b => b.CreatedBy)
+                viewModel.Shelves = _context.Shelves.Select(s => new Shelf
+                    {
+                        Id = s.Id,
+                        Books = s.Books.Where(b => !b.IsDeleted).Take(5).ToList(),
+                        Title = s.Title,
+                        CreatedById = s.CreatedById,
+                        CreatedBy = s.CreatedBy,
+                        IsPublic = s.IsPublic,
+                        CreationDate = s.CreationDate
+                    })
                     .Where(s => s.CreatedById == userId && (s.IsPublic || userId == loggedInUserId) && !s.IsDeleted)
-                    .OrderByDescending(b => b.UpdateDate)
-                    .ToList();
+                    .OrderByDescending(b => b.UpdateDate);
             }
 
             return View(viewModel);
