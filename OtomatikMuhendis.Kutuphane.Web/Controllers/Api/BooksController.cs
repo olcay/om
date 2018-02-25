@@ -92,6 +92,26 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
 
                 if (bookDetailFromDb != null)
                 {
+                    if (viewModel.ShelfId > 0)
+                    {
+                        var bookFromDb = _unitOfWork.Books.GetBookByDetailId(bookDetailFromDb.Id, viewModel.ShelfId);
+
+                        if (bookFromDb != null)
+                        {
+                            if (bookFromDb.IsDeleted)
+                            {
+                                bookFromDb.Reactivate();
+
+                                _unitOfWork.Complete();
+
+                                return Ok(bookFromDb.Id);
+                            }
+
+                            return BadRequest("The book is already in the specified shelf.");
+                        }
+                    }
+
+
                     book.BookDetail = bookDetailFromDb;
                 }
                 else

@@ -27,8 +27,8 @@
         swal("New book!", bookTitle +" is added successfully to "+ selectedShelf.text() +".", "success");
     };
 
-    var fail = function () {
-        swal("Something failed!", "We could not process your request.", "error");
+    var fail = function (data) {
+        swal("Something failed!", "We could not process your request. " + data.responseText, "error");
     };
 
     return {

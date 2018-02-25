@@ -39,5 +39,10 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
                 follower.Notify(notification);
             }
         }
+
+        internal void Reactivate()
+        {
+            IsDeleted = false;
+        }
     }
 }

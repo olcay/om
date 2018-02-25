@@ -6,5 +6,6 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Repositories
     {
         void Save(Book book);
         Book GetBook(int bookId);
+        Book GetBookByDetailId(int bookDetailId, int shelfId);
     }
 }
