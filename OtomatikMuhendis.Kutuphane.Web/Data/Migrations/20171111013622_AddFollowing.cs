@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Data.Migrations
 {
