@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using System;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using System.Collections.Generic;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Data.Migrations
 {

@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,13 +28,6 @@ namespace OtomatikMuhendis.Kutuphane.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(new Connection(Environment.GetEnvironmentVariable("DATABASE_URL")).String));
 
@@ -68,7 +59,7 @@ namespace OtomatikMuhendis.Kutuphane.Web
 
             services.Configure<WebsiteOptions>(Configuration.GetSection("Website"));
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc();
 
             services.AddAutoMapper();
         }
@@ -79,18 +70,18 @@ namespace OtomatikMuhendis.Kutuphane.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
                 app.UseDatabaseErrorPage();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
             }
 
             app.UseStaticFiles();
 
             app.UseAuthentication();
-            app.UseCookiePolicy();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
