@@ -14,39 +14,38 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 {
     [AutoValidateAntiforgeryToken]
     [Route("[controller]")]
-    public class BooksController : Controller
+    public class ItemsController : Controller
     {
         private readonly IApplicationDbContext _context;
         private readonly IBookFinder _bookFinder;
 
-        public BooksController(IApplicationDbContext context, IBookFinder bookFinder)
+        public ItemsController(IApplicationDbContext context, IBookFinder bookFinder)
         {
             _context = context;
             _bookFinder = bookFinder;
         }
 
-        [HttpGet("{bookId}")]
-        public IActionResult Detail(int bookId)
+        [HttpGet("{id}")]
+        public IActionResult Detail([FromRoute] int id)
         {
-            if (bookId == 0)
+            if (id == 0)
             {
                 return RedirectToAction("Error", "Home");
             }
 
-            var book = _context.Books
+            var book = _context.Items
                 .Include(b => b.Shelf)
                 .Include(b => b.Shelf.CreatedBy)
-                .Include(b => b.BookDetail)
-                .FirstOrDefault(b => b.Id == bookId && !b.IsDeleted);
+                .FirstOrDefault(b => b.Id == id && !b.IsDeleted);
 
             if (book == null)
             {
                 return RedirectToAction("Error", "Home");
             }
 
-            var viewModel = new BookViewModel()
+            var viewModel = new ItemViewModel()
             {
-                Book = book
+                Item = book
             };
 
             return View(viewModel);

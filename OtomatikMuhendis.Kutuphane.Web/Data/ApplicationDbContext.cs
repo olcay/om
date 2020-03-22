@@ -7,7 +7,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
     {
-        public DbSet<Book> Books { get; set; }
+        public DbSet<Item> Items { get; set; }
         public DbSet<Shelf> Shelves { get; set; }
         public DbSet<Star> Stars { get; set; }
         public DbSet<Following> Followings { get; set; }
@@ -16,6 +16,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data
         public DbSet<Author> Authors { get; set; }
         public DbSet<BookDetail> BookDetails { get; set; }
         public DbSet<BookAuthor> BookAuthors { get; set; }
+        public DbSet<ItemBookDetail> ItemBookDetails { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -25,8 +26,9 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             new ShelfConfiguration(builder.Entity<Shelf>());
-            new BookConfiguration(builder.Entity<Book>());
+            new ItemConfiguration(builder.Entity<Item>());
             new BookDetailConfiguration(builder.Entity<BookDetail>());
+            new ItemBookDetailConfiguration(builder.Entity<ItemBookDetail>());
             new BookAuthorConfiguration(builder.Entity<BookAuthor>());
             new AuthorConfiguration(builder.Entity<Author>());
             new NotificationConfiguration(builder.Entity<Notification>());

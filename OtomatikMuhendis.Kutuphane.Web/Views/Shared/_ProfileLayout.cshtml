@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-md-12">
                 <ul class="nav nav-tabs">
-                    <li role="presentation" @Html.Raw(ViewData[ViewDataParameters.Tab].ToString() == ProfileTabs.Shelves ? "class=\"active\"":"") ><a asp-controller="Profiles" asp-action="Index" asp-route-userName="@ViewData[ViewDataParameters.UserName]" asp-route-tab="@ProfileTabs.Shelves">Books</a></li>
+                    <li role="presentation" @Html.Raw(ViewData[ViewDataParameters.Tab].ToString() == ProfileTabs.Shelves ? "class=\"active\"":"") ><a asp-controller="Profiles" asp-action="Index" asp-route-userName="@ViewData[ViewDataParameters.UserName]" asp-route-tab="@ProfileTabs.Shelves">Shelves</a></li>
                     <li role="presentation" @Html.Raw(ViewData[ViewDataParameters.Tab].ToString() == ProfileTabs.Stars ? "class=\"active\"":"") ><a asp-controller="Profiles" asp-action="Index" asp-route-userName="@ViewData[ViewDataParameters.UserName]" asp-route-tab="@ProfileTabs.Stars">Stars</a></li>
                     <li role="presentation" @Html.Raw(ViewData[ViewDataParameters.Tab].ToString() == ProfileTabs.Followers ? "class=\"active\"":"") ><a asp-controller="Profiles" asp-action="Index" asp-route-userName="@ViewData[ViewDataParameters.UserName]" asp-route-tab="@ProfileTabs.Followers">Followers</a></li>
                     <li role="presentation" @Html.Raw(ViewData[ViewDataParameters.Tab].ToString() == ProfileTabs.Following ? "class=\"active\"":"") ><a asp-controller="Profiles" asp-action="Index" asp-route-userName="@ViewData[ViewDataParameters.UserName]" asp-route-tab="@ProfileTabs.Following">Following</a></li>

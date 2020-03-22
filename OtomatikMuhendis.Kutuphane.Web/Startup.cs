@@ -49,10 +49,11 @@ namespace OtomatikMuhendis.Kutuphane.Web
             
             services.AddTransient<IFollowingRepository, FollowingRepository>();
             services.AddTransient<IShelfRepository, ShelfRepository>();
-            services.AddTransient<IBookRepository, BookRepository>();
+            services.AddTransient<IItemRepository, ItemRepository>();
             services.AddTransient<IBookDetailRepository, BookDetailRepository>();
             services.AddTransient<IBookAuthorRepository, BookAuthorRepository>();
             services.AddTransient<IAuthorRepository, AuthorRepository>();
+            services.AddTransient<IItemBookDetailRepository, ItemBookDetailRepository>();
 
             services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
 

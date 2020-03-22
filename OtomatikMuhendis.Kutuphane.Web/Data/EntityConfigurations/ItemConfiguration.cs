@@ -3,9 +3,9 @@ using OtomatikMuhendis.Kutuphane.Web.Core.Models;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Data.EntityConfigurations
 {
-    public class BookConfiguration
+    public class ItemConfiguration
     {
-        public BookConfiguration(EntityTypeBuilder<Book> entityBuilder)
+        public ItemConfiguration(EntityTypeBuilder<Item> entityBuilder)
         {
             entityBuilder.Property(s => s.Title)
                 .IsRequired()

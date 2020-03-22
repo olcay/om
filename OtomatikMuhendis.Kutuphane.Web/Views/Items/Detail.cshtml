@@ -1,0 +1,30 @@
+﻿@model ItemViewModel
+
+@{
+    ViewBag.Title = Model.Item.Title;
+}
+<div class="row top-buffer">
+    <div class="col-md-12">
+        <small>
+            <a asp-controller="Home" asp-action="Index">Library</a> >
+            <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Item.Shelf.CreatedBy.Name">@Model.Item.Shelf.CreatedBy.Name's shelves</a> >
+            <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.Item.ShelfId">@Model.Item.Shelf.Title</a>
+        </small>
+    </div>
+</div>
+
+
+<div class="row top-buffer">
+    <div class="col-md-2">
+        <img src="@Html.Raw(Model.BookDetail?.ImageLink ?? "/images/book.jpg")" alt="@Model.Item.Title" class="img-responsive" />
+
+    </div>
+    <div class="col-md-10">
+        <h2>@Model.Item.Title</h2>
+        <h3>@Model.BookDetail?.Subtitle</h3>
+        <p>Published by @Model.BookDetail?.Publisher on @Model.BookDetail?.PublishedYear</p>
+
+        <p>@Model.BookDetail?.Description</p>
+    </div>
+
+</div>

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using OtomatikMuhendis.Kutuphane.Web.Core.ViewModels;
 using OtomatikMuhendis.Kutuphane.Web.Data;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
@@ -46,10 +45,9 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 User = profileUser,
                 IsProfileOwner = loggedInUserId == userId,
                 Tab = tab,
-                ImageUrl = GetGravatarUrl(profileUser.Email)
+                ImageUrl = GetGravatarUrl(profileUser.Email),
+                Stars = _context.Stars.Where(s => s.UserId == userId).ToLookup(s => s.ShelfId)
             };
-
-            viewModel.Stars = _context.Stars.Where(s => s.UserId == userId).ToLookup(s => s.ShelfId);
 
             if (!viewModel.IsProfileOwner)
             {
@@ -67,7 +65,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                     .Select(s => new Shelf
                     {
                         Id = s.Id,
-                        Books = s.Books.Where(b => !b.IsDeleted).Take(5).ToList(),
+                        Items = s.Items.Where(b => !b.IsDeleted).Take(5).ToList(),
                         Title = s.Title,
                         CreatedById = s.CreatedById,
                         CreatedBy = s.CreatedBy,
@@ -96,7 +94,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 viewModel.Shelves = _context.Shelves.Select(s => new Shelf
                     {
                         Id = s.Id,
-                        Books = s.Books.Where(b => !b.IsDeleted).Take(5).ToList(),
+                        Items = s.Items.Where(b => !b.IsDeleted).Take(5).ToList(),
                         Title = s.Title,
                         CreatedById = s.CreatedById,
                         CreatedBy = s.CreatedBy,

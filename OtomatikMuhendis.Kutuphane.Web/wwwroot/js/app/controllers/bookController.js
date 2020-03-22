@@ -1,4 +1,4 @@
-﻿var BookController = function (bookService) {
+﻿var BookController = function (itemService) {
     var bookTitle;
 
     var init = function () {
@@ -18,7 +18,7 @@
         bookTitle = $(this).data("title");
         var gBookId = $(this).data("book-id");
 
-        bookService.add(gBookId, shelfId, bookTitle, done, fail);
+        itemService.add(gBookId, shelfId, bookTitle, done, fail);
     };
 
     var done = function (data) {
@@ -34,4 +34,4 @@
     return {
         init: init
     };
-}(BookService);
+}(ItemService);

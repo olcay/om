@@ -94,16 +94,17 @@
         var date = moment.tz(usernotification.notification.dateTime, "UTC").tz(moment.tz.guess()).format("D MMM HH:mm");
         %>
         <li class="<%= usernotification.isRead ? '': 'new' %>">
-            <span class="highlight"><%= usernotification.notification.shelf.createdBy.name %></span>
             <% if(usernotification.notification.type == 1){ %>
-             created 
+            <span class="highlight"><%= usernotification.notification.shelf.createdBy.name %></span> created
             <% } if(usernotification.notification.type == 2){ %>
-             added <%= usernotification.notification.book.title %> to 
+            <span class="highlight"><%= usernotification.notification.shelf.createdBy.name %></span> added <%= usernotification.notification.book.title %> to
             <% } if(usernotification.notification.type == 3){ %>
-             removed <%= usernotification.notification.book.title %> from 
+            <span class="highlight"><%= usernotification.notification.shelf.createdBy.name %></span> removed <%= usernotification.notification.book.title %> from
+            <% } if(usernotification.notification.type == 5){ %>
+            A user starred
             <% } %>
             <a href="/shelves/<%= usernotification.notification.shelf.id %>"><%= usernotification.notification.shelf.title %></a> on <%= date %>
-            </li>
+        </li>
         <%
         })
         %>

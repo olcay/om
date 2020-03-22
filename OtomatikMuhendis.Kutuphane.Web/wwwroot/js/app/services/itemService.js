@@ -1,7 +1,7 @@
-﻿var BookService = function () {
+﻿var ItemService = function () {
     var remove = function (bookId, done, fail) {
         $.ajax({
-        url: "/api/books/" + bookId,
+        url: "/api/items/" + bookId,
             method: "DELETE",
             headers:
             {
@@ -14,7 +14,7 @@
 
     var add = function (gBookId, shelfId, title, done, fail) {
         $.post({
-            url: "/api/books/",
+            url: "/api/items/",
             data: { shelfId: shelfId, gBookId: gBookId, title: title },
             headers:
             {

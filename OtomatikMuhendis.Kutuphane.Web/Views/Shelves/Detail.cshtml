@@ -41,14 +41,14 @@
         {
             <!-- Split button -->
             <div class="btn-group pull-right">
-                <a asp-controller="Books" asp-action="Search" asp-route-shelfId="@Model.Shelf.Id" class="btn btn-success">Add a Book</a>
+                <a asp-controller="Items" asp-action="Search" asp-route-shelfId="@Model.Shelf.Id" class="btn btn-success">Add a Book</a>
                 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu">
                     <li>
-                        <a asp-controller="Books" asp-action="Search" asp-route-shelfId="@Model.Shelf.Id">
+                        <a asp-controller="Items" asp-action="Search" asp-route-shelfId="@Model.Shelf.Id">
                             <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Add a Book
                         </a>
                     </li>
@@ -77,28 +77,33 @@
 <div class="row top-buffer">
     <div class="col-md-12">
         <div id="grid" data-columns>
-            @foreach (var book in Model.Shelf.Books)
+            @foreach (var book in Model.Items)
             {
                 <div class="thumbnail book">
-                    <img src="@Html.Raw(book.BookDetail.ImageLink ?? "/images/book.jpg")" alt="@book.Title" class="img-responsive" />
+                    <img src="@Html.Raw(book.BookDetail?.ImageLink ?? "/images/book.jpg")" alt="@book.Item.Title" class="img-responsive" />
                     <div class="caption">
                         <div class="row">
                             <div class="col-md-9">
                                 <h4>
-                                    <a asp-controller="Books" asp-action="Detail" asp-route-bookId="@book.Id">
-                                        @book.Title
+                                    <a asp-controller="Items" asp-action="Detail" asp-route-id="@book.Item.Id">
+                                        @book.Item.Title
                                     </a>
                                 </h4>
-                                <h5>@book.BookDetail.Subtitle</h5>
+                                <h5>@book.BookDetail?.Subtitle</h5>
                                 <p>
-                                    <span>@String.Join(", ", book.BookDetail.BookAuthorList.Select(b => b.Author.Name))</span>
+                                    <span>
+                                        @if (book.BookDetail?.BookAuthorList != null)
+                                        {
+                                            @string.Join(", ", book.BookDetail?.BookAuthorList.Select(b => b.Author.Name))
+                                        }
+                                    </span>
                                 </p>
                             </div>
                             <div class="col-md-3 top-buffer">
                                 <div class="actions">
                                     @if (Model.IsShelfOwner)
                                     {
-                                        <button type="button" class="btn btn-danger js-remove-book" data-book-id="@book.Id" aria-label="Remove">
+                                        <button type="button" class="btn btn-danger js-remove-book" data-book-id="@book.Item.Id" aria-label="Remove">
                                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                         </button>
                                     }

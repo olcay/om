@@ -1,4 +1,5 @@
-﻿using OtomatikMuhendis.Kutuphane.Web.Core.Models;
+﻿using System.Collections.Generic;
+using OtomatikMuhendis.Kutuphane.Web.Core.Models;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Core.ViewModels
 {
@@ -11,5 +12,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.ViewModels
         public bool IsShelfOwner { get; set; }
 
         public bool IsStarred { get; set; }
+
+        public List<ItemViewModel> Items { get; set; }
     }
 }

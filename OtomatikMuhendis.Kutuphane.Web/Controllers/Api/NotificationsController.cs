@@ -32,7 +32,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
             var userId = User.GetUserId();
             var notifications = _context.UserNotifications
                 .Where(un => un.UserId == userId)
-                .Include(n => n.Notification.Book)
+                .Include(n => n.Notification.Item)
                 .Include(n => n.Notification.Shelf.CreatedBy)
                 .OrderByDescending(n => n.Notification.DateTime)
                 .Take(10)

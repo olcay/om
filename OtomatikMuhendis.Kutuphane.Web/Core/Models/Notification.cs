@@ -11,7 +11,11 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
 
         public NotificationType Type { get; private set; }
 
-        public Book Book { get; private set; }
+        public ApplicationUser CreatedBy { get; set; }
+
+        public string CreatedById { get; set; }
+
+        public Item Item { get; private set; }
         
         public Shelf Shelf { get; private set; }
 
@@ -21,12 +25,17 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
         {
         }
 
-        private Notification(NotificationType type, Shelf shelf, Book book)
+        private Notification(NotificationType type, Shelf shelf, Item item)
         {
             Shelf = shelf ?? throw new ArgumentNullException(nameof(shelf));
-            Book = book;
+            Item = item;
             Type = type;
             DateTime = DateTime.UtcNow;
+        }
+
+        public static Notification ShelfStarred(Shelf shelf)
+        {
+            return new Notification(NotificationType.ShelfStarred, shelf, null);
         }
 
         public static Notification ShelfCreated(Shelf shelf)
@@ -34,14 +43,14 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
             return new Notification(NotificationType.ShelfCreated, shelf, null);
         }
 
-        public static Notification BookAdded(Book book)
+        public static Notification ItemAdded(Item item)
         {
-            return new Notification(NotificationType.BookAdded, book.Shelf, book);
+            return new Notification(NotificationType.BookAdded, item.Shelf, item);
         }
 
-        public static Notification BookRemoved(Book book)
+        public static Notification ItemRemoved(Item item)
         {
-            return new Notification(NotificationType.BookRemoved, book.Shelf, book);
+            return new Notification(NotificationType.BookRemoved, item.Shelf, item);
         }
     }
 }

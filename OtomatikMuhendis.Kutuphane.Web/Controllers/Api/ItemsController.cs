@@ -15,28 +15,28 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
     [Route("api/[controller]")]
     [Authorize]
     [AutoValidateAntiforgeryToken]
-    public class BooksController : Controller
+    public class ItemsController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IBookFinder _bookFinder;
 
-        public BooksController(IUnitOfWork unitOfWork, IBookFinder bookFinder)
+        public ItemsController(IUnitOfWork unitOfWork, IBookFinder bookFinder)
         {
             _unitOfWork = unitOfWork;
             _bookFinder = bookFinder;
         }
 
-        [HttpDelete("{bookId}")]
-        public IActionResult Delete([FromRoute]int bookId)
+        [HttpDelete("{id}")]
+        public IActionResult Delete([FromRoute]int id)
         {
-            if (bookId < 0)
+            if (id < 0)
             {
                 return BadRequest();
             }
 
             var userId = User.GetUserId();
 
-            var book = _unitOfWork.Books.GetBook(bookId);
+            var book = _unitOfWork.Items.GetItem(id);
 
             if (book == null || book.IsDeleted)
             {
@@ -79,7 +79,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
 
             var userId = User.GetUserId();
 
-            var book = new Book
+            var item = new Item
             {
                 CreationDate = DateTime.UtcNow,
                 Title = viewModel.Title,
@@ -94,25 +94,25 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
                 {
                     if (viewModel.ShelfId > 0)
                     {
-                        var bookFromDb = _unitOfWork.Books.GetBookByDetailId(bookDetailFromDb.Id, viewModel.ShelfId);
+                        var itemFromDb = _unitOfWork.ItemBookDetails.GetItemByBookDetailId(bookDetailFromDb.Id, userId);
 
-                        if (bookFromDb != null)
+                        if (itemFromDb != null)
                         {
-                            if (bookFromDb.IsDeleted)
+                            if (itemFromDb.ShelfId == viewModel.ShelfId)
                             {
-                                bookFromDb.Reactivate();
+                                if (itemFromDb.IsDeleted)
+                                {
+                                    itemFromDb.Reactivate();
 
-                                _unitOfWork.Complete();
+                                    _unitOfWork.Complete();
 
-                                return Ok(bookFromDb.Id);
+                                    return Ok(itemFromDb.Id);
+                                }
+
+                                return BadRequest("The book is already in the specified shelf.");
                             }
-
-                            return BadRequest("The book is already in the specified shelf.");
                         }
                     }
-
-
-                    book.BookDetail = bookDetailFromDb;
                 }
                 else
                 {
@@ -120,7 +120,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
 
                     if (volume != null)
                     {
-                        book.Title = volume.VolumeInfo.Title;
+                        item.Title = volume.VolumeInfo.Title;
 
                         var bookDetail = new BookDetail
                         {
@@ -142,9 +142,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
                                 : ""
                         };
 
-                        _unitOfWork.BookDetails.Save(bookDetail);
-
-                        book.BookDetail = bookDetail;
+                        _unitOfWork.ItemBookDetails.Save(new ItemBookDetail(item, bookDetail));
 
                         if (volume.VolumeInfo.Authors != null && volume.VolumeInfo.Authors.Any())
                         {
@@ -180,9 +178,9 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
 
             if (viewModel.ShelfId > 0)
             {
-                book.ShelfId = viewModel.ShelfId;
+                item.ShelfId = viewModel.ShelfId;
 
-                var shelf = _unitOfWork.Shelves.GetShelf(book.ShelfId);
+                var shelf = _unitOfWork.Shelves.GetShelf(item.ShelfId);
 
                 shelf.UpdateDate = DateTime.UtcNow;
             }
@@ -196,13 +194,13 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
 
                 _unitOfWork.Shelves.Save(shelf);
 
-                book.Shelf = shelf;
+                item.Shelf = shelf;
             }
 
-            _unitOfWork.Books.Save(book);
+            _unitOfWork.Items.Save(item);
             _unitOfWork.Complete();
 
-            return Ok(book.Id);
+            return Ok(item.Id);
         }
 
     }

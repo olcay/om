@@ -5,6 +5,7 @@ using OtomatikMuhendis.Kutuphane.Web.Core.Models;
 using OtomatikMuhendis.Kutuphane.Web.Data;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
 {
@@ -26,7 +27,14 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
         {
             var userId = User.GetUserId();
 
-            var star = _context.Stars.FirstOrDefault(a => a.UserId == userId && a.ShelfId == dto.ShelfId);
+            var shelf = _context.Shelves.Include(s => s.CreatedBy).FirstOrDefault(s => s.Id == dto.ShelfId);
+
+            if (shelf == null)
+            {
+                return NotFound(nameof(shelf));
+            }
+            
+            var star = _context.Stars.FirstOrDefault(a => a.UserId == userId && a.ShelfId == shelf.Id);
 
             string result;
 
@@ -39,6 +47,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
                 };
 
                 _context.Stars.Add(star);
+
+                shelf.Star();
 
                 result = "starred";
             }

@@ -11,24 +11,24 @@ using Xunit;
 
 namespace OtomatikMuhendis.Kutuphane.Tests.Controllers.Api
 {
-    public class BooksControllerTests
+    public class ItemsControllerTests
     {
-        private BooksController _controller;
-        private Mock<IBookRepository> _mockBookRepository;
+        private ItemsController _controller;
+        private Mock<IItemRepository> _mockBookRepository;
         private string _userId;
         
-        public BooksControllerTests()
+        public ItemsControllerTests()
         {
-            _mockBookRepository = new Mock<IBookRepository>();
+            _mockBookRepository = new Mock<IItemRepository>();
             var mockFollowingRepository = new Mock<IFollowingRepository>();
 
             var mockUoW = new Mock<IUnitOfWork>();
-            mockUoW.SetupGet(u => u.Books).Returns(_mockBookRepository.Object);
+            mockUoW.SetupGet(u => u.Items).Returns(_mockBookRepository.Object);
             mockUoW.SetupGet(u => u.Followings).Returns(mockFollowingRepository.Object);
 
             var mockBookFinder = new Mock<IBookFinder>();
             
-            _controller = new BooksController(mockUoW.Object, mockBookFinder.Object);
+            _controller = new ItemsController(mockUoW.Object, mockBookFinder.Object);
             _userId = "1";
             _controller.MockCurrentUser(_userId, "user1@domain.com");
         }
@@ -45,9 +45,9 @@ namespace OtomatikMuhendis.Kutuphane.Tests.Controllers.Api
         public void Delete_BookIsDeleted_ShouldReturnNotFound()
         {
             //Arrange
-            var book = new Book();
+            var book = new Item();
             book.Delete();
-            _mockBookRepository.Setup(r => r.GetBook(1)).Returns(book);
+            _mockBookRepository.Setup(r => r.GetItem(1)).Returns(book);
 
             //Act
             var result = _controller.Delete(1);
@@ -61,8 +61,8 @@ namespace OtomatikMuhendis.Kutuphane.Tests.Controllers.Api
         public void Delete_UserDeletingAnotherUsersBook_ShouldReturnUnauthorized()
         {
             //Arrange
-            var book = new Book {CreatedById = _userId + "-"};
-            _mockBookRepository.Setup(r => r.GetBook(1)).Returns(book);
+            var book = new Item {CreatedById = _userId + "-"};
+            _mockBookRepository.Setup(r => r.GetItem(1)).Returns(book);
 
             //Act
             var result = _controller.Delete(1);
@@ -75,8 +75,8 @@ namespace OtomatikMuhendis.Kutuphane.Tests.Controllers.Api
         public void Delete_ValidRequest_ShouldReturnOK()
         {
             //Arrange
-            var book = new Book { CreatedById = _userId };
-            _mockBookRepository.Setup(r => r.GetBook(1)).Returns(book);
+            var book = new Item { CreatedById = _userId };
+            _mockBookRepository.Setup(r => r.GetItem(1)).Returns(book);
 
             //Act
             var result = _controller.Delete(1);

@@ -32,7 +32,7 @@
       "wwwroot/js/app/services/starService.js",
       "wwwroot/js/app/services/followingService.js",
       "wwwroot/js/app/services/shelfService.js",
-      "wwwroot/js/app/services/bookService.js",
+      "wwwroot/js/app/services/itemService.js",
       "wwwroot/js/app/services/notificationService.js",
       "wwwroot/js/app/modules/starModule.js",
       "wwwroot/js/app/modules/followingModule.js",
