@@ -23,7 +23,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data.Repositories
             return _context.Shelves.Select(s => new Shelf
             {
                 Id = s.Id,
-                Books = s.Books.Where(b => !b.IsDeleted).ToList(),
+                Items = s.Items.Where(b => !b.IsDeleted).ToList(),
                 Title = s.Title,
                 CreatedById = s.CreatedById,
                 CreatedBy = s.CreatedBy,

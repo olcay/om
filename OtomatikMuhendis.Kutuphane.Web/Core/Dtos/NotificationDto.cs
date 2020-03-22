@@ -9,7 +9,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Dtos
 
         public NotificationType Type { get; set; }
 
-        public BookDto Book { get; set; }
+        public ItemDto Item { get; set; }
         
         public ShelfDto Shelf { get; set; }
     }

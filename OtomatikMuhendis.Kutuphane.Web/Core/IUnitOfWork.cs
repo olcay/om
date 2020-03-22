@@ -6,10 +6,11 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core
     {
         IFollowingRepository Followings { get; }
         IShelfRepository Shelves { get; }
-        IBookRepository Books { get; }
+        IItemRepository Items { get; }
         IBookDetailRepository BookDetails { get; }
         IBookAuthorRepository BookAuthors { get; }
         IAuthorRepository Authors { get; }
+        IItemBookDetailRepository ItemBookDetails { get; }
 
         void Complete();
     }

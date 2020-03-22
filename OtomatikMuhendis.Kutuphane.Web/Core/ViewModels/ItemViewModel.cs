@@ -2,8 +2,10 @@
 
 namespace OtomatikMuhendis.Kutuphane.Web.Core.ViewModels
 {
-    public class BookViewModel
+    public class ItemViewModel
     {
-        public Book Book { get; set; }
+        public Item Item { get; set; }
+
+        public BookDetail BookDetail { get; set; }
     }
 }

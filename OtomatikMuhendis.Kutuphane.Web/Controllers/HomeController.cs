@@ -22,14 +22,14 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
             var shelves = _context.Shelves.Select(s => new Shelf
             {
                 Id = s.Id,
-                Books = s.Books.Where(b => !b.IsDeleted).Take(5).ToList(),
+                Items = s.Items.Where(b => !b.IsDeleted).Take(5).ToList(),
                 Title = s.Title,
                 CreatedById = s.CreatedById,
                 CreatedBy = s.CreatedBy,
                 IsPublic = s.IsPublic,
                 CreationDate = s.CreationDate
             })
-            .Where(s => !s.IsDeleted && s.IsPublic && s.Books.Any());
+            .Where(s => !s.IsDeleted && s.IsPublic && s.Items.Any());
 
             if (!string.IsNullOrWhiteSpace(query))
             {
@@ -38,7 +38,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 shelves = shelves.Where(s => 
                 s.Title.ToLowerInvariant().Contains(query) ||
                 s.CreatedBy.Name.ToLowerInvariant().Contains(query) ||
-                s.Books.Any(b => b.Title.ToLowerInvariant().Contains(query)));
+                s.Items.Any(b => b.Title.ToLowerInvariant().Contains(query)));
             }
 
             shelves = shelves.OrderByDescending(b => b.UpdateDate);

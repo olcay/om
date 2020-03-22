@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using OtomatikMuhendis.Kutuphane.Web.Core.Enums;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
 {
-    public class Book
+    public class Item
     {
         public int Id { get; set; }
 
@@ -19,9 +20,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
         
         public int ShelfId { get; set; }
 
-        public BookDetail BookDetail { get; set; }
-
-        public int? BookDetailId { get; set; }
+        public ItemType Type { get; set; }
 
         public bool IsDeleted { get; private set; }
 
@@ -32,7 +31,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
 
         public void Notify(IEnumerable<ApplicationUser> usersToNotify)
         {
-            var notification = Notification.BookRemoved(this);
+            var notification = Notification.ItemRemoved(this);
 
             foreach (var follower in usersToNotify)
             {

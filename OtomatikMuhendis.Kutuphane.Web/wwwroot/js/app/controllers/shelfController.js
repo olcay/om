@@ -1,4 +1,4 @@
-﻿var ShelfController = function (bookService, shelfService) {
+﻿var ShelfController = function (itemService, shelfService) {
     var username;
 
     var init = function () {
@@ -83,7 +83,7 @@
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    bookService.remove(removedBook.data("book-id"), removeBookDone, fail);
+                    itemService.remove(removedBook.data("book-id"), removeBookDone, fail);
                 }
             });
     };
@@ -102,4 +102,4 @@
     return {
         init: init
     };
-}(BookService, ShelfService);
+}(ItemService, ShelfService);

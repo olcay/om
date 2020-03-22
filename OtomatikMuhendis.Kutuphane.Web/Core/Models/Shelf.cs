@@ -15,7 +15,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
 
         public DateTime CreationDate { get; set; }
 
-        public IEnumerable<Book> Books { get; set; }
+        public IEnumerable<Item> Items { get; set; }
 
         public IEnumerable<Star> Stars { get; set; }
 
@@ -52,6 +52,12 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
                 follower.Notify(notification);
             }
             
+        }
+
+        public void Star()
+        {
+            var notification = Notification.ShelfStarred(this);
+            CreatedBy.Notify(notification);
         }
     }
 }

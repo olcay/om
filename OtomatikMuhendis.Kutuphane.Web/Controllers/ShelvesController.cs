@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OtomatikMuhendis.Kutuphane.Web.Core;
 using OtomatikMuhendis.Kutuphane.Web.Core.Models;
@@ -31,25 +32,35 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
             if (shelf == null || shelf.IsDeleted || !shelf.IsPublic && shelf.CreatedById != userId)
                 return RedirectToAction("Error", "Home");
 
-            foreach (var shelfBook in shelf.Books)
-            {
-                if (shelfBook.BookDetailId != null)
-                {
-                    shelfBook.BookDetail = _unitOfWork.BookDetails.GetBookDetail(shelfBook.BookDetailId.Value);
-
-                    foreach (var bookAuthor in shelfBook.BookDetail.BookAuthorList)
-                    {
-                        bookAuthor.Author = _unitOfWork.Authors.GetAuthor(bookAuthor.AuthorId);
-                    }
-                }
-            }
-
             var viewModel = new ShelfViewModel
             {
                 ShowActions = User.Identity.IsAuthenticated,
                 IsShelfOwner = userId == shelf.CreatedById,
-                Shelf = shelf
+                Shelf = shelf,
+                Items = new List<ItemViewModel>()
             };
+
+            foreach (var shelfItem in shelf.Items)
+            {
+                var itemViewModel = new ItemViewModel()
+                {
+                    Item = shelfItem
+                };
+
+                var bookDetail= _unitOfWork.ItemBookDetails.GetBookDetailByItemId(shelfItem.Id);
+
+                if (bookDetail != null)
+                {
+                    foreach (var bookAuthor in bookDetail.BookAuthorList)
+                    {
+                        bookAuthor.Author = _unitOfWork.Authors.GetAuthor(bookAuthor.AuthorId);
+                    }
+
+                    itemViewModel.BookDetail = bookDetail;
+                }
+
+                viewModel.Items.Add(itemViewModel);
+            }
 
             return View(viewModel);
         }

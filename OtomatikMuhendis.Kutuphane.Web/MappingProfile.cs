@@ -11,8 +11,8 @@ namespace OtomatikMuhendis.Kutuphane.Web
             CreateMap<ApplicationUser, UserDto>();
             CreateMap<UserDto, ApplicationUser>();
 
-            CreateMap<BookDto, Book>();
-            CreateMap<Book, BookDto>();
+            CreateMap<ItemDto, Item>();
+            CreateMap<Item, ItemDto>();
 
             CreateMap<ShelfDto, Shelf>();
             CreateMap<Shelf, ShelfDto>();

@@ -2,7 +2,7 @@
 
 namespace OtomatikMuhendis.Kutuphane.Web.Core.Dtos
 {
-    public class BookDto
+    public class ItemDto
     {
         public int Id { get; set; }
 

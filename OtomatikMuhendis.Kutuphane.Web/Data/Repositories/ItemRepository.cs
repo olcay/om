@@ -5,31 +5,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Data.Repositories
 {
-    public class BookRepository : IBookRepository
+    public class ItemRepository : IItemRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public BookRepository(ApplicationDbContext context)
+        public ItemRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public void Save(Book book)
+        public void Save(Item book)
         {
-            _context.Books.Add(book);
+            _context.Items.Add(book);
         }
 
-        public Book GetBook(int bookId)
+        public Item GetItem(int bookId)
         {
-            return _context.Books
+            return _context.Items
                 .Include(b => b.Shelf)
                 .Single(b => b.Id == bookId);
-        }
-
-        public Book GetBookByDetailId(int bookDetailId, int shelfId)
-        {
-            return _context.Books
-                .Single(b => b.BookDetailId == bookDetailId && b.ShelfId == shelfId);
         }
     }
 }

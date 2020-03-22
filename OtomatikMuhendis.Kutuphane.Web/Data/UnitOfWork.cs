@@ -9,26 +9,29 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data
 
         public IFollowingRepository Followings { get; }
         public IShelfRepository Shelves { get; }
-        public IBookRepository Books { get; }
+        public IItemRepository Items { get; }
         public IBookDetailRepository BookDetails { get; }
         public IBookAuthorRepository BookAuthors { get; }
         public IAuthorRepository Authors { get; }
+        public IItemBookDetailRepository ItemBookDetails { get; }
 
-        public UnitOfWork(ApplicationDbContext context, 
-            IShelfRepository shelfRepository, 
+        public UnitOfWork(ApplicationDbContext context,
+            IShelfRepository shelfRepository,
             IFollowingRepository followingRepository,
-            IBookRepository bookRepository, 
-            IBookDetailRepository bookDetails, 
-            IBookAuthorRepository bookAuthors, 
-            IAuthorRepository authors)
+            IItemRepository bookRepository,
+            IBookDetailRepository bookDetails,
+            IBookAuthorRepository bookAuthors,
+            IAuthorRepository authors,
+            IItemBookDetailRepository itemBookDetails)
         {
             _context = context;
             Shelves = shelfRepository;
             Followings = followingRepository;
-            Books = bookRepository;
+            Items = bookRepository;
             BookDetails = bookDetails;
             BookAuthors = bookAuthors;
             Authors = authors;
+            ItemBookDetails = itemBookDetails;
         }
 
         public void Complete()
