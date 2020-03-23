@@ -14,9 +14,16 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data.Repositories
             _context = context;
         }
 
-        public void Save(Item book)
+        public void Save(Item item)
         {
-            _context.Items.Add(book);
+            if (item.Id == 0)
+            {
+                _context.Items.Add(item);
+            }
+            else
+            {
+                _context.Items.Update(item);
+            }
         }
 
         public Item GetItem(int bookId)

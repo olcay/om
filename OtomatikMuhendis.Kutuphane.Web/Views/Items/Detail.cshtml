@@ -16,8 +16,13 @@
 
 <div class="row top-buffer">
     <div class="col-md-2">
-        <img src="@Html.Raw(Model.BookDetail?.ImageLink ?? "/images/book.jpg")" alt="@Model.Item.Title" class="img-responsive" />
-
+        <img src="@Html.Raw(Model.CoverImageUrl ?? "/images/book.jpg")" alt="@Model.Item.Title" class="img-responsive" id="coverImage" />
+        <form method="post" id="myform" enctype="multipart/form-data">
+            <label for="file">Filename:</label>
+            <input type="file" name="file" id="file" accept="image/*"/>
+            <br />
+            <input type="submit" />
+        </form>
     </div>
     <div class="col-md-10">
         <h2>@Model.Item.Title</h2>
@@ -28,3 +33,11 @@
     </div>
 
 </div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            ItemController.init(@Model.Item.Id);
+        });
+    </script>
+}

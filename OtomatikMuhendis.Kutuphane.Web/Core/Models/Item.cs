@@ -22,6 +22,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
 
         public ItemType Type { get; set; }
 
+        public string CoverId { get; set; }
+
         public bool IsDeleted { get; private set; }
 
         public void Delete()

@@ -9,6 +9,9 @@ using OtomatikMuhendis.Kutuphane.Web.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CloudinaryDotNet;
+using OtomatikMuhendis.Kutuphane.Web.Core;
+using OtomatikMuhendis.Kutuphane.Web.Core.Enums;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 {
@@ -18,11 +21,13 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
     {
         private readonly IApplicationDbContext _context;
         private readonly IBookFinder _bookFinder;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ItemsController(IApplicationDbContext context, IBookFinder bookFinder)
+        public ItemsController(IApplicationDbContext context, IBookFinder bookFinder, IUnitOfWork unitOfWork)
         {
             _context = context;
             _bookFinder = bookFinder;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet("{id}")]
@@ -33,20 +38,39 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 return RedirectToAction("Error", "Home");
             }
 
-            var book = _context.Items
+            var item = _context.Items
                 .Include(b => b.Shelf)
                 .Include(b => b.Shelf.CreatedBy)
                 .FirstOrDefault(b => b.Id == id && !b.IsDeleted);
 
-            if (book == null)
+            if (item == null)
             {
                 return RedirectToAction("Error", "Home");
             }
 
             var viewModel = new ItemViewModel()
             {
-                Item = book
+                Item = item
             };
+
+            if (item.Type == ItemType.Book)
+            {
+                viewModel.BookDetail = _unitOfWork.ItemBookDetails.GetBookDetailByItemId(item.Id);
+
+                viewModel.CoverImageUrl = viewModel.BookDetail?.ImageLink;
+            }
+
+            if (!string.IsNullOrEmpty(item.CoverId))
+            {
+                var cloudinary = new Cloudinary();
+
+                var coverImage = cloudinary.GetResource(item.CoverId);
+
+                if (coverImage != null)
+                {
+                    viewModel.CoverImageUrl = coverImage.SecureUrl;
+                }
+            }
 
             return View(viewModel);
         }

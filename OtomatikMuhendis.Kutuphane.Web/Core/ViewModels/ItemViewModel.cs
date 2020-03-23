@@ -7,5 +7,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.ViewModels
         public Item Item { get; set; }
 
         public BookDetail BookDetail { get; set; }
+
+        public string CoverImageUrl { get; set; }
     }
 }

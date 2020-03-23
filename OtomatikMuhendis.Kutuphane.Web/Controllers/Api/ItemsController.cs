@@ -8,6 +8,10 @@ using OtomatikMuhendis.Kutuphane.Web.Services;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using OtomatikMuhendis.Kutuphane.Web.Core.Enums;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
 {
@@ -88,6 +92,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
 
             if (!string.IsNullOrWhiteSpace(viewModel.GBookId))
             {
+                item.Type = ItemType.Book;
                 var bookDetailFromDb = _unitOfWork.BookDetails.GetBookDetail(viewModel.GBookId);
 
                 if (bookDetailFromDb != null)
@@ -203,5 +208,42 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
             return Ok(item.Id);
         }
 
+        [HttpPut("{id}/cover")]
+        public ActionResult UploadCover([FromForm] IFormFile file, [FromRoute] int id)
+        {
+            if (file == null || id < 1)
+            {
+                return BadRequest(nameof(file));
+            }
+
+            var userId = User.GetUserId();
+
+            var item = _unitOfWork.Items.GetItem(id);
+
+            if (item == null)
+            {
+                return NotFound(nameof(item));
+            }
+
+            if (item.CreatedById != userId)
+            {
+                return Forbid();
+            }
+
+            var cloudinary = new Cloudinary();
+
+            var imageUploadResult = cloudinary.Upload(new ImageUploadParams()
+            {
+                Folder = "covers",
+                File = new FileDescription(file.Name, file.OpenReadStream())
+            });
+
+            item.CoverId = imageUploadResult.PublicId;
+
+            _unitOfWork.Items.Save(item);
+            _unitOfWork.Complete();
+
+            return Ok(imageUploadResult.SecureUri);
+        }
     }
 }
