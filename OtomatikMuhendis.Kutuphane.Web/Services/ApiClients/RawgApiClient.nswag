@@ -9,7 +9,7 @@
   },
   "codeGenerators": {
     "openApiToCSharpClient": {
-      "clientBaseClass": "Rawg",
+      "clientBaseClass": "",
       "configurationClass": null,
       "generateClientClasses": true,
       "generateClientInterfaces": true,
@@ -37,7 +37,7 @@
       "useRequestAndResponseSerializationSettings": false,
       "serializeTypeInformation": false,
       "queryNullValue": "",
-      "className": "{controller}Client",
+      "className": "Rawg{controller}Client",
       "operationGenerationMode": "MultipleClientsFromOperationId",
       "additionalNamespaceUsages": [],
       "additionalContractNamespaceUsages": [],
