@@ -7,6 +7,7 @@ using OtomatikMuhendis.Kutuphane.Web.Core;
 using OtomatikMuhendis.Kutuphane.Web.Core.Models;
 using OtomatikMuhendis.Kutuphane.Web.Core.Repositories;
 using OtomatikMuhendis.Kutuphane.Web.Services;
+using OtomatikMuhendis.Kutuphane.Web.Services.ApiClients;
 using Xunit;
 
 namespace OtomatikMuhendis.Kutuphane.Tests.Controllers.Api
@@ -27,8 +28,9 @@ namespace OtomatikMuhendis.Kutuphane.Tests.Controllers.Api
             mockUoW.SetupGet(u => u.Followings).Returns(mockFollowingRepository.Object);
 
             var mockBookFinder = new Mock<IBookFinder>();
+            var mockRawgClient = new Mock<IRawgGamesClient>();
             
-            _controller = new ItemsController(mockUoW.Object, mockBookFinder.Object);
+            _controller = new ItemsController(mockUoW.Object, mockBookFinder.Object, mockRawgClient.Object);
             _userId = "1";
             _controller.MockCurrentUser(_userId, "user1@domain.com");
         }

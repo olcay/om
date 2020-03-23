@@ -1,10 +1,10 @@
-﻿var BookController = function (itemService) {
+﻿var GameController = function (itemService) {
     var bookTitle;
 
     var init = function () {
         $("#js-select-shelf").change(selectShelf);
 
-        $(".js-add-book").click(addBookToShelf);
+        $(".js-add-game").click(addGameToShelf);
     };
 
     var selectShelf = function (e) {
@@ -13,18 +13,18 @@
         $('.js-add-book').attr("data-original-title", "Add to " + selectedShelf.text());
     };
 
-    var addBookToShelf = function (e) {
+    var addGameToShelf = function (e) {
         var shelfId = $("#js-select-shelf option:selected").val();
         bookTitle = $(this).data("title");
-        var gBookId = $(this).data("book-id");
+        var gameId = $(this).data("game-id");
 
-        itemService.add(gBookId, null, shelfId, bookTitle, done, fail);
+        itemService.add(null, gameId, shelfId, bookTitle, done, fail);
     };
 
     var done = function (data) {
         var selectedShelf = $("#js-select-shelf option:selected");
 
-        swal("New book!", bookTitle +" is added successfully to "+ selectedShelf.text() +".", "success");
+        swal("New game!", bookTitle +" is added successfully to "+ selectedShelf.text() +".", "success");
     };
 
     var fail = function (data) {

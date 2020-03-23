@@ -7,5 +7,7 @@
         public int ShelfId { get; set; }
 
         public string GBookId { get; set; }
+
+        public string GameId { get; set; }
     }
 }

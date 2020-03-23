@@ -24,7 +24,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data.Repositories
             var itemBookDetail = _context.ItemBookDetails
                 .Include(b => b.BookDetail)
                 .Include(b => b.BookDetail.BookAuthorList)
-                .Single(b => b.ItemId == itemId);
+                .SingleOrDefault(b => b.ItemId == itemId);
 
             return itemBookDetail?.BookDetail;
         }
@@ -33,7 +33,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data.Repositories
         {
             var itemBookDetail = _context.ItemBookDetails
                 .Include(b => b.Item)
-                .Single(b => b.BookDetailId == bookDetailId && b.Item.CreatedById == userId);
+                .SingleOrDefault(b => b.BookDetailId == bookDetailId && b.Item.CreatedById == userId);
 
             return itemBookDetail?.Item;
         }

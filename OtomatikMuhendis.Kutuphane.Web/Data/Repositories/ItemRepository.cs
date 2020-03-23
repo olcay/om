@@ -26,6 +26,12 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data.Repositories
             }
         }
 
+        public Item GetItemByRawgId(int rawgId, int shelfId)
+        {
+            return _context.Items
+                .SingleOrDefault(b => b.RawgId == rawgId && b.ShelfId == shelfId);
+        }
+
         public Item GetItem(int bookId)
         {
             return _context.Items

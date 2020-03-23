@@ -12,7 +12,9 @@ using OtomatikMuhendis.Kutuphane.Web.Data;
 using OtomatikMuhendis.Kutuphane.Web.Data.Repositories;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
 using OtomatikMuhendis.Kutuphane.Web.Services;
+using OtomatikMuhendis.Kutuphane.Web.Services.ApiClients;
 using System;
+using System.Net.Http;
 
 namespace OtomatikMuhendis.Kutuphane.Web
 {
@@ -57,9 +59,10 @@ namespace OtomatikMuhendis.Kutuphane.Web
 
             services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
 
+            services.AddTransient<IRawgGamesClient>(s => new RawgGamesClient(new HttpClient()));
 
             services.Configure<WebsiteOptions>(Configuration.GetSection("Website"));
-
+            
             services.AddMvc();
 
             services.AddAutoMapper();

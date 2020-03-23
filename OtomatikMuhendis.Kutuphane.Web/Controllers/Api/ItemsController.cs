@@ -7,11 +7,13 @@ using OtomatikMuhendis.Kutuphane.Web.Extensions;
 using OtomatikMuhendis.Kutuphane.Web.Services;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using OtomatikMuhendis.Kutuphane.Web.Core.Enums;
+using OtomatikMuhendis.Kutuphane.Web.Services.ApiClients;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
 {
@@ -23,11 +25,13 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IBookFinder _bookFinder;
+        private readonly IRawgGamesClient _gamesClient;
 
-        public ItemsController(IUnitOfWork unitOfWork, IBookFinder bookFinder)
+        public ItemsController(IUnitOfWork unitOfWork, IBookFinder bookFinder, IRawgGamesClient gamesClient)
         {
             _unitOfWork = unitOfWork;
             _bookFinder = bookFinder;
+            _gamesClient = gamesClient;
         }
 
         [HttpDelete("{id}")]
@@ -67,7 +71,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
         }
         
         [HttpPost]
-        public async Task<IActionResult> Create(BookFormViewModel viewModel)
+        public async Task<IActionResult> Create(BookFormViewModel viewModel, CancellationToken cancellationToken)
         {
             if (viewModel == null)
             {
@@ -118,6 +122,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
                             }
                         }
                     }
+
+                    _unitOfWork.ItemBookDetails.Save(new ItemBookDetail(item, bookDetailFromDb));
                 }
                 else
                 {
@@ -178,6 +184,38 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
                             }
                         }
                     }
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(viewModel.GameId))
+            {
+                if (viewModel.ShelfId > 0 && int.TryParse(viewModel.GameId, out var gameId))
+                {
+                    var itemFromDb = _unitOfWork.Items.GetItemByRawgId(gameId, viewModel.ShelfId);
+
+                    if (itemFromDb != null)
+                    {
+                        if (itemFromDb.IsDeleted)
+                        {
+                            itemFromDb.Reactivate();
+
+                            _unitOfWork.Complete();
+
+                            return Ok(itemFromDb.Id);
+                        }
+
+                        return BadRequest("The game is already in the specified shelf.");
+                    }
+                }
+
+                var game = await _gamesClient.ReadAsync(viewModel.GameId, cancellationToken);
+
+                if (game != null)
+                {
+                    item.RawgId = game.Id;
+                    item.Title = game.Name;
+                    item.Slug = game.Slug;
+                    item.Type = ItemType.Game;
                 }
             }
 

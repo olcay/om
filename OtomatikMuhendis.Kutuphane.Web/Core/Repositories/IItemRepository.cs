@@ -6,5 +6,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Repositories
     {
         void Save(Item item);
         Item GetItem(int itemId);
+
+        Item GetItemByRawgId(int rawgId, int shelfId);
     }
 }

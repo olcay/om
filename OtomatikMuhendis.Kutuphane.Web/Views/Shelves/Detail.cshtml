@@ -53,6 +53,11 @@
                         </a>
                     </li>
                     <li>
+                        <a asp-controller="Items" asp-action="SearchGames" asp-route-shelfId="@Model.Shelf.Id">
+                            <span class="glyphicon glyphicon-cd" aria-hidden="true"></span> Add a Game
+                        </a>
+                    </li>
+                    <li>
 
                         <a href="#" id="js-makePrivate-shelf" data-shelf-id="@Model.Shelf.Id" aria-label="Hide" style="@(!Model.Shelf.IsPublic ? "display: none;" : "")">
                             <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span> Make private

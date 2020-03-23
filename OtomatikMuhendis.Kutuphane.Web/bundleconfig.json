@@ -41,6 +41,7 @@
       "wwwroot/js/app/controllers/homeController.js",
       "wwwroot/js/app/controllers/notificationController.js",
       "wwwroot/js/app/controllers/bookController.js",
+      "wwwroot/js/app/controllers/gameController.js",
       "wwwroot/js/app/controllers/itemController.js"
     ],
     // Optionally specify minification options

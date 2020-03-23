@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using CloudinaryDotNet;
 using OtomatikMuhendis.Kutuphane.Web.Core;
 using OtomatikMuhendis.Kutuphane.Web.Core.Enums;
+using OtomatikMuhendis.Kutuphane.Web.Services.ApiClients;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 {
@@ -22,12 +23,14 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
         private readonly IApplicationDbContext _context;
         private readonly IBookFinder _bookFinder;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IRawgGamesClient _rawgGamesClient;
 
-        public ItemsController(IApplicationDbContext context, IBookFinder bookFinder, IUnitOfWork unitOfWork)
+        public ItemsController(IApplicationDbContext context, IBookFinder bookFinder, IUnitOfWork unitOfWork, IRawgGamesClient rawgGamesClient)
         {
             _context = context;
             _bookFinder = bookFinder;
             _unitOfWork = unitOfWork;
+            _rawgGamesClient = rawgGamesClient;
         }
 
         [HttpGet("{id}")]
@@ -74,7 +77,48 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 
             return View(viewModel);
         }
-        
+
+        [Authorize]
+        [HttpGet("searchGames")]
+        public async Task<IActionResult> SearchGames([FromQuery]string query = null, [FromQuery]int shelfId = 0)
+        {
+            var model = new GameSearchViewModel()
+            {
+                Search = query,
+                ShelfId = shelfId,
+                GameList = new List<GameViewModel>()
+            };
+
+            var userId = User.GetUserId();
+
+            model.UserShelves = _context.Shelves
+                .Where(s => !s.IsDeleted && s.CreatedById == userId)
+                .Select(p => new SelectListItem() { Text = p.Title, Value = p.Id.ToString() })
+                .ToList();
+
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return View(model);
+            }
+
+            var games = await _rawgGamesClient.ListAsync(null, null, query, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
+            if (games != null && games.Results.Any())
+            {
+                foreach (var game in games.Results)
+                {
+                    model.GameList.Add(new GameViewModel()
+                    {
+                        Id = game.Id.Value,
+                        ImageLink = game.Background_image.ToString(),
+                        Title = game.Name
+                    });
+                }
+            }
+
+            return View(model);
+        }
+
         [Authorize]
         [HttpGet("search")]
         public async Task<IActionResult> Search([FromQuery]string query = null, [FromQuery]int shelfId = 0)

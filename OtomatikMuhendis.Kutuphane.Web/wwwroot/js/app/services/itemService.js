@@ -12,10 +12,10 @@
         .fail(fail);
     };
 
-    var add = function (gBookId, shelfId, title, done, fail) {
+    var add = function (gBookId, gameId, shelfId, title, done, fail) {
         $.post({
             url: "/api/items/",
-            data: { shelfId: shelfId, gBookId: gBookId, title: title },
+            data: { shelfId: shelfId, gBookId: gBookId, gameId: gameId, title: title },
             headers:
             {
                 RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
