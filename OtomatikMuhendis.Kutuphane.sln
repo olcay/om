@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtomatikMuhendis.Kutuphane.Web", "OtomatikMuhendis.Kutuphane.Web\OtomatikMuhendis.Kutuphane.Web.csproj", "{446C1778-100B-4991-A980-E2E3D778C805}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtomatikMuhendis.Kutuphane.Tests", "OtomatikMuhendis.Kutuphane.Tests\OtomatikMuhendis.Kutuphane.Tests.csproj", "{E2757316-0000-4C0B-BCED-0AE2D7E9A611}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{56278562-2EC6-4166-B9DF-16411A95BF42}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

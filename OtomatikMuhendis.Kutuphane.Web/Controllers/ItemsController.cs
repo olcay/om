@@ -34,7 +34,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Detail([FromRoute] int id)
+        public async Task<IActionResult> Detail([FromRoute] int id)
         {
             if (id == 0)
             {
@@ -61,6 +61,13 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 viewModel.BookDetail = _unitOfWork.ItemBookDetails.GetBookDetailByItemId(item.Id);
 
                 viewModel.CoverImageUrl = viewModel.BookDetail?.ImageLink;
+            }
+
+            if (item.Type == ItemType.Game)
+            {
+                var game = await _rawgGamesClient.ReadAsync(item.RawgId.ToString());
+
+                viewModel.GameDetail = game;
             }
 
             if (!string.IsNullOrEmpty(item.CoverId))

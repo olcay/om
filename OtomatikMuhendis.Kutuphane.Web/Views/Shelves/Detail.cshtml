@@ -27,7 +27,8 @@
 
             </small>
         </h2>
-        <p>Created by <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Shelf.CreatedBy.Name">@Model.Shelf.CreatedBy.Name</a> on
+        <p>
+            Created by <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Shelf.CreatedBy.Name">@Model.Shelf.CreatedBy.Name</a> on
             <span data-toggle="tooltip" title="@Model.Shelf.CreationDate.ToLongDateString()" data-placement="bottom">@Model.Shelf.CreationDate.DayOfWeek.ToString()</span>
             @if (Model.Shelf.CreationDate.Date != Model.Shelf.UpdateDate.Date)
             {
@@ -85,7 +86,9 @@
             @foreach (var book in Model.Items)
             {
                 <div class="thumbnail book">
-                    <img src="@Html.Raw(book.BookDetail?.ImageLink ?? "/images/book.jpg")" alt="@book.Item.Title" class="img-responsive" />
+                    <a asp-controller="Items" asp-action="Detail" asp-route-id="@book.Item.Id">
+                        <img src="@Html.Raw(book.BookDetail?.ImageLink ?? "/images/book.jpg")" alt="@book.Item.Title" class="img-responsive" />
+                    </a>
                     <div class="caption">
                         <div class="row">
                             <div class="col-md-9">

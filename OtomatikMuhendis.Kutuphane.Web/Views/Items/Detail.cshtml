@@ -18,19 +18,37 @@
     <div class="col-md-2">
         <img src="@Html.Raw(Model.CoverImageUrl ?? "/images/book.jpg")" alt="@Model.Item.Title" class="img-responsive" id="coverImage" />
         <form method="post" id="myform" enctype="multipart/form-data">
-            <label for="file">Filename:</label>
-            <input type="file" name="file" id="file" accept="image/*"/>
+            <input type="file" name="file" id="file" accept="image/*" />
             <br />
-            <input type="submit" />
+            <input type="submit" value="Change cover" />
         </form>
     </div>
     <div class="col-md-10">
         <h2>@Model.Item.Title</h2>
-        <h3>@Model.BookDetail?.Subtitle</h3>
-        <h3>RAWG: @Model.Item.RawgId</h3>
-        <p>Published by @Model.BookDetail?.Publisher on @Model.BookDetail?.PublishedYear</p>
+        @if (Model.BookDetail != null)
+        {
+            <h3>@Model.BookDetail.Subtitle</h3>
+            <p>Published by @Model.BookDetail.Publisher on @Model.BookDetail.PublishedYear</p>
 
-        <p>@Model.BookDetail?.Description</p>
+            <p>@Model.BookDetail.Description</p>
+        }
+
+        @if (Model.GameDetail != null)
+        {
+            if (Model.GameDetail.Name != Model.GameDetail.Name_original)
+            {
+                <h3>@Model.GameDetail.Name_original</h3>
+            }
+
+            @if (Model.GameDetail.Released != null)
+            {
+                <p>
+                    Released on @Model.GameDetail.Released.Value.LocalDateTime.ToShortDateString()
+                </p>
+            }
+            <p>@Html.Raw(Model.GameDetail.Description)</p>
+        }
+
     </div>
 
 </div>

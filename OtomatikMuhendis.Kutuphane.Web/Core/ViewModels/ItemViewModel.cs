@@ -1,4 +1,5 @@
 ﻿using OtomatikMuhendis.Kutuphane.Web.Core.Models;
+using OtomatikMuhendis.Kutuphane.Web.Services.ApiClients;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Core.ViewModels
 {
@@ -9,5 +10,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.ViewModels
         public BookDetail BookDetail { get; set; }
 
         public string CoverImageUrl { get; set; }
+
+        public GameSingle GameDetail { get; set; }
     }
 }
