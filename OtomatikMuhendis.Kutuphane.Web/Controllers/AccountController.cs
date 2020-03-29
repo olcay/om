@@ -74,7 +74,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt. If you are registered new, please check your email inbox for a confirmation.");
                     return View(model);
                 }
             }
