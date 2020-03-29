@@ -68,6 +68,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 var game = await _rawgGamesClient.ReadAsync(item.RawgId.ToString());
 
                 viewModel.GameDetail = game;
+
+                viewModel.CoverImageUrl = game.Background_image.ToString();
             }
 
             if (!string.IsNullOrEmpty(item.CoverId))
@@ -164,7 +166,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                         PublishedYear = volume.VolumeInfo.PublishedDate,
                         PublisherName = volume.VolumeInfo.Publisher,
                         Authors = volume.VolumeInfo.Authors != null ? string.Join(", ", volume.VolumeInfo.Authors) : "",
-                        ImageLink = volume.VolumeInfo.ImageLinks != null ? volume.VolumeInfo.ImageLinks.Thumbnail : ""
+                        ImageLink = volume.VolumeInfo.ImageLinks != null ? volume.VolumeInfo.ImageLinks.Thumbnail : "/images/book.jpg"
                     });
                 }
             }

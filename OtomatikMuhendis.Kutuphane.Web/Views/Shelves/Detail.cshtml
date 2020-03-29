@@ -87,7 +87,7 @@
             {
                 <div class="thumbnail book">
                     <a asp-controller="Items" asp-action="Detail" asp-route-id="@book.Item.Id">
-                        <img src="@Html.Raw(book.BookDetail?.ImageLink ?? "/images/book.jpg")" alt="@book.Item.Title" class="img-responsive" />
+                        <img src="@Html.Raw(book.CoverImageUrl ?? "/images/book.jpg")" alt="@book.Item.Title" class="img-responsive" />
                     </a>
                     <div class="caption">
                         <div class="row">

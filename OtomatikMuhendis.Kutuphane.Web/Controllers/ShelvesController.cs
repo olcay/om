@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OtomatikMuhendis.Kutuphane.Web.Core;
+using OtomatikMuhendis.Kutuphane.Web.Core.Enums;
 using OtomatikMuhendis.Kutuphane.Web.Core.Models;
 using OtomatikMuhendis.Kutuphane.Web.Core.ViewModels;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
+using OtomatikMuhendis.Kutuphane.Web.Services.ApiClients;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 {
@@ -13,14 +17,16 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
     public class ShelvesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IRawgGamesClient _rawgGamesClient;
 
-        public ShelvesController(IUnitOfWork unitOfWork)
+        public ShelvesController(IUnitOfWork unitOfWork, IRawgGamesClient rawgGamesClient)
         {
             _unitOfWork = unitOfWork;
+            _rawgGamesClient = rawgGamesClient;
         }
 
         [HttpGet("{shelfId}")]
-        public IActionResult Detail(int shelfId)
+        public async Task<IActionResult> Detail(int shelfId)
         {
             if (shelfId == 0)
                 return RedirectToAction("Error", "Home");
@@ -40,23 +46,28 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 Items = new List<ItemViewModel>()
             };
 
-            foreach (var shelfItem in shelf.Items)
+            foreach (var item in shelf.Items)
             {
                 var itemViewModel = new ItemViewModel()
                 {
-                    Item = shelfItem
+                    Item = item
                 };
 
-                var bookDetail= _unitOfWork.ItemBookDetails.GetBookDetailByItemId(shelfItem.Id);
-
-                if (bookDetail != null)
+                if (!string.IsNullOrEmpty(item.CoverId))
                 {
-                    foreach (var bookAuthor in bookDetail.BookAuthorList)
+                    itemViewModel.CoverImageUrl = new Cloudinary().GetResource(item.CoverId)?.SecureUrl;
+                }
+                else
+                {
+                    switch (item.Type)
                     {
-                        bookAuthor.Author = _unitOfWork.Authors.GetAuthor(bookAuthor.AuthorId);
+                        case ItemType.Book:
+                            itemViewModel.CoverImageUrl = _unitOfWork.ItemBookDetails.GetBookDetailByItemId(item.Id)?.ImageLink;
+                            break;
+                        case ItemType.Game:
+                            itemViewModel.CoverImageUrl = (await _rawgGamesClient.ReadAsync(item.RawgId.ToString()))?.Background_image.ToString();
+                            break;
                     }
-
-                    itemViewModel.BookDetail = bookDetail;
                 }
 
                 viewModel.Items.Add(itemViewModel);
@@ -88,7 +99,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
             _unitOfWork.Shelves.Save(shelf);
             _unitOfWork.Complete();
 
-            return RedirectToAction("Detail", "Shelves", new {shelfId = shelf.Id});
+            return RedirectToAction("Detail", "Shelves", new { shelfId = shelf.Id });
         }
     }
 }
