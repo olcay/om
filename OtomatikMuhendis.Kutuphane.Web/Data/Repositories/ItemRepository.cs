@@ -16,7 +16,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data.Repositories
 
         public void Save(Item item)
         {
-            if (item.Id == 0)
+            if (item.Id <= 0)
             {
                 _context.Items.Add(item);
             }
