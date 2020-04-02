@@ -12,5 +12,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.ViewModels
         public string CoverImageUrl { get; set; }
 
         public GameSingle GameDetail { get; set; }
+
+        public bool IsShelfOwner { get; set; }
     }
 }

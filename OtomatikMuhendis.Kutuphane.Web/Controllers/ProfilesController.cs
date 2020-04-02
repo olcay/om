@@ -46,7 +46,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 IsProfileOwner = loggedInUserId == userId,
                 Tab = tab,
                 ImageUrl = GetGravatarUrl(profileUser.Email),
-                Stars = _context.Stars.Where(s => s.UserId == userId).ToLookup(s => s.ShelfId)
+                Stars = _context.Stars.Where(s => s.UserId == loggedInUserId).ToLookup(s => s.ShelfId)
             };
 
             if (!viewModel.IsProfileOwner)
@@ -70,9 +70,11 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                         CreatedById = s.CreatedById,
                         CreatedBy = s.CreatedBy,
                         IsPublic = s.IsPublic,
-                        CreationDate = s.CreationDate
+                        CreationDate = s.CreationDate,
+                        Slug = s.Slug
+                        
                     })
-                    .Where(s => s.CreatedById == userId && (s.IsPublic || userId == loggedInUserId) && !s.IsDeleted)
+                    .Where(s => (s.IsPublic || s.CreatedById == loggedInUserId) && !s.IsDeleted)
                     .OrderByDescending(b => b.UpdateDate);
             }
             else if (tab == ProfileTabs.Followers)
@@ -99,7 +101,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                         CreatedById = s.CreatedById,
                         CreatedBy = s.CreatedBy,
                         IsPublic = s.IsPublic,
-                        CreationDate = s.CreationDate
+                        CreationDate = s.CreationDate,
+                        Slug = s.Slug
                     })
                     .Where(s => s.CreatedById == userId && (s.IsPublic || userId == loggedInUserId) && !s.IsDeleted)
                     .OrderByDescending(b => b.UpdateDate);

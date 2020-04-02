@@ -15,22 +15,34 @@
 
 
 <div class="row top-buffer">
-    <div class="col-md-2">
+    <div class="col-sm-2">
         <img src="@Html.Raw(Model.CoverImageUrl ?? "/images/book.jpg")" alt="@Model.Item.Title" class="img-responsive" id="coverImage" />
-        <form method="post" id="myform" enctype="multipart/form-data">
-            <input type="file" name="file" id="file" accept="image/*" />
-            <br />
-            <input type="submit" value="Change cover" />
-        </form>
+        @if (Model.IsShelfOwner)
+        {
+            <form method="post" id="myform" enctype="multipart/form-data">
+                <input type="file" name="file" id="file" accept="image/*" />
+                <br />
+                <input type="submit" value="Change cover" />
+            </form>
+        }
     </div>
-    <div class="col-md-10">
-        <h2>@Model.Item.Title</h2>
+    <div class="col-sm-10">
+        <h2>
+            @if (Model.IsShelfOwner)
+            {
+                <span class="js-editable" data-type="text" data-pk="@Model.Item.Id" data-url="@Url.Action("Edit", "Items")" data-title="Change title">@Model.Item.Title</span>
+            }
+            else
+            {
+                @Model.Item.Title
+            }
+        </h2>
         @if (Model.BookDetail != null)
         {
             <h3>@Model.BookDetail.Subtitle</h3>
             <p>Published by @Model.BookDetail.Publisher on @Model.BookDetail.PublishedYear</p>
 
-            <p>@Model.BookDetail.Description</p>
+            <p>@Html.Raw(Model.BookDetail.Description)</p>
         }
 
         @if (Model.GameDetail != null)

@@ -27,7 +27,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 CreatedById = s.CreatedById,
                 CreatedBy = s.CreatedBy,
                 IsPublic = s.IsPublic,
-                CreationDate = s.CreationDate
+                CreationDate = s.CreationDate,
+                Slug = s.Slug
             })
             .Where(s => !s.IsDeleted && s.IsPublic && s.Items.Any());
 

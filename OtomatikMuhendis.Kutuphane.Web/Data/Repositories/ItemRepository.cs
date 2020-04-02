@@ -36,6 +36,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data.Repositories
         {
             return _context.Items
                 .Include(b => b.Shelf)
+                .Include(b => b.CreatedBy)
                 .Single(b => b.Id == bookId);
         }
     }

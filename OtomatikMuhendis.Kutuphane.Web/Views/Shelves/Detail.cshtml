@@ -86,14 +86,14 @@
             @foreach (var book in Model.Items)
             {
                 <div class="thumbnail book">
-                    <a asp-controller="Items" asp-action="Detail" asp-route-id="@book.Item.Id">
+                    <a asp-controller="Items" asp-action="Detail" asp-route-itemId="@book.Item.Id" asp-route-shelfId="@book.Item.ShelfId" asp-route-slug="@book.Item.Slug">
                         <img src="@Html.Raw(book.CoverImageUrl ?? "/images/book.jpg")" alt="@book.Item.Title" class="img-responsive" />
                     </a>
                     <div class="caption">
                         <div class="row">
                             <div class="col-md-9">
                                 <h4>
-                                    <a asp-controller="Items" asp-action="Detail" asp-route-id="@book.Item.Id">
+                                    <a asp-controller="Items" asp-action="Detail" asp-route-itemId="@book.Item.Id" asp-route-shelfId="@book.Item.ShelfId" asp-route-slug="@book.Item.Slug">
                                         @book.Item.Title
                                     </a>
                                 </h4>

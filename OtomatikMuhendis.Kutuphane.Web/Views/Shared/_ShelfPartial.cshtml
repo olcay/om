@@ -7,7 +7,7 @@
             <div class="col-md-10">
                 <h3 class="panel-title">
                     <span class="glyphicon @(Model.Shelf.IsPublic ? "glyphicon-align-right rotate90" : "glyphicon-eye-close") "></span>
-                    <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.Shelf.Id">@Model.Shelf.Title</a>
+                    <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.Shelf.Id" asp-route-slug="@Model.Shelf.Slug">@Model.Shelf.Title</a>
                 </h3>
             </div>
             <div class="col-md-2">
@@ -31,7 +31,9 @@
             {
                 <tr> <th class="col-md-1" scope="row">@(++i)</th> <td>@book.Title</td> </tr>
             }
-            <tr> <th class="col-md-1" scope="row">&hellip;</th> <th><a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.Shelf.Id">more</a></th> </tr>
+            <tr> <th class="col-md-1" scope="row">&hellip;</th> <th>
+                <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.Shelf.Id" asp-route-slug="@Model.Shelf.Slug">more</a>
+            </th> </tr>
             </tbody>
         </table>
 </div>

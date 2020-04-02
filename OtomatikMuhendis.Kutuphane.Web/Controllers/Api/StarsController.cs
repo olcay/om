@@ -40,15 +40,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
 
             if (star == null)
             {
-                star = new Star
-                {
-                    ShelfId = dto.ShelfId,
-                    UserId = User.GetUserId()
-                };
-
-                _context.Stars.Add(star);
-
-                shelf.Star();
+                _context.Stars.Add(shelf.Star(userId));
 
                 result = "starred";
             }

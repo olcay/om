@@ -1,6 +1,15 @@
 ﻿var ItemController = function (itemService) {
     var init = function (itemId) {
-        //$("#js-upload-cover").click(addBookToShelf);
+        $.fn.editable.defaults.mode = "inline";
+
+        $(".js-editable").editable({
+            ajaxOptions: {
+                headers:
+                {
+                    RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                }
+            }
+        });
 
         $('#myform').on('submit', function (e) {
             e.preventDefault();

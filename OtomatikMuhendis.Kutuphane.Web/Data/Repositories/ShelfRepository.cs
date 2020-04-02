@@ -30,6 +30,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Data.Repositories
                 IsPublic = s.IsPublic,
                 CreationDate = s.CreationDate,
                 UpdateDate = s.UpdateDate,
+                Slug = s.Slug,
                 StarsCount = s.Stars.Count()
             }).FirstOrDefault(s => s.Id == shelfId
                                    && !s.IsDeleted);

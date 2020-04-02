@@ -14,7 +14,5 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Dtos
         [Required]
         [StringLength(255)]
         public string Title { get; set; }
-
-        public UserDto CreatedBy { get; set; }
     }
 }

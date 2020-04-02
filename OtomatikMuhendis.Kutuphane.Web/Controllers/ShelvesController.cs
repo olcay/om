@@ -13,7 +13,7 @@ using OtomatikMuhendis.Kutuphane.Web.Services.ApiClients;
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 {
     [AutoValidateAntiforgeryToken]
-    [Route("[controller]")]
+    [Route("shelves")]
     public class ShelvesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -25,8 +25,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
             _rawgGamesClient = rawgGamesClient;
         }
 
-        [HttpGet("{shelfId}")]
-        public async Task<IActionResult> Detail(int shelfId)
+        [HttpGet("{shelfId}/{slug?}")]
+        public async Task<IActionResult> Detail(int shelfId, string slug = "")
         {
             if (shelfId == 0)
                 return RedirectToAction("Error", "Home");
@@ -35,7 +35,10 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
 
             var shelf = _unitOfWork.Shelves.GetShelf(shelfId);
 
-            if (shelf == null || shelf.IsDeleted || !shelf.IsPublic && shelf.CreatedById != userId)
+            if (shelf == null 
+                || shelf.IsDeleted 
+                || !shelf.IsPublic && shelf.CreatedById != userId 
+                || (!string.IsNullOrEmpty(slug) && shelf.Slug != slug))
                 return RedirectToAction("Error", "Home");
 
             var viewModel = new ShelfViewModel

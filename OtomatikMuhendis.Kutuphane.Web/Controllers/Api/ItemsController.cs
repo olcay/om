@@ -12,7 +12,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using OtomatikMuhendis.Kutuphane.Web.Core.Dtos;
 using OtomatikMuhendis.Kutuphane.Web.Core.Enums;
+using OtomatikMuhendis.Kutuphane.Web.Core.Helpers;
 using OtomatikMuhendis.Kutuphane.Web.Services.ApiClients;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
@@ -244,6 +246,35 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
             _unitOfWork.Complete();
 
             return Ok(item.Id);
+        }
+
+        [HttpPost("updateTitle")]
+        public IActionResult Edit(ItemDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var item = _unitOfWork.Items.GetItem(dto.Id);
+            
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            if (item.CreatedById != User.GetUserId())
+            {
+                return Forbid();
+            }
+
+            item.Title = dto.Title;
+            item.Slug = SlugGenerator.GenerateSlug(dto.Title);
+
+            _unitOfWork.Items.Save(item);
+            _unitOfWork.Complete();
+
+            return Ok();
         }
 
         [HttpPut("{id}/cover")]

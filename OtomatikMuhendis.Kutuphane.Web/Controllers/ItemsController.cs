@@ -33,43 +33,48 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
             _rawgGamesClient = rawgGamesClient;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Detail([FromRoute] int id)
+        [HttpGet("/shelves/{shelfId}/items/{itemId}/{slug?}")]
+        public async Task<IActionResult> Detail(int shelfId, int itemId, string slug = "")
         {
-            if (id == 0)
+            if (shelfId <= 0 || itemId <= 0)
             {
                 return RedirectToAction("Error", "Home");
             }
 
-            var item = _context.Items
-                .Include(b => b.Shelf)
-                .Include(b => b.Shelf.CreatedBy)
-                .FirstOrDefault(b => b.Id == id && !b.IsDeleted);
+            var userId = User.GetUserId();
 
-            if (item == null)
+            var shelf = _unitOfWork.Shelves.GetShelf(shelfId);
+
+            if (shelf == null
+                || shelf.IsDeleted
+                || !shelf.IsPublic && shelf.CreatedById != userId)
+                return RedirectToAction("Error", "Home");
+
+            var item = _unitOfWork.Items.GetItem(itemId);
+
+            if (item == null
+                || item.IsDeleted
+                || (!string.IsNullOrEmpty(slug) && item.Slug != slug))
             {
                 return RedirectToAction("Error", "Home");
             }
 
             var viewModel = new ItemViewModel()
             {
-                Item = item
+                Item = item,
+                IsShelfOwner = item.Shelf.CreatedById == User.GetUserId()
             };
 
-            if (item.Type == ItemType.Book)
+            switch (item.Type)
             {
-                viewModel.BookDetail = _unitOfWork.ItemBookDetails.GetBookDetailByItemId(item.Id);
-
-                viewModel.CoverImageUrl = viewModel.BookDetail?.ImageLink;
-            }
-
-            if (item.Type == ItemType.Game)
-            {
-                var game = await _rawgGamesClient.ReadAsync(item.RawgId.ToString());
-
-                viewModel.GameDetail = game;
-
-                viewModel.CoverImageUrl = game.Background_image.ToString();
+                case ItemType.Book:
+                    viewModel.BookDetail = _unitOfWork.ItemBookDetails.GetBookDetailByItemId(item.Id);
+                    viewModel.CoverImageUrl = viewModel.BookDetail?.ImageLink;
+                    break;
+                case ItemType.Game:
+                    viewModel.GameDetail = await _rawgGamesClient.ReadAsync(item.RawgId.ToString());
+                    viewModel.CoverImageUrl = viewModel.GameDetail.Background_image.ToString();
+                    break;
             }
 
             if (!string.IsNullOrEmpty(item.CoverId))
@@ -138,7 +143,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers
                 Search = query,
                 ShelfId = shelfId
             };
-            
+
             var userId = User.GetUserId();
 
             model.UserShelves = _context.Shelves

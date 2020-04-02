@@ -39,7 +39,7 @@
                     {
                         <li class="list-group-item @(!shelf.IsPublic ? "list-group-item-warning":"")">
                             <span class="glyphicon @(!shelf.IsPublic ? "glyphicon-eye-close" : "glyphicon-align-right rotate90") "></span> 
-                            <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@shelf.Id">@shelf.Title</a>
+                            <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@shelf.Id" asp-route-slug="@shelf.Slug">@shelf.Title</a>
                         </li>
                     }
                 </ul>

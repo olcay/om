@@ -4,6 +4,7 @@ using OtomatikMuhendis.Kutuphane.Web.Core.Dtos;
 using OtomatikMuhendis.Kutuphane.Web.Data;
 using OtomatikMuhendis.Kutuphane.Web.Extensions;
 using System.Linq;
+using OtomatikMuhendis.Kutuphane.Web.Core.Helpers;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
 {
@@ -40,6 +41,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Controllers.Api
             }
 
             shelf.Title = dto.Title;
+            shelf.Slug = SlugGenerator.GenerateSlug(dto.Title);
 
             _context.SaveChanges();
 

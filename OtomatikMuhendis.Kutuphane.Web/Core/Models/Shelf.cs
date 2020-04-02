@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using OtomatikMuhendis.Kutuphane.Web.Core.Helpers;
 
 namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
 {
@@ -27,6 +28,8 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
         
         public int StarsCount { get; set; }
 
+        public string Slug { get; set; }
+
         public Shelf()
         {
             
@@ -37,6 +40,7 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
             CreatedById = createdById ?? throw new ArgumentNullException(nameof(createdById));
             Title = title ?? throw new ArgumentNullException(nameof(title));
 
+            Slug = SlugGenerator.GenerateSlug(title);
             CreationDate = DateTime.UtcNow;
             UpdateDate = DateTime.UtcNow;
         }
@@ -54,10 +58,15 @@ namespace OtomatikMuhendis.Kutuphane.Web.Core.Models
             
         }
 
-        public void Star()
+        public Star Star(string userId)
         {
-            var notification = Notification.ShelfStarred(this);
-            CreatedBy.Notify(notification);
+            if (this.CreatedById != userId)
+            {
+                var notification = Notification.ShelfStarred(this);
+                CreatedBy.Notify(notification);
+            }
+
+            return new Star(){ Shelf = this, UserId= userId };
         }
     }
 }
