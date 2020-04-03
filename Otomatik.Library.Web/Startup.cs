@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -21,6 +22,7 @@ using Otomatik.Library.Web.Core.Repositories;
 using Otomatik.Library.Web.Data.Repositories;
 using Otomatik.Library.Web.Extensions;
 using Otomatik.Library.Web.Services;
+using Otomatik.Library.Web.Services.ApiClients;
 
 namespace Otomatik.Library.Web
 {
@@ -51,11 +53,13 @@ namespace Otomatik.Library.Web
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>,
                 AdditionalUserClaimsPrincipalFactory>();
 
+            services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
             services.AddRazorPages();
 
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddTransient<IBookFinder, BookFinder>();
+            services.AddHttpClient<IRawgGamesClient>();
 
             //Persistence
             services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -69,6 +73,8 @@ namespace Otomatik.Library.Web
             services.AddTransient<IItemBookDetailRepository, ItemBookDetailRepository>();
 
             services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
