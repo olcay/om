@@ -26,17 +26,7 @@ namespace Otomatik.Library.Web.Controllers
 
         public IActionResult Index([FromQuery]string query = null)
         {
-            var shelves = _context.Shelves.Select(s => new Shelf
-                {
-                    Id = s.Id,
-                    Items = s.Items.Where(b => !b.IsDeleted).Take(5).ToList(),
-                    Title = s.Title,
-                    CreatedById = s.CreatedById,
-                    CreatedBy = s.CreatedBy,
-                    IsPublic = s.IsPublic,
-                    CreationDate = s.CreationDate,
-                    Slug = s.Slug
-                })
+            var shelves = _context.Shelves
                 .Where(s => !s.IsDeleted && s.IsPublic && s.Items.Any());
 
             if (!string.IsNullOrWhiteSpace(query))
@@ -53,7 +43,7 @@ namespace Otomatik.Library.Web.Controllers
 
             var viewModel = new HomeViewModel
             {
-                Shelves = shelves,
+                Shelves = shelves.ToList(),
                 ShowActions = User.Identity.IsAuthenticated,
                 Query = query
             };
