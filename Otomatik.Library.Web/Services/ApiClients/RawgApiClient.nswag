@@ -52,7 +52,7 @@
       "wrapResponseMethods": [],
       "generateResponseClasses": true,
       "responseClass": "SwaggerResponse",
-      "namespace": "OtomatikMuhendis.Kutuphane.Web.Services.ApiClients",
+      "namespace": "Otomatik.Library.Web.Services.ApiClients",
       "requiredPropertiesMustBeDefined": true,
       "dateType": "System.DateTimeOffset",
       "jsonConverters": null,

@@ -39,6 +39,9 @@ namespace Otomatik.Library.Web.Areas.Identity.Pages.Account.Manage
             [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Username")]
+            [StringLength(100)]
+            [RegularExpression("^[a-zA-Z0-9]*$", ErrorMessage = "Username may only contain alphanumeric characters.")]
+            [Remote("IsUserExists", "Home", ErrorMessage = "Username is already taken.")]
             public string Name { get; set; }
         }
 
