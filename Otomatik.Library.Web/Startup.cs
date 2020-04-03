@@ -15,7 +15,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Otomatik.Library.Web.Areas.Identity.Data;
+using Otomatik.Library.Web.Core;
 using Otomatik.Library.Web.Core.Models;
+using Otomatik.Library.Web.Core.Repositories;
+using Otomatik.Library.Web.Data.Repositories;
 using Otomatik.Library.Web.Extensions;
 using Otomatik.Library.Web.Services;
 
@@ -52,6 +55,20 @@ namespace Otomatik.Library.Web
             services.AddRazorPages();
 
             services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddTransient<IBookFinder, BookFinder>();
+
+            //Persistence
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            services.AddTransient<IFollowingRepository, FollowingRepository>();
+            services.AddTransient<IShelfRepository, ShelfRepository>();
+            services.AddTransient<IItemRepository, ItemRepository>();
+            services.AddTransient<IBookDetailRepository, BookDetailRepository>();
+            services.AddTransient<IBookAuthorRepository, BookAuthorRepository>();
+            services.AddTransient<IAuthorRepository, AuthorRepository>();
+            services.AddTransient<IItemBookDetailRepository, ItemBookDetailRepository>();
+
+            services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
