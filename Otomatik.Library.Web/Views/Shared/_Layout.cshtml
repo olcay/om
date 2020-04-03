@@ -3,15 +3,22 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Otomatik.Library.Web</title>
+    <title>@(!string.IsNullOrWhiteSpace(ViewData[ViewDataParameters.Title] as string) ? ViewData[ViewDataParameters.Title] + " - " : "")OM Library</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/animate.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/js/dist/bootstrap3-editable/css/bootstrap-editable.css" />
+    <link rel="stylesheet" href="~/css/open-iconic-bootstrap.min.css" />
+
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Otomatik.Library.Web</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">OM Library</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -20,10 +27,16 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <form class="form-inline my-2 my-lg-0" asp-controller="Home" asp-action="Index" method="get">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search" name="query" value="@ViewData[ViewDataParameters.Query]">
+                                    <span class="input-group-append">
+                                        <button class="btn btn-default" type="submit">
+                                            <span class="oi oi-magnifying-glass" title="icon name" aria-hidden="true"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
                         </li>
                     </ul>
                 </div>
@@ -36,14 +49,61 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer">
         <div class="container">
-            &copy; 2020 - Otomatik.Library.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; @DateTime.Now.Year - <a href="https://olcay.dev">olcay.dev</a> - <a asp-area="" asp-controller="Home" asp-action="About">About</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/dist/salvattore.min.js"></script>
+    <script src="~/js/dist/sweetalert.min.js"></script>
+    <script src="~/js/dist/moment.min.js"></script>
+    <script src="~/js/dist/moment-timezone-with-data.min.js"></script>
+    <script src="~/js/dist/underscore-min.js"></script>
+    <script src="~/js/dist/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/app.min.js" asp-append-version="true"></script>
+
     @RenderSection("Scripts", required: false)
+
+    <script type="text/x-template" id="notifications-template">
+        <ul class="notifications">
+            <%
+            _.each(notifications, function(usernotification){
+            var date = moment.tz(usernotification.notification.dateTime, "UTC").tz(moment.tz.guess()).format("D MMM HH:mm");
+            %>
+            <li class="<%= usernotification.isRead ? '': 'new' %>">
+                <% if(usernotification.notification.type == 1){ %>
+                <span class="highlight"><%= usernotification.notification.shelf.createdBy.name %></span> created
+                <% } if(usernotification.notification.type == 2){ %>
+                <span class="highlight"><%= usernotification.notification.shelf.createdBy.name %></span> added <%= usernotification.notification.book.title %> to
+                <% } if(usernotification.notification.type == 3){ %>
+                <span class="highlight"><%= usernotification.notification.shelf.createdBy.name %></span> removed <%= usernotification.notification.book.title %> from
+                <% } if(usernotification.notification.type == 5){ %>
+                A user starred
+                <% } %>
+                <a href="/shelves/<%= usernotification.notification.shelf.id %>"><%= usernotification.notification.shelf.title %></a> on <%= date %>
+            </li>
+            <%
+            })
+            %>
+
+        </ul>
+    </script>
+
+    <script type="text/x-template" id="popover-template">
+        <div class="popover popover-notifications" role="tooltip">
+            <div class="arrow"></div>
+            <h3 class="popover-title"></h3>
+            <div class="popover-content"></div>
+        </div>
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            NotificationController.init("#notifications-template", "#popover-template");
+        });
+    </script>
 </body>
 </html>

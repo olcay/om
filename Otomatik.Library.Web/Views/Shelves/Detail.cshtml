@@ -1,12 +1,12 @@
 ﻿@model ShelfViewModel
 @{
-    ViewData["Title"] = Model.Shelf.Title;
+    ViewData["Title"] = Model.Title;
 }
 <div class="row top-buffer">
     <div class="col-md-12">
         <small>
             <a asp-controller="Home" asp-action="Index">Library</a> >
-            <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Shelf.CreatedBy.Name">Shelves of @Model.Shelf.CreatedBy.Name</a>
+            <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.CreatedBy.Name">Shelves of @Model.CreatedBy.Name</a>
         </small>
     </div>
 </div>
@@ -15,25 +15,25 @@
         <h2>
             @if (Model.IsShelfOwner)
             {
-                <span class="js-editable" data-type="text" data-pk="@Model.Shelf.Id" data-url="@Url.Action("Edit", "Shelves")" data-title="Rename shelf">@Model.Shelf.Title</span>
+                <span class="js-editable" data-type="text" data-pk="@Model.Id" data-url="@Url.Action("Edit", "Shelves")" data-title="Rename shelf">@Model.Title</span>
             }
             else
             {
-                @Model.Shelf.Title
+                @Model.Title
             }
 
             <small>
-                <sup class="label label-warning" style="@(Model.Shelf.IsPublic ? "display: none;" : "")" id="lblIsPublic">Private</sup>
+                <sup class="label label-warning" style="@(Model.IsPublic ? "display: none;" : "")" id="lblIsPublic">Private</sup>
 
             </small>
         </h2>
         <p>
-            Created by <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Shelf.CreatedBy.Name">@Model.Shelf.CreatedBy.Name</a> on
-            <span data-toggle="tooltip" title="@Model.Shelf.CreationDate.ToLongDateString()" data-placement="bottom">@Model.Shelf.CreationDate.DayOfWeek.ToString()</span>
-            @if (Model.Shelf.CreationDate.Date != Model.Shelf.UpdateDate.Date)
+            Created by <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.CreatedBy.Name">@Model.CreatedBy.Name</a> on
+            <span data-toggle="tooltip" title="@Model.CreationDate.ToLongDateString()" data-placement="bottom">@Model.CreationDate.DayOfWeek.ToString()</span>
+            @if (Model.CreationDate.Date != Model.UpdateDate.Date)
             {
                 <text> and updated on </text>
-                <span data-toggle="tooltip" title="@Model.Shelf.UpdateDate.ToLongDateString()" data-placement="bottom"> @Model.Shelf.UpdateDate.DayOfWeek.ToString() </span>
+                <span data-toggle="tooltip" title="@Model.UpdateDate.ToLongDateString()" data-placement="bottom"> @Model.UpdateDate.DayOfWeek.ToString() </span>
             }
         </p>
     </div>
@@ -42,36 +42,36 @@
         {
             <!-- Split button -->
             <div class="btn-group pull-right">
-                <a asp-controller="Items" asp-action="Search" asp-route-shelfId="@Model.Shelf.Id" class="btn btn-success">Add a Book</a>
+                <a asp-controller="Items" asp-action="Search" asp-route-shelfId="@Model.Id" class="btn btn-success">Add a Book</a>
                 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu">
                     <li>
-                        <a asp-controller="Items" asp-action="Search" asp-route-shelfId="@Model.Shelf.Id">
+                        <a asp-controller="Items" asp-action="Search" asp-route-shelfId="@Model.Id">
                             <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Add a Book
                         </a>
                     </li>
                     <li>
-                        <a asp-controller="Items" asp-action="SearchGames" asp-route-shelfId="@Model.Shelf.Id">
+                        <a asp-controller="Items" asp-action="SearchGames" asp-route-shelfId="@Model.Id">
                             <span class="glyphicon glyphicon-cd" aria-hidden="true"></span> Add a Game
                         </a>
                     </li>
                     <li>
 
-                        <a href="#" id="js-makePrivate-shelf" data-shelf-id="@Model.Shelf.Id" aria-label="Hide" style="@(!Model.Shelf.IsPublic ? "display: none;" : "")">
+                        <a href="#" id="js-makePrivate-shelf" data-shelf-id="@Model.Id" aria-label="Hide" style="@(!Model.IsPublic ? "display: none;" : "")">
                             <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span> Make private
                         </a>
 
-                        <a href="#" id="js-makePublic-shelf" data-shelf-id="@Model.Shelf.Id" aria-label="Show" style="@(Model.Shelf.IsPublic ? "display: none;" : "")">
+                        <a href="#" id="js-makePublic-shelf" data-shelf-id="@Model.Id" aria-label="Show" style="@(Model.IsPublic ? "display: none;" : "")">
                             <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Make public
                         </a>
 
                     </li>
                     <li role="separator" class="divider"></li>
                     <li>
-                        <a href="#" id="js-remove-shelf" data-shelf-id="@Model.Shelf.Id" data-user-name="@Model.Shelf.CreatedBy.Name">
+                        <a href="#" id="js-remove-shelf" data-shelf-id="@Model.Id" data-user-name="@Model.CreatedBy.Name">
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Remove shelf
                         </a>
                     </li>
@@ -83,26 +83,26 @@
 <div class="row top-buffer">
     <div class="col-md-12">
         <div id="grid" data-columns>
-            @foreach (var book in Model.Items)
+            @foreach (var item in Model.Items)
             {
                 <div class="thumbnail book">
-                    <a asp-controller="Items" asp-action="Detail" asp-route-itemId="@book.Item.Id" asp-route-shelfId="@book.Item.ShelfId" asp-route-slug="@book.Item.Slug">
-                        <img src="@Html.Raw(book.CoverImageUrl ?? "/images/book.jpg")" alt="@book.Item.Title" class="img-responsive" />
+                    <a asp-controller="Items" asp-action="Detail" asp-route-itemId="@item.Id" asp-route-shelfId="@item.ShelfId" asp-route-slug="@item.Slug">
+                        <img src="@Html.Raw(item.CoverImageUrl ?? "/images/book.jpg")" alt="@item.Title" class="img-responsive" />
                     </a>
                     <div class="caption">
                         <div class="row">
                             <div class="col-md-9">
                                 <h4>
-                                    <a asp-controller="Items" asp-action="Detail" asp-route-itemId="@book.Item.Id" asp-route-shelfId="@book.Item.ShelfId" asp-route-slug="@book.Item.Slug">
-                                        @book.Item.Title
+                                    <a asp-controller="Items" asp-action="Detail" asp-route-itemId="@item.Id" asp-route-shelfId="@item.ShelfId" asp-route-slug="@item.Slug">
+                                        @item.Title
                                     </a>
                                 </h4>
-                                <h5>@book.BookDetail?.Subtitle</h5>
+                                <h5>@item.BookDetail?.Subtitle</h5>
                                 <p>
                                     <span>
-                                        @if (book.BookDetail?.BookAuthorList != null)
+                                        @if (item.BookDetail?.BookAuthorList != null)
                                         {
-                                            @string.Join(", ", book.BookDetail?.BookAuthorList.Select(b => b.Author.Name))
+                                            @string.Join(", ", item.BookDetail?.BookAuthorList.Select(b => b.Author.Name))
                                         }
                                     </span>
                                 </p>
@@ -111,7 +111,7 @@
                                 <div class="actions">
                                     @if (Model.IsShelfOwner)
                                     {
-                                        <button type="button" class="btn btn-danger js-remove-book" data-book-id="@book.Item.Id" aria-label="Remove">
+                                        <button type="button" class="btn btn-danger js-remove-book" data-book-id="@item.Id" aria-label="Remove">
                                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                         </button>
                                     }

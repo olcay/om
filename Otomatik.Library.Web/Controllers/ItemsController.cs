@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Otomatik.Library.Web.Core.ViewModels;
 using Otomatik.Library.Web.Data;
 using Otomatik.Library.Web.Extensions;
@@ -9,6 +8,7 @@ using Otomatik.Library.Web.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using CloudinaryDotNet;
 using Otomatik.Library.Web.Core;
 using Otomatik.Library.Web.Core.Enums;
@@ -24,13 +24,15 @@ namespace Otomatik.Library.Web.Controllers
         private readonly IBookFinder _bookFinder;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRawgGamesClient _rawgGamesClient;
+        private readonly IMapper _mapper;
 
-        public ItemsController(IApplicationDbContext context, IBookFinder bookFinder, IUnitOfWork unitOfWork, IRawgGamesClient rawgGamesClient)
+        public ItemsController(IApplicationDbContext context, IBookFinder bookFinder, IUnitOfWork unitOfWork, IRawgGamesClient rawgGamesClient, IMapper mapper)
         {
             _context = context;
             _bookFinder = bookFinder;
             _unitOfWork = unitOfWork;
             _rawgGamesClient = rawgGamesClient;
+            _mapper = mapper;
         }
 
         [HttpGet("/shelves/{shelfId}/items/{itemId}/{slug?}")]
@@ -59,11 +61,8 @@ namespace Otomatik.Library.Web.Controllers
                 return RedirectToAction("Error", "Home");
             }
 
-            var viewModel = new ItemViewModel()
-            {
-                Item = item,
-                IsShelfOwner = item.Shelf.CreatedById == User.GetUserId()
-            };
+            var viewModel = _mapper.Map<ItemViewModel>(item);
+            viewModel.IsShelfOwner = item.Shelf.CreatedById == User.GetUserId();
 
             switch (item.Type)
             {

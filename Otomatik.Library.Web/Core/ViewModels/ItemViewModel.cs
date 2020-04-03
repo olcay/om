@@ -2,10 +2,8 @@
 
 namespace Otomatik.Library.Web.Core.ViewModels
 {
-    public class ItemViewModel
+    public class ItemViewModel : Item
     {
-        public Item Item { get; set; }
-
         public BookDetail BookDetail { get; set; }
 
         public string CoverImageUrl { get; set; }

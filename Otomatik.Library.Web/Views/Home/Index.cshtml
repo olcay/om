@@ -8,12 +8,7 @@
     <div id="shelves" class="col-md-9">
         @foreach (var shelf in Model.Shelves)
         {
-            @Html.PartialAsync("_ShelfPartial", new ShelfViewModel
-               {
-                   Shelf = shelf,
-                   ShowActions = Model.ShowActions,
-                   IsStarred = Model.Stars != null && Model.Stars.Contains(shelf.Id)
-               })
+            @Html.PartialAsync("_ShelfPartial", shelf)
         }
     </div>
     <div class="col-md-3">

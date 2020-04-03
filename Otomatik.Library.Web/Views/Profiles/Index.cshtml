@@ -34,12 +34,7 @@
 
 @foreach (var shelf in Model.Shelves)
 {
-    @Html.Partial("_ShelfPartial", new ShelfViewModel
-{
-    Shelf = shelf,
-    ShowActions = Model.ShowActions,
-    IsStarred = Model.Stars != null && Model.Stars.Contains(shelf.Id)
-})
+    @Html.PartialAsync("_ShelfPartial", shelf)
 }
 
 @if (Model.Users.Any())

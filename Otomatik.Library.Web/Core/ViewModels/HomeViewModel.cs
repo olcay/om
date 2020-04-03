@@ -6,7 +6,7 @@ namespace Otomatik.Library.Web.Core.ViewModels
 {
     public class HomeViewModel
     {
-        public IEnumerable<Shelf> Shelves { get; set; }
+        public IEnumerable<ShelfViewModel> Shelves { get; set; }
 
         public bool ShowActions { get; set; }
 
@@ -18,7 +18,7 @@ namespace Otomatik.Library.Web.Core.ViewModels
 
         public HomeViewModel()
         {
-            Shelves = Enumerable.Empty<Shelf>();
+            Shelves = Enumerable.Empty<ShelfViewModel>();
             UserShelves = Enumerable.Empty<Shelf>();
         }
     }

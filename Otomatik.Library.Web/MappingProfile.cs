@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using Otomatik.Library.Web.Areas.Identity.Data;
-using Otomatik.Library.Web.Core.Dtos;
 using Otomatik.Library.Web.Core.Models;
+using Otomatik.Library.Web.Core.ViewModels;
 
 namespace OtomatikMuhendis.Kutuphane.Web
 {
@@ -9,20 +8,8 @@ namespace OtomatikMuhendis.Kutuphane.Web
     {
         public MappingProfile()
         {
-            CreateMap<ApplicationUser, UserDto>();
-            CreateMap<UserDto, ApplicationUser>();
-
-            CreateMap<ItemDto, Item>();
-            CreateMap<Item, ItemDto>();
-
-            CreateMap<ShelfDto, Shelf>();
-            CreateMap<Shelf, ShelfDto>();
-
-            CreateMap<Notification, NotificationDto>();
-            CreateMap<NotificationDto, Notification>();
-
-            CreateMap<UserNotification, UserNotificationDto>();
-            CreateMap<UserNotificationDto, UserNotification>();
+            CreateMap<Shelf, ShelfViewModel>();
+            CreateMap<Item, ItemViewModel>();
         }
     }
 }

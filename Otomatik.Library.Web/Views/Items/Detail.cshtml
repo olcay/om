@@ -1,14 +1,14 @@
 ﻿@model ItemViewModel
 
 @{
-    ViewBag.Title = Model.Item.Title;
+    ViewBag.Title = Model.Title;
 }
 <div class="row top-buffer">
     <div class="col-md-12">
         <small>
             <a asp-controller="Home" asp-action="Index">Library</a> >
-            <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Item.Shelf.CreatedBy.Name">@Model.Item.Shelf.CreatedBy.Name's shelves</a> >
-            <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.Item.ShelfId">@Model.Item.Shelf.Title</a>
+            <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Shelf.CreatedBy.Name">@Model.Shelf.CreatedBy.Name's shelves</a> >
+            <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.ShelfId">@Model.Shelf.Title</a>
         </small>
     </div>
 </div>
@@ -16,7 +16,7 @@
 
 <div class="row top-buffer">
     <div class="col-sm-2">
-        <img src="@Html.Raw(Model.CoverImageUrl ?? "/images/book.jpg")" alt="@Model.Item.Title" class="img-responsive" id="coverImage" />
+        <img src="@Html.Raw(Model.CoverImageUrl ?? "/images/book.jpg")" alt="@Model.Title" class="img-responsive" id="coverImage" />
         @if (Model.IsShelfOwner)
         {
             <form method="post" id="myform" enctype="multipart/form-data">
@@ -30,11 +30,11 @@
         <h2>
             @if (Model.IsShelfOwner)
             {
-                <span class="js-editable" data-type="text" data-pk="@Model.Item.Id" data-url="@Url.Action("Edit", "Items")" data-title="Change title">@Model.Item.Title</span>
+                <span class="js-editable" data-type="text" data-pk="@Model.Id" data-url="@Url.Action("Edit", "Items")" data-title="Change title">@Model.Title</span>
             }
             else
             {
-                @Model.Item.Title
+                @Model.Title
             }
         </h2>
         @if (Model.BookDetail != null)
@@ -68,7 +68,7 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
-            ItemController.init(@Model.Item.Id);
+            ItemController.init(@Model.Id);
         });
     </script>
 }

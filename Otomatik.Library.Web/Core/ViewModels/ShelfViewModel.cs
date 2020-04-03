@@ -3,10 +3,8 @@ using Otomatik.Library.Web.Core.Models;
 
 namespace Otomatik.Library.Web.Core.ViewModels
 {
-    public class ShelfViewModel
+    public class ShelfViewModel : Shelf
     {
-        public Shelf Shelf { get; set; }
-
         public bool ShowActions { get; set; }
 
         public bool IsShelfOwner { get; set; }

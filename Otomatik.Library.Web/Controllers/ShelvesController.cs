@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +19,13 @@ namespace Otomatik.Library.Web.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRawgGamesClient _rawgGamesClient;
+        private readonly IMapper _mapper;
 
-        public ShelvesController(IUnitOfWork unitOfWork, IRawgGamesClient rawgGamesClient)
+        public ShelvesController(IUnitOfWork unitOfWork, IRawgGamesClient rawgGamesClient, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _rawgGamesClient = rawgGamesClient;
+            _mapper = mapper;
         }
 
         [HttpGet("{shelfId}/{slug?}")]
@@ -35,26 +38,21 @@ namespace Otomatik.Library.Web.Controllers
 
             var shelf = _unitOfWork.Shelves.GetShelf(shelfId);
 
-            if (shelf == null 
-                || shelf.IsDeleted 
-                || !shelf.IsPublic && shelf.CreatedById != userId 
+            if (shelf == null
+                || shelf.IsDeleted
+                || !shelf.IsPublic && shelf.CreatedById != userId
                 || (!string.IsNullOrEmpty(slug) && shelf.Slug != slug))
                 return RedirectToAction("Error", "Home");
 
-            var viewModel = new ShelfViewModel
-            {
-                ShowActions = User.Identity.IsAuthenticated,
-                IsShelfOwner = userId == shelf.CreatedById,
-                Shelf = shelf,
-                Items = new List<ItemViewModel>()
-            };
+            var viewModel = _mapper.Map<ShelfViewModel>(shelf);
+
+            viewModel.ShowActions = User.Identity.IsAuthenticated;
+            viewModel.IsShelfOwner = userId == shelf.CreatedById;
+            viewModel.Items = new List<ItemViewModel>();
 
             foreach (var item in shelf.Items)
             {
-                var itemViewModel = new ItemViewModel()
-                {
-                    Item = item
-                };
+                var itemViewModel = _mapper.Map<ItemViewModel>(item);
 
                 if (!string.IsNullOrEmpty(item.CoverId))
                 {

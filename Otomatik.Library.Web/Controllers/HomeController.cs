@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Otomatik.Library.Web.Core.Models;
 using Otomatik.Library.Web.Core.ViewModels;
@@ -17,16 +19,19 @@ namespace Otomatik.Library.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IMapper mapper)
         {
             _logger = logger;
             _context = context;
+            _mapper = mapper;
         }
 
         public IActionResult Index([FromQuery]string query = null)
         {
             var shelves = _context.Shelves
+                .Include(s=> s.Items)
                 .Where(s => !s.IsDeleted && s.IsPublic && s.Items.Any());
 
             if (!string.IsNullOrWhiteSpace(query))
@@ -40,10 +45,10 @@ namespace Otomatik.Library.Web.Controllers
             }
 
             shelves = shelves.OrderByDescending(b => b.UpdateDate);
-
+            
             var viewModel = new HomeViewModel
             {
-                Shelves = shelves.ToList(),
+                Shelves = _mapper.Map<List<ShelfViewModel>>(shelves),
                 ShowActions = User.Identity.IsAuthenticated,
                 Query = query
             };
@@ -55,6 +60,12 @@ namespace Otomatik.Library.Web.Controllers
                 viewModel.UserShelves = userShelves;
 
                 viewModel.Stars = _context.Stars.Where(s => s.UserId == userId).ToLookup(s => s.ShelfId);
+
+                foreach (var shelf in viewModel.Shelves)
+                {
+                    shelf.ShowActions = true;
+                    shelf.IsStarred = viewModel.Stars != null && viewModel.Stars.Contains(shelf.Id);
+                }
             }
 
             return View(viewModel);
