@@ -1,4 +1,6 @@
-﻿namespace Otomatik.Library.Web.Core.Models
+﻿using Otomatik.Library.Web.Areas.Identity.Data;
+
+namespace Otomatik.Library.Web.Core.Models
 {
     public class Star
     {

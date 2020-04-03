@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Otomatik.Library.Web.Data;
 
-namespace Otomatik.Library.Web.Migrations
+namespace Otomatik.Library.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20200403135644_CreateIdentity")]

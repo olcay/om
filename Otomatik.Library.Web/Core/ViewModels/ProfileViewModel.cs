@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Otomatik.Library.Web.Areas.Identity.Data;
 using Otomatik.Library.Web.Core.Models;
 
 namespace Otomatik.Library.Web.Core.ViewModels

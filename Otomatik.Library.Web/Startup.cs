@@ -7,12 +7,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Otomatik.Library.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Otomatik.Library.Web.Areas.Identity.Data;
 using Otomatik.Library.Web.Core.Models;
+using Otomatik.Library.Web.Extensions;
+using Otomatik.Library.Web.Services;
 
 namespace Otomatik.Library.Web
 {
@@ -31,14 +36,22 @@ namespace Otomatik.Library.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(new Connection(Environment.GetEnvironmentVariable("DATABASE_URL")).String));
 
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = true;
+                    options.Stores.MaxLengthForKeys = 128;
+                })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultUI()
+                .AddDefaultTokenProviders();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>,
+                AdditionalUserClaimsPrincipalFactory>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-
+            services.AddSingleton<IEmailSender, EmailSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

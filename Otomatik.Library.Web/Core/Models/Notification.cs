@@ -1,4 +1,5 @@
 ﻿using System;
+using Otomatik.Library.Web.Areas.Identity.Data;
 using Otomatik.Library.Web.Core.Enums;
 
 namespace Otomatik.Library.Web.Core.Models
