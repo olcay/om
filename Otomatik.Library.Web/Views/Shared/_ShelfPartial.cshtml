@@ -1,4 +1,5 @@
-﻿@model ShelfViewModel
+﻿@using Newtonsoft.Json
+@model ShelfViewModel
 
 <div class="card @(Model.IsPublic ? "" : "border-light")" style="max-width: 18rem;">
     <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.Id" asp-route-slug="@Model.Slug">
@@ -6,15 +7,17 @@
     </a>
 
     <div class="card-body">
-        <h5 class="card-title">
-            <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.Id" asp-route-slug="@Model.Slug">@Model.Title</a>
-        </h5>
         @if (Model.ShowActions)
         {
-            <button data-shelf-id="@Model.Id" type="button" class="btn @(Model.IsStarred ? "btn-warning" : "btn-default text-muted")  btn-xs card-link js-toggle-star">
+            <button data-shelf-id="@Model.Id" type="button"
+                    class="btn @(Model.IsStarred ? "btn-warning" : "btn-default") card-link btn-lg js-toggle-star float-right"
+                    style="top: -32px;position: relative;">
                 <span class="oi oi-bookmark" title="Bookmark" aria-hidden="true"></span>
             </button>
         }
+        <h5 class="card-title">
+            <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.Id" asp-route-slug="@Model.Slug">@Model.Title</a>
+        </h5>
     </div>
 
     <ul class="list-group list-group-flush">
@@ -33,13 +36,13 @@
         @if (Model.UpdateDate > Model.CreationDate)
         {
             <small class="text-muted">
-                Last updated <abbr class="js-timeago" title="@Model.UpdateDate">1 minute ago</abbr>
+                Last updated <abbr class="js-timeago" title="@Model.UpdateDate UTC">1 minute ago</abbr>
             </small>
         }
         else
         {
             <small class="text-muted">
-                Created <abbr class="js-timeago" title="@Model.CreationDate">1 minute ago</abbr>
+                Created <abbr class="js-timeago" title="@Model.CreationDate UTC">1 minute ago</abbr>
             </small>
         }
 

@@ -11,6 +11,6 @@ namespace Otomatik.Library.Web.Core.Repositories
 
         IEnumerable<Shelf> GetPublicShelves(string query);
 
-        IEnumerable<Shelf> GetUserShelves(string userId);
+        IEnumerable<Shelf> GetUserShelves(string userId, string query = null, int limit = 0);
     }
 }

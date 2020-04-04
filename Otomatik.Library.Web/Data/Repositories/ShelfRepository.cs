@@ -50,11 +50,26 @@ namespace Otomatik.Library.Web.Data.Repositories
                 .FirstOrDefault(s => s.Id == shelfId && !s.IsDeleted);
         }
 
-        public IEnumerable<Shelf> GetUserShelves(string userId)
+        public IEnumerable<Shelf> GetUserShelves(string userId, string query = null, int limit = 0)
         {
-            return _context.Shelves
-                .Where(s => !s.IsDeleted && s.CreatedById == userId)
-                .OrderByDescending(s => s.UpdateDate).Take(10);
+            var shelves = _context.Shelves
+                .Where(s => !s.IsDeleted && s.CreatedById == userId);
+
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return limit > 0
+                    ? shelves.OrderByDescending(s => s.UpdateDate).Take(limit)
+                    : shelves.OrderByDescending(s => s.UpdateDate);
+            }
+
+            query = query.ToLowerInvariant();
+
+            var filtered = shelves.AsEnumerable().Where(s =>
+                s.Title.ToLowerInvariant().Contains(query));
+
+            return limit > 0 
+                ? filtered.OrderByDescending(s => s.UpdateDate).Take(limit) 
+                : filtered.OrderByDescending(s => s.UpdateDate);
         }
     }
 }
