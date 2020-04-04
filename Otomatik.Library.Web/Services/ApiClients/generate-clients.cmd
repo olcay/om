@@ -1,1 +1,1 @@
-nswag.cmd run /runtime:NetCore22
+nswag.cmd run /runtime:NetCore31

@@ -18,10 +18,10 @@ namespace Otomatik.Library.Web.Controllers
     public class ShelvesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IRawgGamesClient _rawgGamesClient;
+        private readonly RawgGamesClient _rawgGamesClient;
         private readonly IMapper _mapper;
 
-        public ShelvesController(IUnitOfWork unitOfWork, IRawgGamesClient rawgGamesClient, IMapper mapper)
+        public ShelvesController(IUnitOfWork unitOfWork, RawgGamesClient rawgGamesClient, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _rawgGamesClient = rawgGamesClient;
@@ -39,7 +39,6 @@ namespace Otomatik.Library.Web.Controllers
             var shelf = _unitOfWork.Shelves.GetShelf(shelfId);
 
             if (shelf == null
-                || shelf.IsDeleted
                 || !shelf.IsPublic && shelf.CreatedById != userId
                 || (!string.IsNullOrEmpty(slug) && shelf.Slug != slug))
                 return RedirectToAction("Error", "Home");
@@ -100,7 +99,7 @@ namespace Otomatik.Library.Web.Controllers
             _unitOfWork.Shelves.Save(shelf);
             _unitOfWork.Complete();
 
-            return RedirectToAction("Detail", "Shelves", new { shelfId = shelf.Id });
+            return RedirectToAction("Detail", "Shelves", new { shelfId = shelf.Id, slug = shelf.Slug });
         }
     }
 }

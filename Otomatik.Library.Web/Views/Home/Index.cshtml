@@ -8,11 +8,11 @@
     <div id="shelves" class="col-md-9">
         @foreach (var shelf in Model.Shelves)
         {
-            @Html.PartialAsync("_ShelfPartial", shelf)
+            <partial name="_ShelfPartial" model="shelf" />
         }
     </div>
     <div class="col-md-3">
-        
+
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="row">
@@ -32,7 +32,7 @@
                     @foreach (var shelf in Model.UserShelves)
                     {
                         <li class="list-group-item @(!shelf.IsPublic ? "list-group-item-warning":"")">
-                            <span class="glyphicon @(!shelf.IsPublic ? "glyphicon-eye-close" : "glyphicon-align-right rotate90") "></span> 
+                            <span class="glyphicon @(!shelf.IsPublic ? "glyphicon-eye-close" : "glyphicon-align-right rotate90") "></span>
                             <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@shelf.Id" asp-route-slug="@shelf.Slug">@shelf.Title</a>
                         </li>
                     }
@@ -46,13 +46,13 @@
                 <div class="arrowHeaded">You don't have any shelf to keep your books. Please, follow the arrow to add a new shelf.</div>
             }
         </div>
-        
+
     </div>
 </div>
 
-@section Scripts{ 
+@section Scripts{
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             HomeController.init("#shelves");
         });
     </script>

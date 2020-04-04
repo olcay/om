@@ -4,6 +4,7 @@ using Otomatik.Library.Web.Data;
 using Otomatik.Library.Web.Extensions;
 using System.Diagnostics;
 using System.Linq;
+using Otomatik.Library.Web.Core;
 using Otomatik.Library.Web.Core.Enums;
 using Otomatik.Library.Web.Core.Helpers;
 using Otomatik.Library.Web.Core.Models;
@@ -14,10 +15,12 @@ namespace Otomatik.Library.Web.Controllers
     public class ProfilesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ProfilesController(ApplicationDbContext context)
+        public ProfilesController(ApplicationDbContext context, IUnitOfWork unitOfWork)
         {
             _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet("/p/{userName}/{tab?}")]
@@ -28,8 +31,7 @@ namespace Otomatik.Library.Web.Controllers
                 return Error();
             }
 
-            var profileUser = _context.Users
-                .SingleOrDefault(p => p.Name == userName);
+            var profileUser = _unitOfWork.Users.GetByUsername(userName);
 
             if (profileUser == null)
             {
@@ -47,7 +49,7 @@ namespace Otomatik.Library.Web.Controllers
                 IsProfileOwner = loggedInUserId == userId,
                 Tab = tab,
                 ImageUrl = GetGravatarUrl(profileUser.Email),
-                Stars = _context.Stars.Where(s => s.UserId == loggedInUserId).ToLookup(s => s.ShelfId)
+                Stars = _unitOfWork.Stars.GetStarLookup(loggedInUserId)
             };
 
             if (!viewModel.IsProfileOwner)

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Otomatik.Library.Web.Core.Models;
+using Otomatik.Library.Web.Core;
 using Otomatik.Library.Web.Core.ViewModels;
-using Otomatik.Library.Web.Data;
 using Otomatik.Library.Web.Extensions;
 using ErrorViewModel = Otomatik.Library.Web.Models.ErrorViewModel;
 
@@ -18,33 +13,19 @@ namespace Otomatik.Library.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IMapper mapper)
+        public HomeController(ILogger<HomeController> logger, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _logger = logger;
-            _context = context;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index([FromQuery]string query = null)
         {
-            var shelves = _context.Shelves
-                .Include(s=> s.Items)
-                .Where(s => !s.IsDeleted && s.IsPublic && s.Items.Any());
-
-            if (!string.IsNullOrWhiteSpace(query))
-            {
-                query = query.ToLowerInvariant();
-
-                shelves = shelves.Where(s =>
-                    s.Title.ToLowerInvariant().Contains(query) ||
-                    s.CreatedBy.Name.ToLowerInvariant().Contains(query) ||
-                    s.Items.Any(b => b.Title.ToLowerInvariant().Contains(query)));
-            }
-
-            shelves = shelves.OrderByDescending(b => b.UpdateDate);
+            var shelves = _unitOfWork.Shelves.GetPublicShelves(query);
             
             var viewModel = new HomeViewModel
             {
@@ -56,10 +37,9 @@ namespace Otomatik.Library.Web.Controllers
             if (viewModel.ShowActions)
             {
                 var userId = User.GetUserId();
-                var userShelves = _context.Shelves.Where(s => !s.IsDeleted && s.CreatedById == userId).Take(10).ToList();
-                viewModel.UserShelves = userShelves;
+                viewModel.UserShelves = _unitOfWork.Shelves.GetUserShelves(userId);
 
-                viewModel.Stars = _context.Stars.Where(s => s.UserId == userId).ToLookup(s => s.ShelfId);
+                viewModel.Stars = _unitOfWork.Stars.GetStarLookup(userId);
 
                 foreach (var shelf in viewModel.Shelves)
                 {
@@ -83,9 +63,9 @@ namespace Otomatik.Library.Web.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public JsonResult IsUserExists(string name)
+        public JsonResult IsUserExists([FromQuery(Name = "Input.Name")]string name)
         {
-            return Json(!_context.Users.Any(x => x.Name == name));
+            return Json(_unitOfWork.Users.GetByUsername(name) == null);
         }
     }
 }

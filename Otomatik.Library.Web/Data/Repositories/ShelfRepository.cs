@@ -1,6 +1,8 @@
-﻿using Otomatik.Library.Web.Core.Models;
+﻿using System.Collections.Generic;
+using Otomatik.Library.Web.Core.Models;
 using Otomatik.Library.Web.Core.Repositories;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Otomatik.Library.Web.Data.Repositories
 {
@@ -18,22 +20,41 @@ namespace Otomatik.Library.Web.Data.Repositories
             _context.Shelves.Add(shelf);
         }
 
+        public IEnumerable<Shelf> GetPublicShelves(string query)
+        {
+            var shelves = _context.Shelves
+                .Include(s => s.Items)
+                .Include(s => s.CreatedBy)
+                .Where(s => !s.IsDeleted && s.IsPublic && s.Items.Any());
+
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                query = query.ToLowerInvariant();
+
+                var filtered = shelves.AsEnumerable().Where(s =>
+                    s.Title.ToLowerInvariant().Contains(query) ||
+                    s.CreatedBy.Name.ToLowerInvariant().Contains(query) ||
+                    s.Items.Any(b => b.Title.ToLowerInvariant().Contains(query)));
+
+                return filtered.OrderByDescending(s => s.UpdateDate);
+            }
+
+            return shelves.OrderByDescending(b => b.UpdateDate);
+        }
+
         public Shelf GetShelf(int shelfId)
         {
-            return _context.Shelves.Select(s => new Shelf
-            {
-                Id = s.Id,
-                Items = s.Items.Where(b => !b.IsDeleted).ToList(),
-                Title = s.Title,
-                CreatedById = s.CreatedById,
-                CreatedBy = s.CreatedBy,
-                IsPublic = s.IsPublic,
-                CreationDate = s.CreationDate,
-                UpdateDate = s.UpdateDate,
-                Slug = s.Slug,
-                StarsCount = s.Stars.Count()
-            }).FirstOrDefault(s => s.Id == shelfId
-                                   && !s.IsDeleted);
+            return _context.Shelves
+                .Include(s => s.Items)
+                .Include(s => s.CreatedBy)
+                .FirstOrDefault(s => s.Id == shelfId && !s.IsDeleted);
+        }
+
+        public IEnumerable<Shelf> GetUserShelves(string userId)
+        {
+            return _context.Shelves
+                .Where(s => !s.IsDeleted && s.CreatedById == userId)
+                .OrderByDescending(s => s.UpdateDate).Take(10);
         }
     }
 }

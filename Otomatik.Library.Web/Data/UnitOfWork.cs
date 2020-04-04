@@ -14,6 +14,8 @@ namespace Otomatik.Library.Web.Data
         public IBookAuthorRepository BookAuthors { get; }
         public IAuthorRepository Authors { get; }
         public IItemBookDetailRepository ItemBookDetails { get; }
+        public IUserRepository Users { get; }
+        public IStarRepository Stars { get; }
 
         public UnitOfWork(ApplicationDbContext context,
             IShelfRepository shelfRepository,
@@ -22,7 +24,9 @@ namespace Otomatik.Library.Web.Data
             IBookDetailRepository bookDetails,
             IBookAuthorRepository bookAuthors,
             IAuthorRepository authors,
-            IItemBookDetailRepository itemBookDetails)
+            IItemBookDetailRepository itemBookDetails, 
+            IStarRepository stars, 
+            IUserRepository users)
         {
             _context = context;
             Shelves = shelfRepository;
@@ -32,6 +36,8 @@ namespace Otomatik.Library.Web.Data
             BookAuthors = bookAuthors;
             Authors = authors;
             ItemBookDetails = itemBookDetails;
+            Stars = stars;
+            Users = users;
         }
 
         public void Complete()

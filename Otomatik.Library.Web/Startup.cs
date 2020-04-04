@@ -1,15 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Otomatik.Library.Web.Data;
 using Microsoft.Extensions.Configuration;
@@ -59,7 +53,7 @@ namespace Otomatik.Library.Web
 
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddTransient<IBookFinder, BookFinder>();
-            services.AddHttpClient<IRawgGamesClient>();
+            services.AddHttpClient<RawgGamesClient>();
 
             //Persistence
             services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -67,6 +61,8 @@ namespace Otomatik.Library.Web
             services.AddTransient<IFollowingRepository, FollowingRepository>();
             services.AddTransient<IShelfRepository, ShelfRepository>();
             services.AddTransient<IItemRepository, ItemRepository>();
+            services.AddTransient<IStarRepository, StarRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IBookDetailRepository, BookDetailRepository>();
             services.AddTransient<IBookAuthorRepository, BookAuthorRepository>();
             services.AddTransient<IAuthorRepository, AuthorRepository>();

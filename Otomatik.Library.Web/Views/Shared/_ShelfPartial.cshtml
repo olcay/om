@@ -14,7 +14,7 @@
                 @if (Model.ShowActions)
                 {
                     <button data-shelf-id="@Model.Id" type="button" class="btn @(Model.IsStarred ? "btn-warning" : "btn-default")  btn-xs pull-right js-toggle-star">
-                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                        <span class="oi oi-star" title="Star" aria-hidden="true"></span>
                     </button>
                 }
             </div>
@@ -23,17 +23,24 @@
     <div class="panel-body">
         <p><a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.CreatedBy.Name">@Model.CreatedBy.Name</a> on @Model.CreationDate.ToLongDateString()</p>
     </div>
-        <!-- Table -->
-        <table class="table table-hover">
-            <tbody>
+    <!-- Table -->
+    <table class="table table-hover">
+        <tbody>
             @{ var i = 0;}
             @foreach (var book in Model.Items)
             {
                 <tr> <th class="col-md-1" scope="row">@(++i)</th> <td>@book.Title</td> </tr>
+                if (i == 5)
+                {
+                    break;
+                }
             }
-            <tr> <th class="col-md-1" scope="row">&hellip;</th> <th>
-                <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.Id" asp-route-slug="@Model.Slug">more</a>
-            </th> </tr>
-            </tbody>
-        </table>
+            <tr>
+                <th class="col-md-1" scope="row">&hellip;</th>
+                <th>
+                    <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.Id" asp-route-slug="@Model.Slug">more</a>
+                </th>
+            </tr>
+        </tbody>
+    </table>
 </div>

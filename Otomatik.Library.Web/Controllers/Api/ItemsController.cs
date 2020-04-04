@@ -27,9 +27,9 @@ namespace Otomatik.Library.Web.Controllers.Api
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IBookFinder _bookFinder;
-        private readonly IRawgGamesClient _gamesClient;
+        private readonly RawgGamesClient _gamesClient;
 
-        public ItemsController(IUnitOfWork unitOfWork, IBookFinder bookFinder, IRawgGamesClient gamesClient)
+        public ItemsController(IUnitOfWork unitOfWork, IBookFinder bookFinder, RawgGamesClient gamesClient)
         {
             _unitOfWork = unitOfWork;
             _bookFinder = bookFinder;

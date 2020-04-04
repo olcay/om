@@ -11,6 +11,8 @@ namespace Otomatik.Library.Web.Core
         IBookAuthorRepository BookAuthors { get; }
         IAuthorRepository Authors { get; }
         IItemBookDetailRepository ItemBookDetails { get; }
+        IUserRepository Users { get; }
+        IStarRepository Stars { get; }
 
         void Complete();
     }

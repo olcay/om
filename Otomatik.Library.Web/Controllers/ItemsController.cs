@@ -23,10 +23,10 @@ namespace Otomatik.Library.Web.Controllers
         private readonly IApplicationDbContext _context;
         private readonly IBookFinder _bookFinder;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IRawgGamesClient _rawgGamesClient;
+        private readonly RawgGamesClient _rawgGamesClient;
         private readonly IMapper _mapper;
 
-        public ItemsController(IApplicationDbContext context, IBookFinder bookFinder, IUnitOfWork unitOfWork, IRawgGamesClient rawgGamesClient, IMapper mapper)
+        public ItemsController(IApplicationDbContext context, IBookFinder bookFinder, IUnitOfWork unitOfWork, RawgGamesClient rawgGamesClient, IMapper mapper)
         {
             _context = context;
             _bookFinder = bookFinder;
@@ -132,7 +132,7 @@ namespace Otomatik.Library.Web.Controllers
                     model.GameList.Add(new GameViewModel()
                     {
                         Id = game.Id.Value,
-                        ImageLink = game.Background_image.ToString(),
+                        ImageLink = game.Background_image?.ToString(),
                         Title = game.Name
                     });
                 }

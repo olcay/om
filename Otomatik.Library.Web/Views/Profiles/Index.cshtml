@@ -34,7 +34,7 @@
 
 @foreach (var shelf in Model.Shelves)
 {
-    @Html.PartialAsync("_ShelfPartial", shelf)
+    <partial name="_ShelfPartial" model="shelf" />
 }
 
 @if (Model.Users.Any())

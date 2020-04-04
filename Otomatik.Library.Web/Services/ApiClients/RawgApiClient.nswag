@@ -1,5 +1,5 @@
 ﻿{
-  "runtime": "NetCore20",
+  "runtime": "NetCore31",
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
@@ -12,7 +12,7 @@
       "clientBaseClass": "",
       "configurationClass": null,
       "generateClientClasses": true,
-      "generateClientInterfaces": true,
+      "generateClientInterfaces": false,
       "injectHttpClient": true,
       "disposeHttpClient": true,
       "protectedMethods": [],
