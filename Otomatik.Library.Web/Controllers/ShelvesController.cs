@@ -47,7 +47,7 @@ namespace Otomatik.Library.Web.Controllers
 
             viewModel.ShowActions = User.Identity.IsAuthenticated;
             viewModel.IsShelfOwner = userId == shelf.CreatedById;
-            viewModel.Items = new List<ItemViewModel>();
+            viewModel.ItemViewModels = new List<ItemViewModel>();
 
             foreach (var item in shelf.Items)
             {
@@ -70,7 +70,7 @@ namespace Otomatik.Library.Web.Controllers
                     }
                 }
 
-                viewModel.Items.Add(itemViewModel);
+                viewModel.ItemViewModels.Add(itemViewModel);
             }
 
             return View(viewModel);

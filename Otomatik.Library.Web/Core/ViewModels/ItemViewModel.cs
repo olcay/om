@@ -11,5 +11,14 @@ namespace Otomatik.Library.Web.Core.ViewModels
         public GameViewModel GameDetail { get; set; }
 
         public bool IsShelfOwner { get; set; }
+
+        public ItemViewModel()
+        {
+            
+        }
+
+        public ItemViewModel(string title, string userId) : base(title, userId)
+        {
+        }
     }
 }

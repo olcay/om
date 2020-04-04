@@ -11,6 +11,6 @@ namespace Otomatik.Library.Web.Core.ViewModels
 
         public bool IsStarred { get; set; }
 
-        public List<ItemViewModel> Items { get; set; }
+        public List<ItemViewModel> ItemViewModels { get; set; }
     }
 }

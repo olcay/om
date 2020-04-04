@@ -1,16 +1,14 @@
 ﻿@model ShelfViewModel
 
 <div class="card @(Model.IsPublic ? "" : "border-light")" style="max-width: 18rem;">
-    <img class="card-img-top img-responsive" src="/images/emptyShelf.png" alt="@Model.Title">
+    <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.Id" asp-route-slug="@Model.Slug">
+        <img class="card-img-top img-responsive" src="/images/emptyShelf.png" alt="@Model.Title">
+    </a>
 
     <div class="card-body">
         <h5 class="card-title">
-            <span class="oi  @(Model.IsPublic ? "oi-vertical-align-bottom" : "oi-bar-chart") "></span>
             <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.Id" asp-route-slug="@Model.Slug">@Model.Title</a>
         </h5>
-        <h6 class="card-subtitle mb-2 text-muted">
-            Created by <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.CreatedBy.Name">@Model.CreatedBy.Name</a> on @Model.CreationDate.ToLongDateString()
-        </h6>
         @if (Model.ShowActions)
         {
             <button data-shelf-id="@Model.Id" type="button" class="btn @(Model.IsStarred ? "btn-warning" : "btn-default text-muted")  btn-xs card-link js-toggle-star">
@@ -20,13 +18,30 @@
     </div>
 
     <ul class="list-group list-group-flush">
-        @foreach (var book in Model.Items)
+        @foreach (var item in Model.Items)
         {
-            <li class="list-group-item">@book.Title</li>
+            <li class="list-group-item">
+                <a class="text-white" asp-controller="Items" asp-action="Detail" asp-route-itemId="@item.Id" asp-route-shelfId="@Model.Id" asp-route-slug="@item.Slug">
+                    @item.Title
+                </a>
+            </li>
         }
     </ul>
 
     <div class="card-footer">
-        <small class="text-muted">Last updated @Model.UpdateDate</small>
+
+        @if (Model.UpdateDate > Model.CreationDate)
+        {
+            <small class="text-muted">
+                Last updated <abbr class="js-timeago" title="@Model.UpdateDate">1 minute ago</abbr>
+            </small>
+        }
+        else
+        {
+            <small class="text-muted">
+                Created <abbr class="js-timeago" title="@Model.CreationDate">1 minute ago</abbr>
+            </small>
+        }
+
     </div>
 </div>

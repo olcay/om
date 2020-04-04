@@ -14,7 +14,6 @@ using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Otomatik.Library.Web.Core.Dtos;
 using Otomatik.Library.Web.Core.Enums;
-using Otomatik.Library.Web.Core.Helpers;
 using Otomatik.Library.Web.Services.ApiClients;
 
 namespace Otomatik.Library.Web.Controllers.Api
@@ -89,12 +88,7 @@ namespace Otomatik.Library.Web.Controllers.Api
 
             var userId = User.GetUserId();
 
-            var item = new Item
-            {
-                CreationDate = DateTime.UtcNow,
-                Title = viewModel.Title,
-                CreatedById = userId
-            };
+            var item = new Item(viewModel.Title, userId);
 
             if (!string.IsNullOrWhiteSpace(viewModel.GBookId))
             {
@@ -133,7 +127,7 @@ namespace Otomatik.Library.Web.Controllers.Api
 
                     if (volume != null)
                     {
-                        item.Title = volume.VolumeInfo.Title;
+                        item.SetTitle(volume.VolumeInfo.Title);
 
                         var bookDetail = new BookDetail
                         {
@@ -215,8 +209,7 @@ namespace Otomatik.Library.Web.Controllers.Api
                 if (game != null)
                 {
                     item.RawgId = game.Id;
-                    item.Title = game.Name;
-                    item.Slug = game.Slug;
+                    item.SetTitle(game.Name);
                     item.Type = ItemType.Game;
                 }
             }
@@ -268,8 +261,7 @@ namespace Otomatik.Library.Web.Controllers.Api
                 return Forbid();
             }
 
-            item.Title = dto.Title;
-            item.Slug = SlugGenerator.GenerateSlug(dto.Title);
+            item.SetTitle(dto.Title);
 
             _unitOfWork.Items.Save(item);
             _unitOfWork.Complete();

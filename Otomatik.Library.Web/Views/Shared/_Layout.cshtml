@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using Otomatik.Library.Web.Areas.Identity.Data
+@inject SignInManager<ApplicationUser> SignInManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -67,43 +70,46 @@
 
     @RenderSection("Scripts", required: false)
 
-    <script type="text/x-template" id="notifications-template">
-        <ul class="notifications">
-            <%
-            _.each(notifications, function(usernotification){
-            var date = moment.tz(usernotification.notification.dateTime, "UTC").tz(moment.tz.guess()).format("D MMM HH:mm");
-            %>
-            <li class="<%= usernotification.isRead ? '': 'new' %>">
-                <% if(usernotification.notification.type == 1){ %>
-                <span class="highlight"><%= usernotification.notification.shelf.createdBy.name %></span> created
-                <% } if(usernotification.notification.type == 2){ %>
-                <span class="highlight"><%= usernotification.notification.shelf.createdBy.name %></span> added <%= usernotification.notification.book.title %> to
-                <% } if(usernotification.notification.type == 3){ %>
-                <span class="highlight"><%= usernotification.notification.shelf.createdBy.name %></span> removed <%= usernotification.notification.book.title %> from
-                <% } if(usernotification.notification.type == 5){ %>
-                A user starred
-                <% } %>
-                <a href="/shelves/<%= usernotification.notification.shelf.id %>"><%= usernotification.notification.shelf.title %></a> on <%= date %>
-            </li>
-            <%
-            })
-            %>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <script type="text/x-template" id="notifications-template">
+            <ul class="notifications">
+                <%
+                _.each(notifications, function(usernotification){
+                var date = moment.tz(usernotification.notification.dateTime, "UTC").tz(moment.tz.guess()).format("D MMM HH:mm");
+                %>
+                <li class="<%= usernotification.isRead ? '': 'new' %>">
+                    <% if(usernotification.notification.type == 1){ %>
+                    <span class="highlight"><%= usernotification.notification.shelf.createdBy.name %></span> created
+                    <% } if(usernotification.notification.type == 2){ %>
+                    <span class="highlight"><%= usernotification.notification.shelf.createdBy.name %></span> added <%= usernotification.notification.book.title %> to
+                    <% } if(usernotification.notification.type == 3){ %>
+                    <span class="highlight"><%= usernotification.notification.shelf.createdBy.name %></span> removed <%= usernotification.notification.book.title %> from
+                    <% } if(usernotification.notification.type == 5){ %>
+                    A user starred
+                    <% } %>
+                    <a href="/shelves/<%= usernotification.notification.shelf.id %>"><%= usernotification.notification.shelf.title %></a> on <%= date %>
+                </li>
+                <%
+                })
+                %>
 
-        </ul>
-    </script>
+            </ul>
+        </script>
 
-    <script type="text/x-template" id="popover-template">
-        <div class="popover popover-notifications" role="tooltip">
-            <div class="arrow"></div>
-            <h3 class="popover-title"></h3>
-            <div class="popover-content"></div>
-        </div>
-    </script>
+        <script type="text/x-template" id="popover-template">
+            <div class="popover popover-notifications" role="tooltip">
+                <div class="arrow"></div>
+                <h3 class="popover-title"></h3>
+                <div class="popover-content"></div>
+            </div>
+        </script>
 
-    <script>
-        $(document).ready(function () {
-            NotificationController.init("#notifications-template", "#popover-template");
-        });
-    </script>
+        <script>
+            $(document).ready(function () {
+                NotificationController.init("#notifications-template", "#popover-template");
+            });
+        </script>
+    }
 </body>
 </html>

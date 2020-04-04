@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Otomatik.Library.Web.Areas.Identity.Data;
 using Otomatik.Library.Web.Core.Enums;
+using Otomatik.Library.Web.Core.Helpers;
 
 namespace Otomatik.Library.Web.Core.Models
 {
@@ -15,7 +16,7 @@ namespace Otomatik.Library.Web.Core.Models
 
         public DateTime CreationDate { get; set; }
         
-        public string Title { get; set; }
+        public string Title { get; private set; }
 
         public Shelf Shelf { get; set; }
         
@@ -31,9 +32,27 @@ namespace Otomatik.Library.Web.Core.Models
 
         public bool IsDeleted { get; private set; }
 
+        public Item()
+        {
+            
+        }
+
+        public Item(string title, string userId)
+        {
+            CreationDate = DateTime.UtcNow;
+            SetTitle(title);
+            CreatedById = userId;
+        }
+
         public void Delete()
         {
             IsDeleted = true;
+        }
+
+        public void SetTitle(string title)
+        {
+            Title = title;
+            Slug = SlugGenerator.GenerateSlug(title);
         }
 
         public void Notify(IEnumerable<ApplicationUser> usersToNotify)

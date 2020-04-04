@@ -83,7 +83,7 @@
 <div class="row top-buffer">
     <div class="col-md-12">
         <div id="grid" data-columns>
-            @foreach (var item in Model.Items)
+            @foreach (var item in Model.ItemViewModels)
             {
                 <div class="thumbnail book">
                     <a asp-controller="Items" asp-action="Detail" asp-route-itemId="@item.Id" asp-route-shelfId="@item.ShelfId" asp-route-slug="@item.Slug">

@@ -9,45 +9,40 @@
         <div id="shelves" class="card-deck">
             @foreach (var shelf in Model.Shelves)
             {
-                <partial name="_ShelfPartial" model="shelf"/>
+                <partial name="_ShelfPartial" model="shelf" />
             }
         </div>
     </div>
     <div class="col-md-3">
-
-        <div class="panel panel-info">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-md-10">
-                        <h3 class="panel-title">
-                            Your shelves
-                        </h3>
-                    </div>
-                    <div class="col-md-2">
-                        <a class="btn btn-success btn-xs pull-right" asp-controller="Shelves" asp-action="Create">Add a Shelf</a>
-                    </div>
-                </div>
-            </div>
-            @if (Model.ShowActions && Model.UserShelves.Any())
-            {
-                <ul class="list-group">
+        @if (Model.ShowActions && Model.UserShelves.Any())
+        {
+            <div class="card">
+                <h5 class="card-header">Your shelves <a class="btn btn-success float-right btn-sm" asp-controller="Shelves" asp-action="Create" title="Add a shelf"><span class="oi oi-plus"></span> New</a></h5>
+                <ul class="list-group list-group-flush">
                     @foreach (var shelf in Model.UserShelves)
                     {
-                        <li class="list-group-item @(!shelf.IsPublic ? "list-group-item-warning" : "")">
-                            <span class="glyphicon @(!shelf.IsPublic ? "glyphicon-eye-close" : "glyphicon-align-right rotate90") "></span>
-                            <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@shelf.Id" asp-route-slug="@shelf.Slug">@shelf.Title</a>
+                        <li class="list-group-item">
+                            <span class="oi @(!shelf.IsPublic ? "oi-lock-locked text-warning" : "oi-vertical-align-bottom text-muted")" style="width: 16px;"></span>
+                            <a class="text-white" asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@shelf.Id" asp-route-slug="@shelf.Slug">@shelf.Title</a>
                         </li>
                     }
                 </ul>
-                <div class="panel-footer">
-                    <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" title="Profile">Load more...</a>
+                <div class="card-body">
+                    <a class="card-link text-muted" asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" title="@User.GetUserName()'s shelves">Show more</a>
                 </div>
-            }
-            else
-            {
-                <div class="arrowHeaded">You don't have any shelf to keep your books. Please, follow the arrow to add a new shelf.</div>
-            }
-        </div>
+            </div>
+        }
+        else
+        {
+            <div class="card">
+                <h5 class="card-header">Your shelves</h5>
+                <div class="card-body">
+                    <h5 class="card-title">Too bad, you don't have any shelf yet.</h5>
+                    <p class="card-text">There is nothing to stop you to create your first shelf and organize your books and games.</p>
+                    <a class="btn btn-success" asp-controller="Shelves" asp-action="Create">Create your first shelf</a>
+                </div>
+            </div>
+        }
 
     </div>
 </div>
