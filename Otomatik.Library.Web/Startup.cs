@@ -49,7 +49,11 @@ namespace Otomatik.Library.Web
 
             services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            var builder = services.AddRazorPages();
+
+#if DEBUG
+            builder.AddRazorRuntimeCompilation();
+#endif
 
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddTransient<IBookFinder, BookFinder>();
@@ -70,7 +74,7 @@ namespace Otomatik.Library.Web
 
             services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
 
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

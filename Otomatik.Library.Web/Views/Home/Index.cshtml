@@ -5,11 +5,13 @@
 }
 
 <div class="row top-buffer">
-    <div id="shelves" class="col-md-9">
-        @foreach (var shelf in Model.Shelves)
-        {
-            <partial name="_ShelfPartial" model="shelf" />
-        }
+    <div class="col-md-9">
+        <div id="shelves" class="card-deck">
+            @foreach (var shelf in Model.Shelves)
+            {
+                <partial name="_ShelfPartial" model="shelf"/>
+            }
+        </div>
     </div>
     <div class="col-md-3">
 
@@ -31,7 +33,7 @@
                 <ul class="list-group">
                     @foreach (var shelf in Model.UserShelves)
                     {
-                        <li class="list-group-item @(!shelf.IsPublic ? "list-group-item-warning":"")">
+                        <li class="list-group-item @(!shelf.IsPublic ? "list-group-item-warning" : "")">
                             <span class="glyphicon @(!shelf.IsPublic ? "glyphicon-eye-close" : "glyphicon-align-right rotate90") "></span>
                             <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@shelf.Id" asp-route-slug="@shelf.Slug">@shelf.Title</a>
                         </li>

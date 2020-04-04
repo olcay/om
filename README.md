@@ -23,9 +23,10 @@ The third party libraries, tools and services that are used in this project.
 
 ### Image Credits
 * [Mockup vector created by Freepik](https://www.freepik.com/free-photos-vectors/mockup)
+* Photo by [Alvaro Matzumura](https://unsplash.com/@alvaromatzumura?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on Unsplash
 
 ### Style
-* [Bootstrap 3](https://getbootstrap.com)
+* [Bootstrap 4](https://getbootstrap.com)
 * [Animate.css](https://daneden.github.io/animate.css/)
 
 ### Front-end
@@ -39,7 +40,7 @@ The third party libraries, tools and services that are used in this project.
 
 ### Back-end
 * [.NET Core](https://dot.net/)
-* [ASP.NET Core 2.0](https://asp.net/)
+* [ASP.NET Core 3.1](https://asp.net/)
 * [EF Core](https://docs.microsoft.com/en-us/ef/core/)
 * [Npgsql](http://www.npgsql.org/)
 * [AutoMapper](http://automapper.org/)
