@@ -8,13 +8,13 @@
         notificationService.get(getNotificationsDone);
     };
 
-    var getNotificationsDone = function(notifications) {
+    var getNotificationsDone = function (notifications) {
         if (notifications.length === 0)
             return;
 
         var count = 0;
         $.each(notifications,
-            function(index, value) {
+            function (index, value) {
                 if (!value.isRead) {
                     count++;
                 }
@@ -38,15 +38,15 @@
             placement: "bottom",
             template: $(_popoverTemplate).html()
         }).on("shown.bs.popover",
-            function() {
+            function () {
                 $.post({
-                        url: "/api/notifications/",
-                        headers:
-                        {
-                            RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-                        }
-                    })
-                    .done(function() {
+                    url: "/api/notifications/",
+                    headers:
+                    {
+                        RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    }
+                })
+                    .done(function () {
                         $(".js-notifications-count")
                             .text("")
                             .addClass("hide");

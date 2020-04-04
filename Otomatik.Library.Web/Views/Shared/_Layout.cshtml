@@ -76,7 +76,7 @@
             <ul class="notifications">
                 <%
                 _.each(notifications, function(usernotification){
-                var date = moment.tz(usernotification.notification.dateTime, "UTC").tz(moment.tz.guess()).format("D MMM HH:mm");
+                var date = moment.tz(usernotification.notification.dateTime, "UTC").local().fromNow();
                 %>
                 <li class="<%= usernotification.isRead ? '': 'new' %>">
                     <% if(usernotification.notification.type == 1){ %>
@@ -88,7 +88,7 @@
                     <% } if(usernotification.notification.type == 5){ %>
                     A user starred
                     <% } %>
-                    <a href="/shelves/<%= usernotification.notification.shelf.id %>"><%= usernotification.notification.shelf.title %></a> on <%= date %>
+                    <a href="/shelves/<%= usernotification.notification.shelf.id %>"><%= usernotification.notification.shelf.title %></a> <%= date %>
                 </li>
                 <%
                 })
@@ -100,8 +100,8 @@
         <script type="text/x-template" id="popover-template">
             <div class="popover popover-notifications" role="tooltip">
                 <div class="arrow"></div>
-                <h3 class="popover-title"></h3>
-                <div class="popover-content"></div>
+                <h3 class="popover-header"></h3>
+                <div class="popover-body"></div>
             </div>
         </script>
 
