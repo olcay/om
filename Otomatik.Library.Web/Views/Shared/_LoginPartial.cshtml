@@ -7,13 +7,32 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a class="nav-link btn" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.GetUserName()!</a>
+        <li class="notifications nav-item">
+            <a class="nav-link" href="#">
+                <i class="oi oi-bell"></i>
+                <span class="badge js-notifications-count hide"></span>
+            </a>
         </li>
-        <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link">Logout</button>
-            </form>
+
+        <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                @User.GetUserName()
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Account">
+                    Account
+                </a>
+                <a class="dropdown-item" asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" asp-route-tab="" title="Profile">
+                    Your profile
+                </a>
+                <a class="dropdown-item" asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" asp-route-tab="@ProfileTabs.Stars" title="Stars">
+                    Your stars
+                </a>
+                <div class="dropdown-divider"></div>
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="dropdown-item">Logout</button>
+                </form>
+            </div>
         </li>
     }
     else

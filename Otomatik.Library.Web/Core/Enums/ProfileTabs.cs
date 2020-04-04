@@ -2,9 +2,14 @@
 {
     public static class ProfileTabs
     {
-        public const string Shelves = "books";
-        public const string Stars = "stars";
-        public const string Followers = "followers";
-        public const string Following = "following";
+        public const string Shelves = "Shelves";
+        public const string Stars = "Stars";
+        public const string Followers = "Followers";
+        public const string Following = "Following";
+
+        public static string[] All()
+        {
+            return new[] {Shelves, Stars, Followers, Following};
+        }
     }
 }

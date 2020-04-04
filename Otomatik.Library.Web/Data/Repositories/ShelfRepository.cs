@@ -53,6 +53,7 @@ namespace Otomatik.Library.Web.Data.Repositories
         public IEnumerable<Shelf> GetUserShelves(string userId, string query = null, int limit = 0)
         {
             var shelves = _context.Shelves
+                .Include(s => s.Items)
                 .Where(s => !s.IsDeleted && s.CreatedById == userId);
 
             if (string.IsNullOrWhiteSpace(query))

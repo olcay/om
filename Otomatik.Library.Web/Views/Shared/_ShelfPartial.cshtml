@@ -1,7 +1,6 @@
-﻿@using Newtonsoft.Json
-@model ShelfViewModel
+﻿@model ShelfViewModel
 
-<div class="card @(Model.IsPublic ? "" : "border-light")" style="max-width: 18rem;">
+<div class="card @(Model.IsPublic ? "" : "border-light")">
     <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.Id" asp-route-slug="@Model.Slug">
         <img class="card-img-top img-responsive" src="/images/emptyShelf.png" alt="@Model.Title">
     </a>

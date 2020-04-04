@@ -80,45 +80,6 @@ body {
     margin-top: 20px;
 }
 
-@media screen and (max-width: 480px) {
-    #grid[data-columns]:before {
-        content: '2 .column.size-1of2';
-    }
-}
-
-@media screen and (min-width: 481px) and (max-width: 768px) {
-    #grid[data-columns]:before {
-        content: '3 .column.size-1of3';
-    }
-}
-
-@media screen and (min-width: 769px) {
-    #grid[data-columns]:before {
-        content: '4 .column.size-1of4';
-    }
-}
-
-.column {
-    float: left;
-    padding: 0 10px;
-}
-
-.size-1of1 {
-    width: 100%;
-}
-
-.size-1of2 {
-    width: 50%;
-}
-
-.size-1of3 {
-    width: 33.333%;
-}
-
-.size-1of4 {
-    width: 25%;
-}
-
 /* Bootstrap Overrides */
 .popover {
     box-shadow: none;
@@ -220,26 +181,6 @@ body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     }
 
 
-.rotate90 {
-    /* Safari */
-    -webkit-transform: rotate(90deg);
-    /* Firefox */
-    -moz-transform: rotate(90deg);
-    /* IE */
-    -ms-transform: rotate(90deg);
-    /* Opera */
-    -o-transform: rotate(90deg);
-    /* Internet Explorer */
-    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
-}
-
-.arrowHeaded {
-    background: url('../images/arrow.jpg') no-repeat right;
-    min-height: 103px;
-    padding-right: 58px;
-    margin: 10px;
-}
-
 ul.users {
     list-style: none;
     padding-left: 0;
@@ -253,3 +194,16 @@ ul.users {
         ul.users > li:last-child {
             border-bottom: none;
         }
+
+/*Personalization ends*/
+
+
+@media screen and (min-width: 576px) and (max-width: 981px) {
+    .card-columns {
+        column-count: 2;
+    }
+}
+
+.nav-tabs .nav-link.active {
+    border-bottom-color: transparent;
+}

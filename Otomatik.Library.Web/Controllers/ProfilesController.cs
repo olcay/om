@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using Otomatik.Library.Web.Core.ViewModels;
 using Otomatik.Library.Web.Data;
 using Otomatik.Library.Web.Extensions;
 using System.Diagnostics;
 using System.Linq;
+using AutoMapper;
 using Otomatik.Library.Web.Core;
 using Otomatik.Library.Web.Core.Enums;
 using Otomatik.Library.Web.Core.Helpers;
@@ -16,11 +18,13 @@ namespace Otomatik.Library.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ProfilesController(ApplicationDbContext context, IUnitOfWork unitOfWork)
+        public ProfilesController(ApplicationDbContext context, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _context = context;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [HttpGet("/p/{userName}/{tab?}")]
@@ -62,23 +66,13 @@ namespace Otomatik.Library.Web.Controllers
             
             if (tab == ProfileTabs.Stars)
             {
-                viewModel.Shelves = _context.Stars
+                var shelves = _context.Stars
                     .Where(s => s.UserId == userId)
                     .Select(s => s.Shelf)
-                    .Select(s => new Shelf
-                    {
-                        Id = s.Id,
-                        Items = s.Items.Where(b => !b.IsDeleted).Take(5).ToList(),
-                        Title = s.Title,
-                        CreatedById = s.CreatedById,
-                        CreatedBy = s.CreatedBy,
-                        IsPublic = s.IsPublic,
-                        CreationDate = s.CreationDate,
-                        Slug = s.Slug
-                        
-                    })
                     .Where(s => (s.IsPublic || s.CreatedById == loggedInUserId) && !s.IsDeleted)
                     .OrderByDescending(b => b.UpdateDate);
+
+                viewModel.Shelves = _mapper.Map<List<ShelfViewModel>>(shelves);
             }
             else if (tab == ProfileTabs.Followers)
             {
@@ -96,19 +90,14 @@ namespace Otomatik.Library.Web.Controllers
             }
             else
             {
-                viewModel.Shelves = _context.Shelves.Select(s => new Shelf
-                    {
-                        Id = s.Id,
-                        Items = s.Items.Where(b => !b.IsDeleted).Take(5).ToList(),
-                        Title = s.Title,
-                        CreatedById = s.CreatedById,
-                        CreatedBy = s.CreatedBy,
-                        IsPublic = s.IsPublic,
-                        CreationDate = s.CreationDate,
-                        Slug = s.Slug
-                    })
-                    .Where(s => s.CreatedById == userId && (s.IsPublic || userId == loggedInUserId) && !s.IsDeleted)
-                    .OrderByDescending(b => b.UpdateDate);
+                var shelves = _unitOfWork.Shelves.GetUserShelves(userId);
+
+                if (userId != loggedInUserId)
+                {
+                    shelves = shelves.Where(s => s.IsPublic);
+                }
+
+                viewModel.Shelves = _mapper.Map<List<ShelfViewModel>>(shelves);
             }
 
             return View(viewModel);

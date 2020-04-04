@@ -18,7 +18,7 @@
     {
         if (Model.IsProfileOwner)
         {
-            <a asp-controller="Shelves" asp-action="Create" class="btn btn-success btn-lg">Add a Shelf</a>
+            <a asp-controller="Shelves" asp-action="Create" class="btn btn-success">Add a new shelf</a>
         }
         else
         {
@@ -32,29 +32,31 @@
     }
 }
 
-@foreach (var shelf in Model.Shelves)
-{
-    <partial name="_ShelfPartial" model="shelf" />
-}
+<div class="card-columns">
+    @foreach (var shelf in Model.Shelves)
+    {
+        <partial name="_ShelfPartial" model="shelf" />
+    }
+</div>
 
-@if (Model.Users.Any())
-{
-    <ul class="users">
-        @foreach (var user in Model.Users)
-        {
-            <li>
-                <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@user.Name">@user.Name</a>
-            </li>
-        }
-    </ul>
-}
+    @if (Model.Users.Any())
+    {
+        <ul class="users">
+            @foreach (var user in Model.Users)
+            {
+                <li>
+                    <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@user.Name">@user.Name</a>
+                </li>
+            }
+        </ul>
+    }
 
 
 
-@section Scripts{
-    <script>
-        $(document).ready(function() {
-            ProfileController.init(".profile");
-        });
-    </script>
-}
+    @section Scripts{
+        <script>
+            $(document).ready(function () {
+                ProfileController.init(".profile");
+            });
+        </script>
+    }

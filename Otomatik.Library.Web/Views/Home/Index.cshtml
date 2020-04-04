@@ -6,7 +6,7 @@
 
 <div class="row top-buffer">
     <div class="col-md-9">
-        <div id="shelves" class="card-deck">
+        <div id="shelves" class="card-columns">
             @foreach (var shelf in Model.Shelves)
             {
                 <partial name="_ShelfPartial" model="shelf" />

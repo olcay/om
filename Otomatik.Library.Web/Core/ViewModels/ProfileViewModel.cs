@@ -19,7 +19,7 @@ namespace Otomatik.Library.Web.Core.ViewModels
 
         public IEnumerable<ApplicationUser> Users { get; set; }
 
-        public IEnumerable<Shelf> Shelves { get; set; }
+        public IEnumerable<ShelfViewModel> Shelves { get; set; }
 
         public bool ShowActions { get; set; }
 
@@ -28,7 +28,7 @@ namespace Otomatik.Library.Web.Core.ViewModels
         public ProfileViewModel()
         {
             Users = new List<ApplicationUser>();
-            Shelves = new List<Shelf>();
+            Shelves = new List<ShelfViewModel>();
         }
     }
 }
