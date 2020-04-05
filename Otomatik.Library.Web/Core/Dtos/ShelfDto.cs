@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Otomatik.Library.Web.Core.Dtos
@@ -14,5 +16,9 @@ namespace Otomatik.Library.Web.Core.Dtos
         [Required]
         [StringLength(255)]
         public string Title { get; set; }
+
+        public List<ItemDto> Items { get; set; }
+
+        public DateTime UpdateDate { get; set; }
     }
 }

@@ -24,7 +24,6 @@ namespace Otomatik.Library.Web.Data.Repositories
         {
             var shelves = _context.Shelves
                 .Include(s => s.Items)
-                .Include(s => s.CreatedBy)
                 .Where(s => !s.IsDeleted && s.IsPublic && s.Items.Any());
 
             if (!string.IsNullOrWhiteSpace(query))
@@ -33,7 +32,6 @@ namespace Otomatik.Library.Web.Data.Repositories
 
                 var filtered = shelves.AsEnumerable().Where(s =>
                     s.Title.ToLowerInvariant().Contains(query) ||
-                    s.CreatedBy.Name.ToLowerInvariant().Contains(query) ||
                     s.Items.Any(b => b.Title.ToLowerInvariant().Contains(query)));
 
                 return filtered.OrderByDescending(s => s.UpdateDate);

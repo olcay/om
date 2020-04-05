@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Otomatik.Library.Web.Core.Dtos;
 using Otomatik.Library.Web.Data;
 using Otomatik.Library.Web.Extensions;
 using System.Linq;
+using AutoMapper;
 using Otomatik.Library.Web.Core;
 using Otomatik.Library.Web.Core.Helpers;
 
@@ -16,11 +18,13 @@ namespace Otomatik.Library.Web.Controllers.Api
     {
         private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ShelvesController(ApplicationDbContext context, IUnitOfWork unitOfWork)
+        public ShelvesController(ApplicationDbContext context, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _context = context;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [Authorize]
@@ -30,7 +34,9 @@ namespace Otomatik.Library.Web.Controllers.Api
             var userId = User.GetUserId();
             var shelves = _unitOfWork.Shelves.GetUserShelves(userId, query, limit);
 
-            return Ok(shelves);
+            var shelfDtos = _mapper.Map<List<ShelfDto>>(shelves);
+
+            return Ok(shelfDtos);
         }
 
         [HttpGet]
@@ -38,7 +44,9 @@ namespace Otomatik.Library.Web.Controllers.Api
         {
             var shelves = _unitOfWork.Shelves.GetPublicShelves(query);
 
-            return Ok(shelves);
+            var shelfDtos = _mapper.Map<List<ShelfDto>>(shelves);
+
+            return Ok(shelfDtos);
         }
 
         [Authorize]
