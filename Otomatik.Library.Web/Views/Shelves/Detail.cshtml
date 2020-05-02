@@ -2,15 +2,14 @@
 @{
     ViewData["Title"] = Model.Title;
 }
-<div class="row top-buffer">
-    <div class="col-md-12">
-        <small>
-            <a asp-controller="Home" asp-action="Index">Library</a> >
-            <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.CreatedBy.Name">Shelves of @Model.CreatedBy.Name</a>
-        </small>
-    </div>
-</div>
-<div class="row top-buffer">
+
+@section Breadcrumb
+{
+    <a asp-controller="Home" asp-action="Index">Library</a> >
+    <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.CreatedBy.Name">Shelves of @Model.CreatedBy.Name</a>
+}
+
+<div class="row">
     <div class="col-md-10">
         <h2>
             @if (Model.IsShelfOwner)
@@ -37,7 +36,7 @@
             }
         </p>
     </div>
-    <div class="col-md-2 top-buffer" id="js-operation">
+    <div class="col-md-2" id="js-operation">
         @if (Model.IsShelfOwner)
         {
             <!-- Split button -->
@@ -80,49 +79,36 @@
         }
     </div>
 </div>
-<div class="row top-buffer">
-    <div class="col-md-12">
-        <div id="grid" data-columns>
-            @foreach (var item in Model.ItemViewModels)
-            {
-                <div class="thumbnail book">
-                    <a asp-controller="Items" asp-action="Detail" asp-route-itemId="@item.Id" asp-route-shelfId="@item.ShelfId" asp-route-slug="@item.Slug">
-                        <img src="@Html.Raw(item.CoverImageUrl ?? "/images/book.jpg")" alt="@item.Title" class="img-responsive" />
-                    </a>
-                    <div class="caption">
-                        <div class="row">
-                            <div class="col-md-9">
-                                <h4>
-                                    <a asp-controller="Items" asp-action="Detail" asp-route-itemId="@item.Id" asp-route-shelfId="@item.ShelfId" asp-route-slug="@item.Slug">
-                                        @item.Title
-                                    </a>
-                                </h4>
-                                <h5>@item.BookDetail?.Subtitle</h5>
-                                <p>
-                                    <span>
-                                        @if (item.BookDetail?.BookAuthorList != null)
-                                        {
-                                            @string.Join(", ", item.BookDetail?.BookAuthorList.Select(b => b.Author.Name))
-                                        }
-                                    </span>
-                                </p>
-                            </div>
-                            <div class="col-md-3 top-buffer">
-                                <div class="actions">
-                                    @if (Model.IsShelfOwner)
-                                    {
-                                        <button type="button" class="btn btn-danger js-remove-book" data-book-id="@item.Id" aria-label="Remove">
-                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                        </button>
-                                    }
-                                </div>
-                            </div>
-                        </div>
+<div class="row">
+    @foreach (var item in Model.ItemViewModels)
+    {
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card h-100">
+                <a asp-controller="Items" asp-action="Detail" asp-route-itemId="@item.Id" asp-route-shelfId="@item.ShelfId" asp-route-slug="@item.Slug">
+                    <div class="wrapper">
+                        <img class="card-img-top img-fluid" src="@Html.Raw(item.CoverImageUrl ?? "/images/book.jpg")" alt="@item.Title">
                     </div>
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a asp-controller="Items" asp-action="Detail" asp-route-itemId="@item.Id" asp-route-shelfId="@item.ShelfId" asp-route-slug="@item.Slug">
+                            @item.Title
+                        </a>
+                    </h5>
+                    <h6>@item.BookDetail?.Subtitle</h6>
+                    <p class="card-text">@Html.Raw(item.Description)</p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            @if (item.BookDetail?.BookAuthorList != null)
+                            {
+                                @string.Join(", ", item.BookDetail?.BookAuthorList.Select(b => b.Author.Name))
+                            }
+                        </small>
+                    </p>
                 </div>
-            }
+            </div>
         </div>
-    </div>
+    }
 </div>
 
 @section Scripts{

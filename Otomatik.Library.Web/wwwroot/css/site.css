@@ -1,5 +1,10 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+﻿body {
+    background: url('https://source.unsplash.com/twukN12EN7c/1920x1080') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
 
 a.navbar-brand {
   white-space: normal;
@@ -166,4 +171,28 @@ ul.users {
 
 .nav-tabs .nav-link.active {
     border-bottom-color: transparent;
+}
+
+
+.wrapper {
+    position: relative;
+    overflow: hidden;
+    background: black;
+    max-height: 300px;
+}
+
+.wrapper:after {
+    content: '';
+    display: block;
+    padding-top: 100%;
+}
+
+.wrapper img {
+    width: auto;
+    height: 100%;
+    max-width: none;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
 }

@@ -128,6 +128,7 @@ namespace Otomatik.Library.Web.Controllers.Api
                     if (volume != null)
                     {
                         item.SetTitle(volume.VolumeInfo.Title);
+                        item.SetDescription(volume.VolumeInfo.Description);
 
                         var bookDetail = new BookDetail
                         {
@@ -211,6 +212,7 @@ namespace Otomatik.Library.Web.Controllers.Api
                     item.RawgId = game.Id;
                     item.SetTitle(game.Name);
                     item.Type = ItemType.Game;
+                    item.SetDescription(game.Description);
                 }
             }
 
@@ -224,7 +226,7 @@ namespace Otomatik.Library.Web.Controllers.Api
             }
             else
             {
-                var shelf = new Shelf(userId, string.Format("{0}'s shelf", User.GetUserName()));
+                var shelf = new Shelf(userId, $"{User.GetUserName()}'s shelf");
                 
                 var followers = _unitOfWork.Followings.GetFollowers(userId);
 
@@ -262,6 +264,34 @@ namespace Otomatik.Library.Web.Controllers.Api
             }
 
             item.SetTitle(dto.Title);
+
+            _unitOfWork.Items.Save(item);
+            _unitOfWork.Complete();
+
+            return Ok();
+        }
+
+        [HttpPost("updateDescription")]
+        public IActionResult EditDescription(ItemUpdateDescriptionDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var item = _unitOfWork.Items.GetItem(dto.Id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            if (item.CreatedById != User.GetUserId())
+            {
+                return Forbid();
+            }
+
+            item.SetDescription(dto.Description);
 
             _unitOfWork.Items.Save(item);
             _unitOfWork.Complete();

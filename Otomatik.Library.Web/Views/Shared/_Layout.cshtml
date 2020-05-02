@@ -46,9 +46,21 @@
             </div>
         </nav>
     </header>
+
     <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
+        <small>
+            @RenderSection("Breadcrumb", required: false)
+        </small>
+    </div>
+
+    <div class="container">
+        <main role="main">
+            <div class="card border-0 shadow my-5">
+                @RenderSection("Featured", required: false)
+                <div class="card-body">
+                    @RenderBody()
+                </div>
+            </div>
         </main>
     </div>
 

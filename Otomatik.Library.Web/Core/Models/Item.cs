@@ -32,6 +32,12 @@ namespace Otomatik.Library.Web.Core.Models
 
         public bool IsDeleted { get; private set; }
 
+        public string Description { get; private set; }
+
+        public bool IsPlayed { get; set; }
+
+        public bool IsFinished { get; set; }
+
         public Item()
         {
             
@@ -51,8 +57,17 @@ namespace Otomatik.Library.Web.Core.Models
 
         public void SetTitle(string title)
         {
-            Title = title;
-            Slug = SlugGenerator.GenerateSlug(title);
+            Title = !string.IsNullOrWhiteSpace(title) && title.Length > 255
+                ? title.Substring(255)
+                : title; ;
+            Slug = SlugGenerator.GenerateSlug(Title);
+        }
+
+        public void SetDescription(string description)
+        {
+            Description = !string.IsNullOrWhiteSpace(description) && description.Length > 1000
+                ? description.Substring(1000)
+                : description;
         }
 
         public void Notify(IEnumerable<ApplicationUser> usersToNotify)

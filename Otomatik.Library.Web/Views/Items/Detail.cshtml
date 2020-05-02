@@ -3,30 +3,35 @@
 @{
     ViewBag.Title = Model.Title;
 }
-<div class="row top-buffer">
-    <div class="col-md-12">
-        <small>
-            <a asp-controller="Home" asp-action="Index">Library</a> >
-            <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Shelf.CreatedBy.Name">@Model.Shelf.CreatedBy.Name's shelves</a> >
-            <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.ShelfId">@Model.Shelf.Title</a>
-        </small>
-    </div>
-</div>
 
+@section Breadcrumb
+{
+    <a asp-controller="Home" asp-action="Index">Library</a> >
+    <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Shelf.CreatedBy.Name">@Model.Shelf.CreatedBy.Name's shelves</a> >
+    <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.ShelfId">@Model.Shelf.Title</a>
+}
 
-<div class="row top-buffer">
-    <div class="col-sm-2">
-        <img src="@Html.Raw(Model.CoverImageUrl ?? "/images/book.jpg")" alt="@Model.Title" class="img-responsive" id="coverImage" />
-        @if (Model.IsShelfOwner)
-        {
-            <form method="post" id="myform" enctype="multipart/form-data">
-                <input type="file" name="file" id="file" accept="image/*" />
-                <br />
-                <input type="submit" value="Change cover" />
-            </form>
-        }
+@section Featured
+{
+    <div class="wrapper">
+        <img class="card-img-top img-fluid" src="@Html.Raw(Model.CoverImageUrl ?? "/images/book.jpg")" alt="@Model.Title" id="coverImage">
     </div>
-    <div class="col-sm-10">
+    <div class="card-img-overlay">
+        <p class="card-text">
+            @if (Model.IsShelfOwner)
+            {
+                <form method="post" id="myform" enctype="multipart/form-data">
+                    <input type="file" name="file" id="file" accept="image/*"/>
+                    <br/>
+                    <input type="submit" value="Change cover"/>
+                </form>
+            }
+        </p>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
         <h2>
             @if (Model.IsShelfOwner)
             {
