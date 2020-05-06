@@ -1,0 +1,57 @@
+﻿@model Otomatik.Library.Web.Core.ViewModels.HomeViewModel
+@{
+    ViewData[ViewDataParameters.Title] = null;
+    ViewData[ViewDataParameters.Query] = Model.Query;
+    Layout = "_HomeLayout";
+}
+
+<div class="row">
+    <div class="col-md-9">
+        <div id="shelves" class="card-columns">
+            @foreach (var shelf in Model.Shelves)
+            {
+                <partial name="_ShelfPartial" model="shelf" />
+            }
+        </div>
+    </div>
+    <div class="col-md-3">
+        @if (Model.ShowActions && Model.UserShelves.Any())
+        {
+            <div class="card">
+                <h5 class="card-header">Your shelves <a class="btn btn-success float-right btn-sm" asp-controller="Shelves" asp-action="Create" title="Add a shelf"><span class="oi oi-plus"></span> New</a></h5>
+                <ul class="list-group list-group-flush">
+                    @foreach (var shelf in Model.UserShelves)
+                    {
+                        <li class="list-group-item">
+                            <span class="oi @(!shelf.IsPublic ? "oi-lock-locked text-warning" : "oi-vertical-align-bottom text-muted")" style="width: 16px;"></span>
+                            <a class="text-white" asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@shelf.Id" asp-route-slug="@shelf.Slug">@shelf.Title</a>
+                        </li>
+                    }
+                </ul>
+                <div class="card-body">
+                    <a class="card-link text-muted" asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" title="@User.GetUserName()'s shelves">Show more</a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="card">
+                <h5 class="card-header">Your shelves</h5>
+                <div class="card-body">
+                    <h5 class="card-title">Too bad, you don't have any shelf yet.</h5>
+                    <p class="card-text">There is nothing to stop you to create your first shelf and organize your books and games.</p>
+                    <a class="btn btn-success" asp-controller="Shelves" asp-action="Create">Create your first shelf</a>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            HomeController.init("#shelves");
+        });
+    </script>
+}
