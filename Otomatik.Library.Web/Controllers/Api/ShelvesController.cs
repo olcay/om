@@ -8,6 +8,7 @@ using System.Linq;
 using AutoMapper;
 using Otomatik.Library.Web.Core;
 using Otomatik.Library.Web.Core.Helpers;
+using Otomatik.Library.Web.Core.ViewModels;
 
 namespace Otomatik.Library.Web.Controllers.Api
 {
@@ -19,6 +20,7 @@ namespace Otomatik.Library.Web.Controllers.Api
         private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private const int PageSize = 20;
 
         public ShelvesController(ApplicationDbContext context, IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -29,7 +31,7 @@ namespace Otomatik.Library.Web.Controllers.Api
 
         [Authorize]
         [HttpGet("/api/me/shelves")]
-        public IActionResult GetShelvesByUser(string query, int limit = 0)
+        public IActionResult GetMyShelves(string query, int limit = 0)
         {
             var userId = User.GetUserId();
             var shelves = _unitOfWork.Shelves.GetUserShelves(userId, query, limit);
@@ -37,6 +39,44 @@ namespace Otomatik.Library.Web.Controllers.Api
             var shelfDtos = _mapper.Map<List<ShelfDto>>(shelves);
 
             return Ok(shelfDtos);
+        }
+
+        [HttpGet("/api/{userId}/shelves")]
+        public IActionResult GetShelvesByUser([FromRoute] string userId, [FromQuery] int page = 1)
+        {
+            var loggedInUserId = User.GetUserId();
+            var shelves = _unitOfWork.Shelves.GetShelvesByUser(userId);
+
+            if (userId != loggedInUserId)
+            {
+                shelves = shelves.Where(s => s.IsPublic);
+            }
+
+            var offset = page > 0 ? (page - 1) * PageSize : 0;
+            
+            var paginated = new PaginatedViewModel<ShelfDto>()
+            {
+                Total = shelves.Count(),
+                List = _mapper.Map<List<ShelfDto>>(shelves.Skip(offset).Take(PageSize))
+            };
+            
+            return Ok(paginated);
+        }
+
+        [HttpGet("/api/{userId}/starredShelves")]
+        public IActionResult GetStarredShelvesByUser([FromRoute] string userId, [FromQuery] int page = 1)
+        {
+            var shelves = _unitOfWork.Shelves.GetStarredShelves(userId);
+
+            var offset = page > 0 ? (page - 1) * PageSize : 0;
+
+            var paginated = new PaginatedViewModel<ShelfDto>()
+            {
+                Total = shelves.Count(),
+                List = _mapper.Map<List<ShelfDto>>(shelves.Skip(offset).Take(PageSize))
+            };
+
+            return Ok(paginated);
         }
 
         [HttpGet]

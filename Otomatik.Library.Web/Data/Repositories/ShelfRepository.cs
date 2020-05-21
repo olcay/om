@@ -70,5 +70,21 @@ namespace Otomatik.Library.Web.Data.Repositories
                 ? filtered.OrderByDescending(s => s.UpdateDate).Take(limit) 
                 : filtered.OrderByDescending(s => s.UpdateDate);
         }
+
+        public IQueryable<Shelf> GetShelvesByUser(string userId)
+        {
+            return _context.Shelves
+                .Where(s => !s.IsDeleted && s.CreatedById == userId)
+                .OrderByDescending(s => s.CreationDate);
+        }
+
+        public IQueryable<Shelf> GetStarredShelves(string userId)
+        {
+            return _context.Stars
+                .Where(s => s.UserId == userId)
+                .Select(s => s.Shelf)
+                .Where(s => s.IsPublic && !s.IsDeleted)
+                .OrderByDescending(b => b.CreationDate);
+        }
     }
 }

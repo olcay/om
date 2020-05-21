@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Otomatik.Library.Web.Areas.Identity.Data;
-using Otomatik.Library.Web.Core.Models;
+﻿using Otomatik.Library.Web.Areas.Identity.Data;
 
 namespace Otomatik.Library.Web.Core.ViewModels
 {
@@ -17,18 +14,12 @@ namespace Otomatik.Library.Web.Core.ViewModels
 
         public string ImageUrl { get; set; }
 
-        public IEnumerable<ApplicationUser> Users { get; set; }
-
-        public IEnumerable<ShelfViewModel> Shelves { get; set; }
-
         public bool ShowActions { get; set; }
+        
+        public int FollowersCount { get; set; }
 
-        public ILookup<int, Star> Stars { get; set; }
+        public int FollowingCount { get; set; }
 
-        public ProfileViewModel()
-        {
-            Users = new List<ApplicationUser>();
-            Shelves = new List<ShelfViewModel>();
-        }
+        public int ShelvesCount { get; set; }
     }
 }

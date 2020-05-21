@@ -4,12 +4,10 @@
     {
         public const string Shelves = "Shelves";
         public const string Stars = "Stars";
-        public const string Followers = "Followers";
-        public const string Following = "Following";
 
         public static string[] All()
         {
-            return new[] {Shelves, Stars, Followers, Following};
+            return new[] {Shelves, Stars};
         }
     }
 }

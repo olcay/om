@@ -1,4 +1,28 @@
-﻿var ShelfService = function() {
+﻿var ShelfService = function () {
+    var get = function (userId, page, done, fail) {
+        $.get({
+            url: "/api/" + userId + "/shelves?page=" + page,
+            headers:
+            {
+                RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+            }
+        })
+            .done(done)
+            .fail(fail);
+    };
+
+    var getStarred = function (userId, page, done, fail) {
+        $.get({
+            url: "/api/" + userId + "/starredShelves?page=" + page,
+            headers:
+            {
+                RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+            }
+        })
+            .done(done)
+            .fail(fail);
+    };
+
     var remove = function (shelfId, done, fail) {
         $.ajax({
             url: "/api/shelves/" + shelfId,
@@ -8,8 +32,8 @@
                 RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
             }
         })
-        .done(done)
-        .fail(fail);
+            .done(done)
+            .fail(fail);
     };
 
     var makePublic = function (shelfId, done, fail) {
@@ -21,8 +45,8 @@
                 RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
             }
         })
-        .done(done)
-        .fail(fail);
+            .done(done)
+            .fail(fail);
     };
 
     var makePrivate = function (shelfId, done, fail) {
@@ -34,11 +58,13 @@
                 RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
             }
         })
-        .done(done)
-        .fail(fail);
+            .done(done)
+            .fail(fail);
     };
 
     return {
+        get: get,
+        getStarred: getStarred,
         remove: remove,
         makePublic: makePublic,
         makePrivate: makePrivate

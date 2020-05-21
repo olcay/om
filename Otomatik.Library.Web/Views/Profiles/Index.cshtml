@@ -1,62 +1,67 @@
 ﻿@model ProfileViewModel
 @{
-    Layout = "_ProfileLayout";
     ViewData[ViewDataParameters.Title] = Model.User.Name;
     ViewData[ViewDataParameters.UserName] = Model.User.Name;
     ViewData[ViewDataParameters.Tab] = Model.Tab;
 }
 
-@section UserInfo
-{
-    <img src="@Model.ImageUrl" class="img-rounded img-responsive"/>
-    <p>
-        Visit <a href="https://gravatar.com/" target="_blank">Gravatar <span class="glyphicon glyphicon-new-window"></span></a>
-        to update your profile picture.
-    </p>
-    <h2>@Model.User.Name</h2>
-    @if (Model.ShowActions)
-    {
-        if (Model.IsProfileOwner)
-        {
-            <a asp-controller="Shelves" asp-action="Create" class="btn btn-success">Add a new shelf</a>
-        }
-        else
-        {
-            <button type="button"
-                    data-user-id="@Model.User.Id"
-                    class="btn btn-@(Model.IsFollowing ? "success" : "default") btn-lg js-toggle-follow">
-                Follow
-            </button>
-        }
+<header class="page-header page-header-dark bg-dark">
+    <div class="page-header-content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-10 text-center">
+                    <a href="https://gravatar.com/" target="_blank" title="Change profile picture"><img class="mb-4 rounded-circle" src="@Model.ImageUrl" style="width: 15rem;" /></a>
+                    <h1 class="page-header-title">@Model.User.Name</h1>
+                    <p class="page-header-text">
+                        @if (Model.ShowActions && !Model.IsProfileOwner)
+                        {
+                            <button type="button" data-user-id="@Model.User.Id" 
+                                    class="btn btn-@(Model.IsFollowing ? "success" : "default") btn-lg js-toggle-follow">
+                                Follow
+                            </button>
+                        }
+                    </p>
+                    <p class="page-header-text">
+                        <button class="btn btn-link"><b>@Model.ShelvesCount</b> shelves</button>
+                        <button class="btn btn-link"><b>@Model.FollowersCount</b> followers</button>
+                        <button class="btn btn-link"><b>@Model.FollowingCount</b> following</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="svg-border-rounded text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="currentColor"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
+    </div>
+</header>
 
-    }
+<section class="bg-white py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-12 mb-5 mb-lg-0">
+                <a class="btn @Html.Raw(ViewData[ViewDataParameters.Tab].ToString() == ProfileTabs.Shelves ? "btn-primary" : "btn-link") btn-marketing rounded-pill" asp-controller="Profiles" asp-action="Index" asp-route-userName="@ViewData[ViewDataParameters.UserName]" asp-route-tab="@ProfileTabs.Shelves">Shelves</a>
+                <a class="btn @Html.Raw(ViewData[ViewDataParameters.Tab].ToString() == ProfileTabs.Stars ? "btn-primary" : "btn-link") btn-marketing rounded-pill" asp-controller="Profiles" asp-action="Index" asp-route-userName="@ViewData[ViewDataParameters.UserName]" asp-route-tab="@ProfileTabs.Stars">Stars</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-white py-1 pb-4">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-12 mb-5 mb-lg-0">
+                <div class="card-columns" id="shelves">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            ProfileController.init(".container", "@Model.User.Id", 1);
+        });
+    </script>
 }
-
-<div class="card-columns">
-    @foreach (var shelf in Model.Shelves)
-    {
-        <partial name="_ShelfPartial" model="shelf" />
-    }
-</div>
-
-    @if (Model.Users.Any())
-    {
-        <ul class="users">
-            @foreach (var user in Model.Users)
-            {
-                <li>
-                    <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@user.Name">@user.Name</a>
-                </li>
-            }
-        </ul>
-    }
-
-
-
-    @section Scripts{
-        <script>
-            $(document).ready(function () {
-                ProfileController.init(".profile");
-            });
-        </script>
-    }

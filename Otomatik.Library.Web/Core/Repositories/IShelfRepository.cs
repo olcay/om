@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Otomatik.Library.Web.Core.Models;
 
 namespace Otomatik.Library.Web.Core.Repositories
@@ -12,5 +13,9 @@ namespace Otomatik.Library.Web.Core.Repositories
         IEnumerable<Shelf> GetPublicShelves(string query);
 
         IEnumerable<Shelf> GetUserShelves(string userId, string query = null, int limit = 0);
+
+        IQueryable<Shelf> GetShelvesByUser(string userId);
+
+        IQueryable<Shelf> GetStarredShelves(string userId);
     }
 }
