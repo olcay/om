@@ -11,7 +11,7 @@
                 <div class="col-lg-6" data-aos="fade-up">
                     <h1 class="page-header-title">Organize your items and share with friends</h1>
                     <p class="page-header-text mb-5">Welcome to Item.Directory, a web app for organizing items like books, games etc. Created by a geek for geeks.</p>
-                    <a class="btn btn-teal btn-marketing rounded-pill lift lift-sm" href="/">Get Started<i class="fas fa-arrow-right ml-1"></i></a><a class="btn btn-link btn-marketing" href="/home/about">About</a>
+                    <a class="btn btn-teal btn-marketing rounded-pill lift lift-sm" asp-area="Identity" asp-page="/Account/Register">Get Started<i class="fas fa-arrow-right ml-1"></i></a><a class="btn btn-link btn-marketing" href="/home/about">About</a>
                 </div>
                 <div class="col-lg-6 d-none d-lg-block" data-aos="fade-up" data-aos-delay="50"><img class="img-fluid" src="assets/img/drawkit/color/drawkit-content-man-color.svg" /></div>
             </div>
@@ -94,7 +94,10 @@
                 <h4>Ready to get started?</h4>
                 <p class="lead mb-5 mb-lg-0 text-gray-500">Register or login with your existing account.</p>
             </div>
-            <div class="col-lg-6 text-lg-right"><a class="btn btn-primary btn-marketing rounded-pill mr-3 my-2 lift lift-sm" href="#!">Get Started</a><a class="btn btn-white btn-marketing rounded-pill my-2 lift lift-sm" href="#!">Login</a></div>
+            <div class="col-lg-6 text-lg-right">
+                <a class="btn btn-teal btn-marketing rounded-pill mr-3 my-2 lift lift-sm" asp-area="Identity" asp-page="/Account/Register">Get Started</a>
+                <a class="btn btn-white btn-marketing rounded-pill my-2 lift lift-sm" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </div>
         </div>
     </div>
 </section>

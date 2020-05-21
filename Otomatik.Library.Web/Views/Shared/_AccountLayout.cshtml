@@ -1,0 +1,18 @@
+﻿@{
+    Layout = "_HomeLayout";
+}
+
+<header class="pb-5 pt-3 page-header-dark bg-secondary">
+    
+</header>
+
+<section class="bg-white py-10" style="min-height: 40em">
+    <div class="container">
+        @RenderBody()
+    </div>
+</section>
+
+@section Scripts
+{
+    @RenderSection("Scripts", false)
+}
