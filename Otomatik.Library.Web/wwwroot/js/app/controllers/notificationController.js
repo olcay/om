@@ -1,9 +1,9 @@
 ﻿var NotificationController = function (notificationService) {
-    var _notificationTemplate, _popoverTemplate;
+    var _notificationTemplate, _notifications;
 
-    var init = function (notificationTemplate, popoverTemplate) {
+    var init = function (notificationTemplate, notificationsDropdown) {
         _notificationTemplate = notificationTemplate;
-        _popoverTemplate = popoverTemplate;
+        _notifications = notificationsDropdown;
 
         notificationService.get(getNotificationsDone);
     };
@@ -21,23 +21,19 @@
             });
 
         if (count > 0) {
-            $(".js-notifications-count")
+            $(_notifications + " .js-notifications-count")
                 .text(count)
-                .removeClass("hide")
-                .addClass("animated wobble");
+                .removeClass("hide");
+
+            $(_notifications + " .fa-bell")
+                .addClass("animate__animated animate__swing animate__repeat-2");
         }
 
-        $(".notifications").popover({
-            html: true,
-            title: "Notifications",
-            trigger: "focus",
-            content: function () {
-                var compiled = _.template($(_notificationTemplate).html());
-                return compiled({ notifications: notifications });
-            },
-            placement: "bottom",
-            template: $(_popoverTemplate).html()
-        }).on("shown.bs.popover",
+        var compiled = _.template($(_notificationTemplate).html());
+
+        $(_notifications + " .dropdown-menu").html(compiled({ notifications: notifications }));
+
+        $(_notifications).on("shown.bs.dropdown",
             function () {
                 $.post({
                     url: "/api/notifications/",
@@ -47,7 +43,7 @@
                     }
                 })
                     .done(function () {
-                        $(".js-notifications-count")
+                        $(_notifications + " .js-notifications-count")
                             .text("")
                             .addClass("hide");
                     });

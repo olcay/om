@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Otomatik.Library.Web.Areas.Identity.Data
+@using Otomatik.Library.Web.Extensions
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <ul class="navbar-nav ml-auto mr-lg-5">
+        <li class="nav-item dropdown no-caret" id="navbarDropdownNotifications">
+            <a class="nav-link dropdown-toggle" id="navbarDropdownNotificationsBell" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="badge js-notifications-count badge-pill badge-danger hide"></span><i class="fas fa-bell"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right animated--fade-in" aria-labelledby="navbarDropdownNotificationsBell">
+            </div>
+        </li>
+
+        <li class="nav-item dropdown no-caret">
+            <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                @User.GetUserName()<i class="fas fa-chevron-right dropdown-arrow"></i>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Account">
+                    Account
+                </a>
+                <a class="dropdown-item" asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" asp-route-tab="" title="Profile">
+                    Your profile
+                </a>
+                <a class="dropdown-item" asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" asp-route-tab="@ProfileTabs.Stars" title="Stars">
+                    Your stars
+                </a>
+                <div class="dropdown-divider"></div>
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})">
+                    <button type="submit" class="dropdown-item">Logout</button>
+                </form>
+            </div>
+        </li>
+    </ul>
+}
+else
+{
+    <ul class="navbar-nav ml-auto mr-lg-5">
+    </ul>
+    <a class="btn-teal btn rounded-pill px-4 ml-lg-4" asp-area="Identity" asp-page="/Account/Register">Get Started</a>
+    <a class="btn-light btn rounded-pill px-4 ml-lg-4" asp-area="Identity" asp-page="/Account/Login">Login</a>
+}
