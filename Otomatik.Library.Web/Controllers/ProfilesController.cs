@@ -54,7 +54,7 @@ namespace Otomatik.Library.Web.Controllers
                 viewModel.IsFollowing = _unitOfWork.Followings.IsFollowing(userId, loggedInUserId);
             }
             
-            var shelves = (tab == ProfileTabs.Stars) ? _unitOfWork.Shelves.GetStarredShelves(userId) : _unitOfWork.Shelves.GetUserShelves(userId);
+            var shelves = _unitOfWork.Shelves.GetShelvesByUser(userId);
 
             if (userId != loggedInUserId)
             {

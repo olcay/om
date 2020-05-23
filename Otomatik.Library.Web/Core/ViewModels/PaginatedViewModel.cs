@@ -7,5 +7,9 @@ namespace Otomatik.Library.Web.Core.ViewModels
         public int Total { get; set; }
 
         public List<T> List { get; set; }
+
+        public int CurrentPage { get; set; }
+
+        public int PageCount { get; set; }
     }
 }

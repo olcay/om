@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Otomatik.Library.Web.Core.Dtos;
@@ -56,10 +57,13 @@ namespace Otomatik.Library.Web.Controllers.Api
             
             var paginated = new PaginatedViewModel<ShelfDto>()
             {
+                CurrentPage = page,
                 Total = shelves.Count(),
                 List = _mapper.Map<List<ShelfDto>>(shelves.Skip(offset).Take(PageSize))
             };
-            
+
+            paginated.PageCount = (int)Math.Ceiling((decimal)paginated.Total / PageSize);
+
             return Ok(paginated);
         }
 
@@ -72,9 +76,12 @@ namespace Otomatik.Library.Web.Controllers.Api
 
             var paginated = new PaginatedViewModel<ShelfDto>()
             {
+                CurrentPage = page,
                 Total = shelves.Count(),
                 List = _mapper.Map<List<ShelfDto>>(shelves.Skip(offset).Take(PageSize))
             };
+
+            paginated.PageCount = (int)Math.Ceiling((decimal)paginated.Total / PageSize);
 
             return Ok(paginated);
         }

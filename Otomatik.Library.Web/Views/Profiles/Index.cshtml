@@ -1,8 +1,6 @@
 ﻿@model ProfileViewModel
 @{
-    ViewData[ViewDataParameters.Title] = Model.User.Name;
-    ViewData[ViewDataParameters.UserName] = Model.User.Name;
-    ViewData[ViewDataParameters.Tab] = Model.Tab;
+    ViewBag.Title = Model.User.Name;
 }
 
 <header class="page-header page-header-dark bg-dark">
@@ -39,21 +37,20 @@
     <div class="container">
         <div class="row text-center">
             <div class="col-lg-12 mb-5 mb-lg-0">
-                <a class="btn @Html.Raw(ViewData[ViewDataParameters.Tab].ToString() == ProfileTabs.Shelves ? "btn-primary" : "btn-link") btn-marketing rounded-pill" asp-controller="Profiles" asp-action="Index" asp-route-userName="@ViewData[ViewDataParameters.UserName]" asp-route-tab="@ProfileTabs.Shelves">Shelves</a>
-                <a class="btn @Html.Raw(ViewData[ViewDataParameters.Tab].ToString() == ProfileTabs.Stars ? "btn-primary" : "btn-link") btn-marketing rounded-pill" asp-controller="Profiles" asp-action="Index" asp-route-userName="@ViewData[ViewDataParameters.UserName]" asp-route-tab="@ProfileTabs.Stars">Stars</a>
+                <a class="btn @Html.Raw(Model.Tab == ProfileTabs.Shelves ? "btn-primary" : "btn-link") btn-marketing rounded-pill" asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.User.Name" asp-route-tab="@ProfileTabs.Shelves">Shelves</a>
+                <a class="btn @Html.Raw(Model.Tab == ProfileTabs.Stars ? "btn-primary" : "btn-link") btn-marketing rounded-pill" asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.User.Name" asp-route-tab="@ProfileTabs.Stars">Stars</a>
             </div>
         </div>
     </div>
 </section>
 
-<section class="bg-white py-1 pb-4">
+<section class="bg-white py-10">
     <div class="container">
-        <div class="row text-center">
-            <div class="col-lg-12 mb-5 mb-lg-0">
-                <div class="card-columns" id="shelves">
-                </div>
-            </div>
+        <div class="row mb-5" id="divShelves">
+            Loading...
         </div>
+        <nav aria-label="Shelf pages" id="navShelves">
+        </nav>
     </div>
 </section>
 
@@ -72,13 +69,87 @@
             %>
         </div>
     </script>
-    
+
+    <script type="text/x-template" id="pagination-template">
+        <ul class="pagination justify-content-center">
+            <%
+            if (currentPage == 1){
+            %>
+            <li class="page-item disabled">
+                <span class="page-link">Previous</span>
+            </li>
+            <%
+            } else {
+            %>
+            <li class="page-item"><a class="page-link" href="#<%= currentPage - 1 %>">Previous</a></li>
+            <%
+            }
+            _.each(pages, function(page){
+                if (page == '...') {
+                %>
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                </li>
+                <%
+                } else {
+                    if (currentPage == page){
+                    %>
+                    <li class="page-item active">
+                        <span class="page-link">
+                            <%= page %>
+                            <span class="sr-only">(current)</span>
+                        </span>
+                    </li>
+                    <%
+                    } else {
+                    %>
+                    <li class="page-item"><a class="page-link" href="#<%= page %>"><%= page %></a></li>
+                    <%
+                    }
+                }
+            })
+            if (currentPage == pageCount){
+            %>
+            <li class="page-item disabled">
+                <span class="page-link">Next</span>
+            </li>
+            <%
+            } else {
+            %>
+            <li class="page-item"><a class="page-link" href="#<%= currentPage + 1 %>">Next</a></li>
+            <%
+            }
+            %>
+        </ul>
+    </script>
+
+    <script type="text/x-template" id="shelves-template">
+        <%
+        _.each(shelves, function(shelf){
+        %>
+        <div class="col-lg-4 mb-5">
+            <a class="card lift h-100" href="/shelves/<%= shelf.id %>">
+                <img class="card-img-top" src="/images/emptyShelf.png" alt="..." />
+                <div class="card-body">
+                    <h4 class="card-title mb-2"><%= shelf.title %></h4>
+                    <p class="card-text">Last updated <abbr class="js-timeago" title="<%= shelf.updateDate %> UTC"><%= moment.utc(shelf.updateDate).local().fromNow() %></abbr></p>
+                </div>
+                <div class="card-footer bg-transparent border-top d-flex align-items-center justify-content-between">
+                    <div class="small text-primary">See more</div>
+                    <div class="small text-primary">...</div>
+                </div>
+            </a>
+        </div>
+        <%
+        })
+        %>
+    </script>
 
     <script src="https://unpkg.com/%40popperjs/core@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
     <script>
         $(document).ready(function () {
-            ProfileController.init(".container", "@Model.User.Id", @Model.Page, "#followers-template");
+            ProfileController.init(".container", "@Model.User.Id", "#followers-template", "#shelves-template", "@Model.Tab");
         });
     </script>
 }
