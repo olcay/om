@@ -35,18 +35,11 @@
 
         $(_notifications).on("shown.bs.dropdown",
             function () {
-                $.post({
-                    url: "/api/notifications/",
-                    headers:
-                    {
-                        RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-                    }
-                })
-                    .done(function () {
-                        $(_notifications + " .js-notifications-count")
-                            .text("")
-                            .addClass("hide");
-                    });
+                notificationService.read(function() {
+                    $(_notifications + " .js-notifications-count")
+                        .text("")
+                        .addClass("hide");
+                });
             });
     };
 

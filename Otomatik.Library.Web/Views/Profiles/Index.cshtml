@@ -15,7 +15,7 @@
                     <p class="page-header-text">
                         @if (Model.ShowActions && !Model.IsProfileOwner)
                         {
-                            <button type="button" data-user-id="@Model.User.Id" 
+                            <button type="button" data-user-id="@Model.User.Id"
                                     class="btn btn-@(Model.IsFollowing ? "success" : "default") btn-lg js-toggle-follow">
                                 Follow
                             </button>
@@ -23,8 +23,8 @@
                     </p>
                     <p class="page-header-text">
                         <button class="btn btn-link"><b>@Model.ShelvesCount</b> shelves</button>
-                        <button class="btn btn-link"><b>@Model.FollowersCount</b> followers</button>
-                        <button class="btn btn-link"><b>@Model.FollowingCount</b> following</button>
+                        <button class="btn btn-link" id="btnFollowers"><b>@Model.FollowersCount</b> followers</button>
+                        <button class="btn btn-link" id="btnFollowing"><b>@Model.FollowingCount</b> following</button>
                     </p>
                 </div>
             </div>
@@ -59,9 +59,26 @@
 
 
 @section Scripts{
+    <script type="text/x-template" id="followers-template">
+        <div class="list-group small mb-5">
+            <%
+            _.each(followers, function(follower){
+            %>
+            <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" href="/p/<%= follower.name %>">
+                <%= follower.name %><i class="fas fa-arrow-right fa-xs text-gray-400"></i>
+            </a>
+            <%
+            })
+            %>
+        </div>
+    </script>
+    
+
+    <script src="https://unpkg.com/%40popperjs/core@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
     <script>
         $(document).ready(function () {
-            ProfileController.init(".container", "@Model.User.Id", 1);
+            ProfileController.init(".container", "@Model.User.Id", @Model.Page, "#followers-template");
         });
     </script>
 }

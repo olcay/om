@@ -21,5 +21,7 @@ namespace Otomatik.Library.Web.Core.ViewModels
         public int FollowingCount { get; set; }
 
         public int ShelvesCount { get; set; }
+
+        public int Page { get; set; }
     }
 }

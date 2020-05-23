@@ -31,7 +31,10 @@ namespace Otomatik.Library.Web.Services
                 return new List<Volume>();
             }
 
-            var result = await _service.Volumes.List(searchTerm).ExecuteAsync();
+            var list = _service.Volumes.List();
+            list.Q = searchTerm;
+
+            var result = await list.ExecuteAsync();
 
             return result?.Items ?? new List<Volume>();
         }

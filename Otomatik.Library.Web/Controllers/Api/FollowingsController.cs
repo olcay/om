@@ -67,7 +67,7 @@ namespace Otomatik.Library.Web.Controllers.Api
             return Ok(users);
         }
 
-        [HttpGet("/api/{userId}/followings")]
+        [HttpGet("/api/{userId}/followers")]
         public IActionResult GetFollowers([FromRoute] string userId)
         {
             var followers = _unitOfWork.Followings.GetFollowers(userId);

@@ -3,7 +3,19 @@
         $.getJSON("/api/notifications/", done);
     };
 
+    var read = function (done) {
+        $.post({
+                url: "/api/notifications/",
+                headers:
+                {
+                    RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                }
+            })
+            .done(done);
+    };
+
     return {
-        get: get
+        get: get,
+        read: read
     };
 }();
