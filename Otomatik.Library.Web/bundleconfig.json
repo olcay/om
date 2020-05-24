@@ -29,6 +29,7 @@
   {
     "outputFileName": "wwwroot/js/app.min.js",
     "inputFiles": [
+      "wwwroot/js/app/modules/urlModule.js",
       "wwwroot/js/app/services/starService.js",
       "wwwroot/js/app/services/followingService.js",
       "wwwroot/js/app/services/shelfService.js",

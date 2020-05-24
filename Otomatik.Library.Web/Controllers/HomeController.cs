@@ -1,58 +1,30 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using AutoMapper;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Otomatik.Library.Web.Core;
-using Otomatik.Library.Web.Core.ViewModels;
-using Otomatik.Library.Web.Extensions;
 using ErrorViewModel = Otomatik.Library.Web.Models.ErrorViewModel;
 
 namespace Otomatik.Library.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController(ILogger<HomeController> logger, IMapper mapper, IUnitOfWork unitOfWork)
+        public HomeController(IUnitOfWork unitOfWork)
         {
-            _logger = logger;
-            _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
 
-        public IActionResult Index([FromQuery]string query = null)
+        public IActionResult Index()
         {
-            var shelves = _unitOfWork.Shelves.GetPublicShelves(query);
-            
-            var viewModel = new HomeViewModel
-            {
-                Shelves = _mapper.Map<List<ShelfViewModel>>(shelves),
-                ShowActions = User.Identity.IsAuthenticated,
-                Query = query
-            };
-
-            if (viewModel.ShowActions)
-            {
-                var userId = User.GetUserId();
-                viewModel.UserShelves = _unitOfWork.Shelves.GetUserShelves(userId);
-
-                viewModel.Stars = _unitOfWork.Stars.GetStarLookup(userId);
-
-                foreach (var shelf in viewModel.Shelves)
-                {
-                    shelf.ShowActions = true;
-                    shelf.IsStarred = viewModel.Stars != null && viewModel.Stars.Contains(shelf.Id);
-                }
-            }
-
-            return View(viewModel);
+            return User.Identity.IsAuthenticated ? View("AuthenticatedIndex") : View();
         }
 
-
         public IActionResult About()
+        {
+            return View();
+        }
+
+        public IActionResult ToDo()
         {
             return View();
         }

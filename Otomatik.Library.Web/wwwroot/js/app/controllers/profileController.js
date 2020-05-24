@@ -1,4 +1,4 @@
-﻿var ProfileController = function (followingModule, starModule, shelfService, followingService, paginationModule) {
+﻿var ProfileController = function (followingModule, starModule, shelfService, followingService, paginationModule, urlModule) {
     var _followerTemplate, _shelvesTemplate, _tab, _userId;
 
     var fail = function (data) {
@@ -34,7 +34,7 @@
     };
 
     var getShelves = function () {
-        var page = location.hash.substr(1);
+        var page = urlModule.getPage();
 
         if (!page || page <= 0) {
             page = 1;
@@ -71,4 +71,4 @@
     return {
         init: init
     };
-}(FollowingModule, StarModule, ShelfService, FollowingService, PaginationModule);
+}(FollowingModule, StarModule, ShelfService, FollowingService, PaginationModule, URLModule);

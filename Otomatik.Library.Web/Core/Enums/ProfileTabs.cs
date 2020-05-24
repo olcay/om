@@ -3,11 +3,11 @@
     public static class ProfileTabs
     {
         public const string Shelves = "Shelves";
-        public const string Stars = "Stars";
+        public const string Bookmarks = "Bookmarks";
 
         public static string[] All()
         {
-            return new[] {Shelves, Stars};
+            return new[] {Shelves, Bookmarks};
         }
     }
 }

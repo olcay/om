@@ -8,6 +8,10 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <ul class="navbar-nav ml-auto mr-lg-5">
+        <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" asp-route-tab="">Profile</a></li>
         <li class="nav-item dropdown no-caret" id="navbarDropdownNotifications">
             <a class="nav-link dropdown-toggle" id="navbarDropdownNotificationsBell" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="badge js-notifications-count badge-pill badge-danger hide"></span><i class="fas fa-bell"></i>
@@ -22,13 +26,7 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Account">
-                    Account
-                </a>
-                <a class="dropdown-item" asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" asp-route-tab="" title="Profile">
-                    Your profile
-                </a>
-                <a class="dropdown-item" asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" asp-route-tab="@ProfileTabs.Stars" title="Stars">
-                    Your stars
+                    Settings
                 </a>
                 <div class="dropdown-divider"></div>
                 <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})">
@@ -41,6 +39,9 @@
 else
 {
     <ul class="navbar-nav ml-auto mr-lg-5">
+        <li class="nav-item">
+            <span class="nav-link">&nbsp;</span>
+        </li>
     </ul>
     <a class="btn-teal btn rounded-pill px-4 ml-lg-4" asp-area="Identity" asp-page="/Account/Register">Get Started</a>
     <a class="btn-light btn rounded-pill px-4 ml-lg-4" asp-area="Identity" asp-page="/Account/Login">Login</a>

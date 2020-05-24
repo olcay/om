@@ -20,24 +20,26 @@ namespace Otomatik.Library.Web.Data.Repositories
             _context.Shelves.Add(shelf);
         }
 
-        public IEnumerable<Shelf> GetPublicShelves(string query)
+        public IQueryable<Shelf> GetPublicShelves(string query)
         {
-            var shelves = _context.Shelves
-                .Include(s => s.Items)
-                .Where(s => !s.IsDeleted && s.IsPublic && s.Items.Any());
-
             if (!string.IsNullOrWhiteSpace(query))
             {
                 query = query.ToLowerInvariant();
 
-                var filtered = shelves.AsEnumerable().Where(s =>
-                    s.Title.ToLowerInvariant().Contains(query) ||
-                    s.Items.Any(b => b.Title.ToLowerInvariant().Contains(query)));
-
-                return filtered.OrderByDescending(s => s.UpdateDate);
+                return _context.Shelves
+                    .Include(s => s.Items)
+                    .Where(s => !s.IsDeleted
+                                && s.IsPublic
+                                && s.Items.Any()
+                                && (s.Title.ToLower().Contains(query)
+                                    || s.Items.Any(b => b.Title.ToLower().Contains(query)))
+                                ).OrderByDescending(s => s.UpdateDate);
             }
 
-            return shelves.OrderByDescending(b => b.UpdateDate);
+            return _context.Shelves
+                .Include(s => s.Items)
+                .Where(s => !s.IsDeleted && s.IsPublic && s.Items.Any())
+                .OrderByDescending(b => b.UpdateDate);
         }
 
         public Shelf GetShelf(int shelfId)
@@ -66,8 +68,8 @@ namespace Otomatik.Library.Web.Data.Repositories
             var filtered = shelves.AsEnumerable().Where(s =>
                 s.Title.ToLowerInvariant().Contains(query));
 
-            return limit > 0 
-                ? filtered.OrderByDescending(s => s.UpdateDate).Take(limit) 
+            return limit > 0
+                ? filtered.OrderByDescending(s => s.UpdateDate).Take(limit)
                 : filtered.OrderByDescending(s => s.UpdateDate);
         }
 

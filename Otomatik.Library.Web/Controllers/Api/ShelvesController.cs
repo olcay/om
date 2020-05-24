@@ -31,6 +31,38 @@ namespace Otomatik.Library.Web.Controllers.Api
         }
 
         [Authorize]
+        [HttpGet("/api/shelves")]
+        public IActionResult GetPublicShelves([FromQuery] string query, [FromQuery] int page = 1)
+        {
+            var userId = User.GetUserId();
+
+            var shelves = _unitOfWork.Shelves.GetPublicShelves(query);
+
+            var offset = page > 0 ? (page - 1) * PageSize : 0;
+
+            var paginated = new PaginatedViewModel<ShelfDto>()
+            {
+                CurrentPage = page,
+                Total = shelves.Count(),
+                List = _mapper.Map<List<ShelfDto>>(shelves.Skip(offset).Take(PageSize))
+            };
+
+            var stars = _unitOfWork.Stars.GetStarLookup(userId);
+
+            if (stars.Any())
+            {
+                foreach (var shelf in paginated.List)
+                {
+                    shelf.IsStarred = stars.Contains(shelf.Id);
+                }
+            }
+
+            paginated.PageCount = (int) Math.Ceiling((decimal) paginated.Total / PageSize);
+
+            return Ok(paginated);
+        }
+
+        [Authorize]
         [HttpGet("/api/me/shelves")]
         public IActionResult GetMyShelves(string query, int limit = 0)
         {
@@ -84,16 +116,6 @@ namespace Otomatik.Library.Web.Controllers.Api
             paginated.PageCount = (int)Math.Ceiling((decimal)paginated.Total / PageSize);
 
             return Ok(paginated);
-        }
-
-        [HttpGet]
-        public IActionResult Get(string query)
-        {
-            var shelves = _unitOfWork.Shelves.GetPublicShelves(query);
-
-            var shelfDtos = _mapper.Map<List<ShelfDto>>(shelves);
-
-            return Ok(shelfDtos);
         }
 
         [Authorize]

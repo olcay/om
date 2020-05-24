@@ -1,11 +1,13 @@
-﻿var PaginationModule = function() {
+﻿var PaginationModule = function(urlModule) {
 
     var init = function(currentPage, pageCount, destinationNav) {
         var pages = pagination(currentPage, pageCount);
 
         var render = _.template($("#pagination-template").html());
 
-        $(destinationNav).html(render({ currentPage: currentPage, pageCount: pageCount, pages: pages }));
+        var hash = urlModule.getCurrentHash();
+
+        $(destinationNav).html(render({ currentPage: currentPage, pageCount: pageCount, pages: pages, currentHash: hash }));
     };
 
     const getRange = (start, end) => {
@@ -56,4 +58,4 @@
     return {
         init: init
     };
-}();
+}(URLModule);

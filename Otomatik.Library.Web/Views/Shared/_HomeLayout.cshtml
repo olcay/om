@@ -75,42 +75,36 @@
                         <div class="col-lg-9">
                             <div class="row">
                                 <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
-                                    <div class="text-uppercase-expanded text-xs mb-4">Product</div>
+                                    <div class="text-uppercase-expanded text-xs mb-4">Personal</div>
                                     <ul class="list-unstyled mb-0">
-                                        <li class="mb-2"><a href="javascript:void(0);">Landing</a></li>
-                                        <li class="mb-2"><a href="javascript:void(0);">Pages</a></li>
-                                        <li class="mb-2"><a href="javascript:void(0);">Sections</a></li>
-                                        <li class="mb-2"><a href="javascript:void(0);">Documentation</a></li>
-                                        <li><a href="javascript:void(0);">Changelog</a></li>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <li class="mb-2"><a asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" asp-route-tab="">Profile</a></li>
+                                            <li class="mb-2"><a asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-userName="@User.GetUserName()" asp-route-tab="@ProfileTabs.Bookmarks">Bookmarks</a></li>
+                                            <li><a asp-controller="Home" asp-action="ToDo">Notifications</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="mb-2"><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+                                            <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+                                        }
                                     </ul>
                                 </div>
                                 <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
-                                    <div class="text-uppercase-expanded text-xs mb-4">Technical</div>
+                                    <div class="text-uppercase-expanded text-xs mb-4">Add a new</div>
                                     <ul class="list-unstyled mb-0">
-                                        <li class="mb-2"><a href="javascript:void(0);">Documentation</a></li>
-                                        <li class="mb-2"><a href="javascript:void(0);">Changelog</a></li>
-                                        <li class="mb-2"><a href="javascript:void(0);">Theme Customizer</a></li>
-                                        <li><a href="javascript:void(0);">UI Kit</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-lg-3 col-md-6 mb-5 mb-md-0">
-                                    <div class="text-uppercase-expanded text-xs mb-4">Includes</div>
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="mb-2"><a href="javascript:void(0);">Utilities</a></li>
-                                        <li class="mb-2"><a href="javascript:void(0);">Components</a></li>
-                                        <li class="mb-2"><a href="javascript:void(0);">Layouts</a></li>
-                                        <li class="mb-2"><a href="javascript:void(0);">Code Samples</a></li>
-                                        <li class="mb-2"><a href="javascript:void(0);">Products</a></li>
-                                        <li class="mb-2"><a href="javascript:void(0);">Affiliates</a></li>
-                                        <li><a href="javascript:void(0);">Updates</a></li>
+                                        <li class="mb-2"><a asp-controller="Shelves" asp-action="Create">Shelf</a></li>
+                                        <li class="mb-2"><a asp-controller="Items" asp-action="Search">Book</a></li>
+                                        <li class="mb-2"><a asp-controller="Items" asp-action="SearchGames">Game</a></li>
+                                        <li><a asp-controller="Home" asp-action="ToDo">Item</a></li>
                                     </ul>
                                 </div>
                                 <div class="col-lg-3 col-md-6">
                                     <div class="text-uppercase-expanded text-xs mb-4">Legal</div>
                                     <ul class="list-unstyled mb-0">
-                                        <li class="mb-2"><a href="javascript:void(0);">Privacy Policy</a></li>
-                                        <li class="mb-2"><a href="javascript:void(0);">Terms and Conditions</a></li>
-                                        <li><a href="javascript:void(0);">License</a></li>
+                                        <li class="mb-2"><a asp-controller="Home" asp-action="ToDo">Privacy Policy</a></li>
+                                        <li class="mb-2"><a asp-controller="Home" asp-action="ToDo">Terms and Conditions</a></li>
+                                        <li><a asp-controller="Home" asp-action="ToDo">License</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -120,9 +114,9 @@
                     <div class="row align-items-center">
                         <div class="col-md-6 small">Copyright &copy; Item.Directory @DateTime.Now.Year</div>
                         <div class="col-md-6 text-md-right small">
-                            <a href="javascript:void(0);">Privacy Policy</a>
+                            <a asp-controller="Home" asp-action="ToDo">Privacy Policy</a>
                             &middot;
-                            <a href="javascript:void(0);">Terms &amp; Conditions</a>
+                            <a asp-controller="Home" asp-action="ToDo">Terms &amp; Conditions</a>
                         </div>
                     </div>
                 </div>
@@ -149,7 +143,60 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/app.min.js" asp-append-version="true"></script>
 
-    @RenderSection("Scripts", required: false)
+<script type="text/x-template" id="pagination-template">
+    <ul class="pagination justify-content-center">
+        <%
+        if (currentPage == 1){
+        %>
+        <li class="page-item disabled">
+            <span class="page-link">Previous</span>
+        </li>
+        <%
+        } else {
+        %>
+        <li class="page-item"><a class="page-link" href="<%= currentHash %><%= currentPage - 1 %>">Previous</a></li>
+        <%
+        }
+        _.each(pages, function(page){
+        if (page == '...') {
+        %>
+        <li class="page-item disabled">
+            <span class="page-link">...</span>
+        </li>
+        <%
+        } else {
+        if (currentPage == page){
+        %>
+        <li class="page-item active">
+            <span class="page-link">
+                <%= page %>
+                <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        <%
+        } else {
+        %>
+        <li class="page-item"><a class="page-link" href="<%= currentHash %><%= page %>"><%= page %></a></li>
+        <%
+        }
+        }
+        })
+        if (currentPage == pageCount){
+        %>
+        <li class="page-item disabled">
+            <span class="page-link">Next</span>
+        </li>
+        <%
+        } else {
+        %>
+        <li class="page-item"><a class="page-link" href="<%= currentHash %><%= currentPage + 1 %>">Next</a></li>
+        <%
+        }
+        %>
+    </ul>
+</script>
+
+@RenderSection("Scripts", required: false)
 
     @if (SignInManager.IsSignedIn(User))
     {

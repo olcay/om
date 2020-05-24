@@ -11,6 +11,18 @@
             .fail(fail);
     };
 
+    var getPublic = function (page, query, done, fail) {
+        $.get({
+                url: "/api/shelves?page=" + page + (query ? "&query=" + query : ""),
+                headers:
+                {
+                    RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                }
+            })
+            .done(done)
+            .fail(fail);
+    };
+
     var getStarred = function (userId, page, done, fail) {
         $.get({
             url: "/api/" + userId + "/starredShelves?page=" + page,
@@ -64,6 +76,7 @@
 
     return {
         get: get,
+        getPublic: getPublic,
         getStarred: getStarred,
         remove: remove,
         makePublic: makePublic,
