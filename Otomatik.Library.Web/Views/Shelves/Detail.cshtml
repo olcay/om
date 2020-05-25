@@ -3,113 +3,107 @@
     ViewData["Title"] = Model.Title;
 }
 
-@section Breadcrumb
-{
-    <a asp-controller="Home" asp-action="Index">Library</a> >
-    <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.CreatedBy.Name">Shelves of @Model.CreatedBy.Name</a>
-}
+<header class="page-header page-header-dark bg-gradient-primary-to-secondary">
+    <div class="page-header-content pt-10">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="page-header-title mb-3">
+                        @if (Model.IsShelfOwner)
+                        {
+                            <span class="js-editable" data-type="text" data-pk="@Model.Id" data-url="@Url.Action("Edit", "Shelves")" data-title="Rename shelf">@Model.Title</span>
+                        }
+                        else
+                        {
+                            @Model.Title
+                        }
+                        <sup class="badge badge-yellow-soft text-xs" style="@(Model.IsPublic ? "display: none;" : "")" id="lblIsPublic">Private</sup>
+                    </h1>
+                    @if (Model.IsShelfOwner)
+                    {
+                        <div class="page-header-text" id="js-operation">
+                            Add a new <a asp-controller="Items" asp-action="SearchGames" asp-route-shelfId="@Model.Id" class="btn btn-default text-light" title="Item" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-cube"></i></a>,
+                            <a asp-controller="Items" asp-action="Search" asp-route-shelfId="@Model.Id" class="btn btn-default text-light" title="Book" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-book"></i></a>,
+                            <a asp-controller="Items" asp-action="SearchGames" asp-route-shelfId="@Model.Id" class="btn btn-default text-light" title="Game" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-gamepad"></i></a> or
 
-<div class="row">
-    <div class="col-md-10">
-        <h2>
-            @if (Model.IsShelfOwner)
-            {
-                <span class="js-editable" data-type="text" data-pk="@Model.Id" data-url="@Url.Action("Edit", "Shelves")" data-title="Rename shelf">@Model.Title</span>
-            }
-            else
-            {
-                @Model.Title
-            }
+                            <!-- Split button -->
+                            <div class="btn-group pull-right no-caret">
+                                <button type="button" class="btn btn-default text-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret">...</span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a href="#" id="js-makePrivate-shelf" data-shelf-id="@Model.Id" aria-label="Hide" style="@(!Model.IsPublic ? "display: none;" : "")" class="dropdown-item text-dark">
+                                        Make shelf private
+                                    </a>
+                                    <a href="#" id="js-makePublic-shelf" data-shelf-id="@Model.Id" aria-label="Show" style="@(Model.IsPublic ? "display: none;" : "")" class="dropdown-item text-dark">
+                                        Make shelf public
+                                    </a>
+                                    <a href="#" id="js-remove-shelf" data-shelf-id="@Model.Id" data-user-name="@Model.CreatedBy.Name" class="dropdown-item text-dark">
+                                        Remove shelf
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="page-header-text">
 
-            <small>
-                <sup class="label label-warning" style="@(Model.IsPublic ? "display: none;" : "")" id="lblIsPublic">Private</sup>
-
-            </small>
-        </h2>
-        <p>
-            Created by <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.CreatedBy.Name">@Model.CreatedBy.Name</a> on
-            <span data-toggle="tooltip" title="@Model.CreationDate.ToLongDateString()" data-placement="bottom">@Model.CreationDate.DayOfWeek.ToString()</span>
-            @if (Model.CreationDate.Date != Model.UpdateDate.Date)
-            {
-                <text> and updated on </text>
-                <span data-toggle="tooltip" title="@Model.UpdateDate.ToLongDateString()" data-placement="bottom"> @Model.UpdateDate.DayOfWeek.ToString() </span>
-            }
-        </p>
-    </div>
-    <div class="col-md-2" id="js-operation">
-        @if (Model.IsShelfOwner)
-        {
-            <!-- Split button -->
-            <div class="btn-group pull-right">
-                <a asp-controller="Items" asp-action="Search" asp-route-shelfId="@Model.Id" class="btn btn-success">Add a Book</a>
-                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a asp-controller="Items" asp-action="Search" asp-route-shelfId="@Model.Id">
-                            <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Add a Book
-                        </a>
-                    </li>
-                    <li>
-                        <a asp-controller="Items" asp-action="SearchGames" asp-route-shelfId="@Model.Id">
-                            <span class="glyphicon glyphicon-cd" aria-hidden="true"></span> Add a Game
-                        </a>
-                    </li>
-                    <li>
-
-                        <a href="#" id="js-makePrivate-shelf" data-shelf-id="@Model.Id" aria-label="Hide" style="@(!Model.IsPublic ? "display: none;" : "")">
-                            <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span> Make private
-                        </a>
-
-                        <a href="#" id="js-makePublic-shelf" data-shelf-id="@Model.Id" aria-label="Show" style="@(Model.IsPublic ? "display: none;" : "")">
-                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Make public
-                        </a>
-
-                    </li>
-                    <li role="separator" class="divider"></li>
-                    <li>
-                        <a href="#" id="js-remove-shelf" data-shelf-id="@Model.Id" data-user-name="@Model.CreatedBy.Name">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Remove shelf
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        }
-    </div>
-</div>
-<div class="row">
-    @foreach (var item in Model.ItemViewModels)
-    {
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-            <div class="card h-100">
-                <a asp-controller="Items" asp-action="Detail" asp-route-itemId="@item.Id" asp-route-shelfId="@item.ShelfId" asp-route-slug="@item.Slug">
-                    <div class="wrapper">
-                        <img class="card-img-top img-fluid" src="@Html.Raw(item.CoverImageUrl ?? "/images/book.jpg")" alt="@item.Title">
-                    </div>
-                </a>
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a asp-controller="Items" asp-action="Detail" asp-route-itemId="@item.Id" asp-route-shelfId="@item.ShelfId" asp-route-slug="@item.Slug">
-                            @item.Title
-                        </a>
-                    </h5>
-                    <h6>@item.BookDetail?.Subtitle</h6>
-                    <p class="card-text">@Html.Raw(item.Description)</p>
-                    <p class="card-text">
-                        <small class="text-muted">
-                            @if (item.BookDetail?.BookAuthorList != null)
+                            Created by <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.CreatedBy.Name">@Model.CreatedBy.Name</a> on
+                            <span data-toggle="tooltip" title="@Model.CreationDate.ToLongDateString()" data-placement="bottom">@Model.CreationDate.DayOfWeek.ToString()</span>
+                            @if (Model.CreationDate.Date != Model.UpdateDate.Date)
                             {
-                                @string.Join(", ", item.BookDetail?.BookAuthorList.Select(b => b.Author.Name))
+                                <text> and updated on </text>
+                                <span data-toggle="tooltip" title="@Model.UpdateDate.ToLongDateString()" data-placement="bottom"> @Model.UpdateDate.DayOfWeek.ToString() </span>
                             }
-                        </small>
-                    </p>
+                        </p>
+                    }
                 </div>
             </div>
         </div>
-    }
-</div>
+    </div>
+    <div class="svg-border-rounded text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="currentColor"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
+    </div>
+</header>
+<section class="bg-white py-10">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model.ItemViewModels)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="card h-100">
+                        <a asp-controller="Items" asp-action="Detail" asp-route-itemId="@item.Id" asp-route-shelfId="@item.ShelfId" asp-route-slug="@item.Slug">
+                            <div class="wrapper">
+                                <img class="card-img-top img-fluid" src="@Html.Raw(item.CoverImageUrl ?? "/images/book.jpg")" alt="@item.Title">
+                            </div>
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a asp-controller="Items" asp-action="Detail" asp-route-itemId="@item.Id" asp-route-shelfId="@item.ShelfId" asp-route-slug="@item.Slug">
+                                    @item.Title
+                                </a>
+                            </h5>
+                            <h6>@item.BookDetail?.Subtitle</h6>
+                            <p class="card-text">@Html.Raw(item.Description)</p>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    @if (item.BookDetail?.BookAuthorList != null)
+                                    {
+                                        @string.Join(", ", item.BookDetail?.BookAuthorList.Select(b => b.Author.Name))
+                                    }
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+
 
 @section Scripts{
     <script>

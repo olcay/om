@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Otomatik.Library.Web.Core.Dtos;
-using Otomatik.Library.Web.Data;
 using Otomatik.Library.Web.Extensions;
 using System.Linq;
 using AutoMapper;
 using Otomatik.Library.Web.Core;
-using Otomatik.Library.Web.Core.Helpers;
 using Otomatik.Library.Web.Core.ViewModels;
 
 namespace Otomatik.Library.Web.Controllers.Api
@@ -18,14 +16,12 @@ namespace Otomatik.Library.Web.Controllers.Api
     [AutoValidateAntiforgeryToken]
     public class ShelvesController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private const int PageSize = 20;
 
-        public ShelvesController(ApplicationDbContext context, IUnitOfWork unitOfWork, IMapper mapper)
+        public ShelvesController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -129,19 +125,16 @@ namespace Otomatik.Library.Web.Controllers.Api
 
             var userId = User.GetUserId();
 
-            var shelf = _context.Shelves
-                .FirstOrDefault(s => s.Id == dto.Id
-                    && s.CreatedById == userId);
+            var shelf = _unitOfWork.Shelves.GetShelf(dto.Id, userId);
 
             if (shelf == null)
             {
                 return NotFound();
             }
 
-            shelf.Title = dto.Title;
-            shelf.Slug = SlugGenerator.GenerateSlug(dto.Title);
+            shelf.SetTitle(dto.Title);
 
-            _context.SaveChanges();
+            _unitOfWork.Complete();
 
             return Ok();
         }
@@ -157,9 +150,7 @@ namespace Otomatik.Library.Web.Controllers.Api
 
             var userId = User.GetUserId();
 
-            var shelf = _context.Shelves
-                .FirstOrDefault(s => s.Id == shelfId
-                                     && s.CreatedById == userId);
+            var shelf = _unitOfWork.Shelves.GetShelf(shelfId, userId);
 
             if (shelf == null || shelf.IsPublic)
             {
@@ -168,7 +159,7 @@ namespace Otomatik.Library.Web.Controllers.Api
 
             shelf.IsPublic = true;
 
-            _context.SaveChanges();
+            _unitOfWork.Complete();
 
             return Ok();
         }
@@ -184,9 +175,7 @@ namespace Otomatik.Library.Web.Controllers.Api
 
             var userId = User.GetUserId();
 
-            var shelf = _context.Shelves
-                .FirstOrDefault(s => s.Id == shelfId
-                                     && s.CreatedById == userId);
+            var shelf = _unitOfWork.Shelves.GetShelf(shelfId, userId);
 
             if (shelf == null || !shelf.IsPublic)
             {
@@ -195,7 +184,7 @@ namespace Otomatik.Library.Web.Controllers.Api
 
             shelf.IsPublic = false;
 
-            _context.SaveChanges();
+            _unitOfWork.Complete();
 
             return Ok();
         }
@@ -211,9 +200,7 @@ namespace Otomatik.Library.Web.Controllers.Api
 
             var userId = User.GetUserId();
 
-            var shelf = _context.Shelves
-                .FirstOrDefault(s => s.Id == shelfId
-                                     && s.CreatedById == userId);
+            var shelf = _unitOfWork.Shelves.GetShelf(shelfId, userId);
 
             if (shelf == null || shelf.IsDeleted)
             {
@@ -222,7 +209,7 @@ namespace Otomatik.Library.Web.Controllers.Api
 
             shelf.IsDeleted = true;
 
-            _context.SaveChanges();
+            _unitOfWork.Complete();
 
             return Ok();
         }

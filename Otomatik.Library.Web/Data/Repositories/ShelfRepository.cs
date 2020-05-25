@@ -42,6 +42,12 @@ namespace Otomatik.Library.Web.Data.Repositories
                 .OrderByDescending(b => b.UpdateDate);
         }
 
+        public Shelf GetShelf(int shelfId, string userId)
+        {
+            return _context.Shelves
+                .FirstOrDefault(s => s.Id == shelfId && s.CreatedById == userId);
+        }
+
         public Shelf GetShelf(int shelfId)
         {
             return _context.Shelves

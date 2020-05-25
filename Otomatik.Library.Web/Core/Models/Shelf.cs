@@ -46,6 +46,13 @@ namespace Otomatik.Library.Web.Core.Models
             UpdateDate = DateTime.UtcNow;
         }
 
+        public void SetTitle(string title)
+        {
+            Title = title;
+            Slug = SlugGenerator.GenerateSlug(title);
+            UpdateDate = DateTime.UtcNow;
+        }
+
         public void Publish(IEnumerable<ApplicationUser> usersToNotify)
         {
             IsPublic = true;

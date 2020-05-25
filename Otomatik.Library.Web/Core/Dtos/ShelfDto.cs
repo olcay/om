@@ -22,5 +22,7 @@ namespace Otomatik.Library.Web.Core.Dtos
         public DateTime UpdateDate { get; set; }
 
         public bool IsStarred { get; set; }
+
+        public string Slug { get; set; }
     }
 }

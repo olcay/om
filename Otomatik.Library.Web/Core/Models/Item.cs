@@ -34,7 +34,7 @@ namespace Otomatik.Library.Web.Core.Models
 
         public string Description { get; private set; }
 
-        public bool IsPlayed { get; set; }
+        public bool IsStarted { get; set; }
 
         public bool IsFinished { get; set; }
 

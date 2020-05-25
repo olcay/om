@@ -63,7 +63,7 @@
         _.each(shelves, function(shelf){
         %>
         <div class="col-lg-4 mb-5">
-            <a class="card lift h-100" href="/shelves/<%= shelf.id %>">
+            <a class="card lift h-100" href="/shelves/<%= shelf.id %>/<%= shelf.slug %>">
                 <img class="card-img-top" src="/images/emptyShelf.png" alt="..." />
                 <div class="card-body">
                     <%
