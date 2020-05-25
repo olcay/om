@@ -4,7 +4,7 @@
 }
 
 <header class="page-header page-header-dark bg-gradient-primary-to-secondary">
-    <div class="page-header-content pt-10">
+    <div class="page-header-content">
         <div class="container text-center">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
@@ -22,9 +22,9 @@
                     @if (Model.IsShelfOwner)
                     {
                         <div class="page-header-text" id="js-operation">
-                            Add a new <a asp-controller="Items" asp-action="SearchGames" asp-route-shelfId="@Model.Id" class="btn btn-default text-light" title="Item" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-cube"></i></a>,
-                            <a asp-controller="Items" asp-action="Search" asp-route-shelfId="@Model.Id" class="btn btn-default text-light" title="Book" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-book"></i></a>,
-                            <a asp-controller="Items" asp-action="SearchGames" asp-route-shelfId="@Model.Id" class="btn btn-default text-light" title="Game" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-gamepad"></i></a> or
+                            Add a new <a asp-controller="Items" asp-action="SearchGames" asp-route-shelfId="@Model.Id" class="btn btn-default text-light" title="item" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-cube"></i></a>,
+                            <a asp-controller="Items" asp-action="Search" asp-route-shelfId="@Model.Id" class="btn btn-default text-light" title="book" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-book"></i></a>,
+                            <a asp-controller="Items" asp-action="SearchGames" asp-route-shelfId="@Model.Id" class="btn btn-default text-light" title="game" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-gamepad"></i></a> or
 
                             <!-- Split button -->
                             <div class="btn-group pull-right no-caret">
@@ -33,15 +33,15 @@
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a href="#" id="js-makePrivate-shelf" data-shelf-id="@Model.Id" aria-label="Hide" style="@(!Model.IsPublic ? "display: none;" : "")" class="dropdown-item text-dark">
-                                        Make shelf private
-                                    </a>
-                                    <a href="#" id="js-makePublic-shelf" data-shelf-id="@Model.Id" aria-label="Show" style="@(Model.IsPublic ? "display: none;" : "")" class="dropdown-item text-dark">
-                                        Make shelf public
-                                    </a>
-                                    <a href="#" id="js-remove-shelf" data-shelf-id="@Model.Id" data-user-name="@Model.CreatedBy.Name" class="dropdown-item text-dark">
-                                        Remove shelf
-                                    </a>
+                                    <button type="button" id="js-makePrivate-shelf" data-shelf-id="@Model.Id" aria-label="Hide" style="@(!Model.IsPublic ? "display: none;" : "")" class="dropdown-item text-dark">
+                                        make shelf private
+                                    </button>
+                                    <button type="button" id="js-makePublic-shelf" data-shelf-id="@Model.Id" aria-label="Show" style="@(Model.IsPublic ? "display: none;" : "")" class="dropdown-item text-dark">
+                                        make shelf public
+                                    </button>
+                                    <button type="button" id="js-remove-shelf" data-shelf-id="@Model.Id" data-user-name="@Model.CreatedBy.Name" class="dropdown-item text-dark">
+                                        remove shelf
+                                    </button>
                                 </div>
                             </div>
                         </div>

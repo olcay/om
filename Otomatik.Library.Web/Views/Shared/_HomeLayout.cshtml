@@ -22,9 +22,9 @@
     <div id="layoutDefault">
         <div id="layoutDefault_content">
             <main>
-                <nav class="navbar navbar-marketing navbar-expand-lg bg-transparent navbar-dark fixed-top">
+                <nav class="navbar navbar-marketing navbar-expand-lg @((ViewData[ViewDataParameters.IsFixedTop] as bool?)??false ? "bg-transparent navbar-dark fixed-top" : "bg-white navbar-light")">
                     <div class="container">
-                        <a class="navbar-brand text-white" href="/">Item.Directory</a><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i data-feather="menu"></i></button>
+                        <a class="navbar-brand @((ViewData[ViewDataParameters.IsFixedTop] as bool?)??false ? "text-white" : "text-dark") " href="/">Item.Directory</a><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i data-feather="menu"></i></button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <partial name="_HomeLoginPartial" />
                         </div>
@@ -34,7 +34,7 @@
                 @RenderBody()
 
                 <section class="bg-white">
-                    <div class="svg-border-waves text-dark">
+                    <div class="svg-border-waves text-light">
                         <svg class="wave" style="pointer-events: none" fill="currentColor" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 75">
                             <defs>
                                 <style>
@@ -62,7 +62,7 @@
             </main>
         </div>
         <div id="layoutDefault_footer">
-            <footer class="footer pt-10 pb-5 mt-auto bg-dark footer-dark">
+            <footer class="footer pt-10 pb-5 mt-auto bg-light footer-light">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-3">
@@ -104,7 +104,7 @@
                                     <ul class="list-unstyled mb-0">
                                         <li class="mb-2"><a asp-controller="Home" asp-action="ToDo">Privacy Policy</a></li>
                                         <li class="mb-2"><a asp-controller="Home" asp-action="ToDo">Terms and Conditions</a></li>
-                                        <li><a asp-controller="Home" asp-action="ToDo">License</a></li>
+                                        <li><a asp-controller="Home" asp-action="About">About</a></li>
                                     </ul>
                                 </div>
                             </div>
