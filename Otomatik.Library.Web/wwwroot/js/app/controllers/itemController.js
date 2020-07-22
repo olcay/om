@@ -1,7 +1,6 @@
 ﻿var ItemController = function (itemService) {
     var init = function (itemId) {
-        $.fn.editable.defaults.mode = "inline";
-
+        
         $(".js-editable").editable({
             ajaxOptions: {
                 headers:
@@ -11,18 +10,25 @@
             }
         });
 
-        $('#myform').on('submit', function (e) {
-            e.preventDefault();
-
-            var form = $(this);
-            var formdata = false;
-            if (window.FormData) {
-                formdata = new FormData(form[0]);
+        $("#file").change(function () {
+            var fileName = $(this).val();
+            if (fileName) {
+                $('#frmUploadCover').submit();
             }
+        });
 
+        $('#frmUploadCover').on('submit', function (e) {
+            e.preventDefault();
+            debugger
+            var form = $(this);
+            var formData = false;
+            if (window.FormData) {
+                formData = new FormData(form[0]);
+            }
+            
             $.ajax({
                 url: '/api/items/'+itemId+'/cover',
-                data: formdata ? formdata : form.serialize(),
+                data: formData ? formData : form.serialize(),
                 cache: false,
                 contentType: false,
                 processData: false,
@@ -35,7 +41,7 @@
     };
 
     var done = function (data) {
-        $('#coverImage').attr('src', data);
+        $('header').css('background-image', 'url(' + data + ')');
 
         swal("Image uploaded!", "The cover image is uploaded successfully.", "success");
     };

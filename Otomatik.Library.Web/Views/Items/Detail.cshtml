@@ -4,71 +4,102 @@
     ViewBag.Title = Model.Title;
 }
 
-@section Breadcrumb
-{
-    <a asp-controller="Home" asp-action="Index">Library</a> >
-    <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Shelf.CreatedBy.Name">@Model.Shelf.CreatedBy.Name's shelves</a> >
-    <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.ShelfId">@Model.Shelf.Title</a>
-}
+@*@section Breadcrumb
+    {
+        <a asp-controller="Home" asp-action="Index">Library</a> >
+        <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Shelf.CreatedBy.Name">@Model.Shelf.CreatedBy.Name's shelves</a> >
+        <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.ShelfId">@Model.Shelf.Title</a>
+    }*@
 
-@section Featured
-{
-    <div class="wrapper">
-        <img class="card-img-top img-fluid" src="@Html.Raw(Model.CoverImageUrl ?? "/images/book.jpg")" alt="@Model.Title" id="coverImage">
-    </div>
-    <div class="card-img-overlay">
-        <p class="card-text">
-            @if (Model.IsShelfOwner)
-            {
-                <form method="post" id="myform" enctype="multipart/form-data">
-                    <input type="file" name="file" id="file" accept="image/*"/>
-                    <br/>
-                    <input type="submit" value="Change cover"/>
-                </form>
-            }
-        </p>
-    </div>
-}
+@*@section Featured
+    {
+        <div class="wrapper">
+            <img class="card-img-top img-fluid" src="@Html.Raw(Model.CoverImageUrl ?? "/images/book.jpg")" alt="@Model.Title" id="coverImage">
+        </div>
+        <div class="card-img-overlay">
+            <p class="card-text">
+                @if (Model.IsShelfOwner)
+                {
+                    <form method="post" id="myform" enctype="multipart/form-data">
+                        <input type="file" name="file" id="file" accept="image/*"/>
+                        <br/>
+                        <input type="submit" value="Change cover"/>
+                    </form>
+                }
+            </p>
+        </div>
+    }*@
 
-<div class="row">
-    <div class="col-md-8 mx-auto">
-        <h2>
-            @if (Model.IsShelfOwner)
-            {
-                <span class="js-editable" data-type="text" data-pk="@Model.Id" data-url="@Url.Action("Edit", "Items")" data-title="Change title">@Model.Title</span>
-            }
-            else
-            {
-                @Model.Title
-            }
-        </h2>
+
+<header class="page-header page-header-dark bg-img-cover overlay overlay-80" style='background-image: url("@Html.Raw(Model.CoverImageUrl ?? "/images/book.jpg")")'>
+    <div class="page-header-content py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-10 text-center">
+                    <div data-aos="fade-up">
+                        <h1 class="page-header-title">
+                            @if (Model.IsShelfOwner)
+                            {
+                                <span class="js-editable" data-type="text" data-pk="@Model.Id" data-url="@Url.Action("Edit", "Items")" data-title="Change title">@Model.Title</span>
+                            }
+                            else
+                            {
+                                @Model.Title
+                            }
+                        </h1>
+                        <p class="page-header-text">
+                            @if (Model.BookDetail != null)
+                            {
+                                <text>@Model.BookDetail.Subtitle</text>
+                            }
+                            else if (Model.GameDetail != null)
+                            {
+                                if (Model.GameDetail.Title != Model.GameDetail.TitleOriginal)
+                                {
+                                    <text>@Model.GameDetail.TitleOriginal</text>
+                                }
+                                else if (Model.GameDetail.Released != null)
+                                {
+                                    <text>Released on @Model.GameDetail.Released.Value.LocalDateTime.ToShortDateString()</text>
+                                }
+                            }
+                        </p>
+                    </div>
+                    @if (Model.IsShelfOwner)
+                    {
+                        <form method="post" id="frmUploadCover" enctype="multipart/form-data">
+                            <label for="file" class="btn btn-secondary mt-2" title="Change cover image">
+                                <img src="~/images/feather/image.svg" style="filter: invert(100%)"/>
+                                <input type="file" name="file" id="file" accept="image/*" style="display: none">
+                            </label>
+                        </form>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="svg-border-rounded text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="currentColor"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0" /></svg>
+    </div>
+</header>
+
+
+<section class="bg-white py-10">
+    <div class="container">
         @if (Model.BookDetail != null)
         {
-            <h3>@Model.BookDetail.Subtitle</h3>
-            <p>Published by @Model.BookDetail.Publisher on @Model.BookDetail.PublishedYear</p>
+            <p class="lead">Published by @Model.BookDetail.Publisher on @Model.BookDetail.PublishedYear</p>
 
             <p>@Html.Raw(Model.BookDetail.Description)</p>
         }
 
         @if (Model.GameDetail != null)
         {
-            if (Model.GameDetail.Title != Model.GameDetail.TitleOriginal)
-            {
-                <h3>@Model.GameDetail.TitleOriginal</h3>
-            }
-
-            @if (Model.GameDetail.Released != null)
-            {
-                <p>
-                    Released on @Model.GameDetail.Released.Value.LocalDateTime.ToShortDateString()
-                </p>
-            }
             <p>@Html.Raw(Model.GameDetail.Description)</p>
         }
-
     </div>
-
-</div>
+</section>
 
 @section Scripts{
     <script>
