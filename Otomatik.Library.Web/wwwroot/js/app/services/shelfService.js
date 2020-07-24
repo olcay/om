@@ -1,4 +1,10 @@
 ﻿var ShelfService = function () {
+    var getForm = function (done, fail) {
+        $.get("/shelves")
+            .done(done)
+            .fail(fail);
+    };
+
     var get = function (userId, page, done, fail) {
         $.get({
             url: "/api/" + userId + "/shelves?page=" + page,
@@ -75,6 +81,7 @@
     };
 
     return {
+        getForm: getForm,
         get: get,
         getPublic: getPublic,
         getStarred: getStarred,

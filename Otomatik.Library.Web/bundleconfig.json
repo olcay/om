@@ -36,6 +36,7 @@
       "wwwroot/js/app/services/itemService.js",
       "wwwroot/js/app/services/notificationService.js",
       "wwwroot/js/app/modules/starModule.js",
+      "wwwroot/js/app/modules/shelfModule.js",
       "wwwroot/js/app/modules/followingModule.js",
       "wwwroot/js/app/modules/paginationModule.js",
       "wwwroot/js/app/controllers/profileController.js",

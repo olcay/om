@@ -94,7 +94,7 @@
                                 <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
                                     <div class="text-uppercase-expanded text-xs mb-4">Add a new</div>
                                     <ul class="list-unstyled mb-0">
-                                        <li class="mb-2"><a asp-controller="Shelves" asp-action="Create">Shelf</a></li>
+                                        <li class="mb-2"><a class="js-add-shelf" href="#">Shelf</a></li>
                                         <li class="mb-2"><a asp-controller="Items" asp-action="Search">Book</a></li>
                                         <li class="mb-2"><a asp-controller="Items" asp-action="SearchGames">Game</a></li>
                                         <li><a asp-controller="Home" asp-action="ToDo">Item</a></li>
@@ -141,6 +141,7 @@
     <script src="~/js/dist/moment-timezone-with-data.min.js"></script>
     <script src="~/js/dist/underscore-min.js"></script>
     <script src="~/js/dist/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+    <script src="~/js/dist/bootbox.js/bootbox.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/app.min.js" asp-append-version="true"></script>
 
@@ -232,6 +233,7 @@
         <script>
             $(document).ready(function () {
                 NotificationController.init("#notifications-template", "#navbarDropdownNotifications");
+                ShelfModule.init();
             });
         </script>
     }
