@@ -19,12 +19,12 @@
 
     var getPublic = function (page, query, done, fail) {
         $.get({
-                url: "/api/shelves?page=" + page + (query ? "&query=" + query : ""),
-                headers:
-                {
-                    RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-                }
-            })
+            url: "/api/shelves?page=" + page + (query ? "&query=" + query : ""),
+            headers:
+            {
+                RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+            }
+        })
             .done(done)
             .fail(fail);
     };
@@ -80,6 +80,20 @@
             .fail(fail);
     };
 
+    var rename = function (shelfId, title, done, fail) {
+        $.ajax({
+            url: "/api/shelves/" + shelfId,
+            method: "PATCH",
+            data: { title },
+            headers:
+            {
+                RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+            }
+        })
+            .done(done)
+            .fail(fail);
+    };
+
     return {
         getForm: getForm,
         get: get,
@@ -87,6 +101,7 @@
         getStarred: getStarred,
         remove: remove,
         makePublic: makePublic,
-        makePrivate: makePrivate
+        makePrivate: makePrivate,
+        rename: rename
     };
 }();

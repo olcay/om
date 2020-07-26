@@ -9,20 +9,13 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <h1 class="page-header-title mb-3">
-                        @if (Model.IsShelfOwner)
-                        {
-                            <span class="js-editable" data-type="text" data-pk="@Model.Id" data-url="@Url.Action("Edit", "Shelves")" data-title="Rename shelf">@Model.Title</span>
-                        }
-                        else
-                        {
-                            @Model.Title
-                        }
+                        <span id="spnTitle">@Model.Title</span>
                         <sup class="badge badge-yellow-soft text-xs" style="@(Model.IsPublic ? "display: none;" : "")" id="lblIsPublic">Private</sup>
                     </h1>
                     @if (Model.IsShelfOwner)
                     {
                         <div class="page-header-text" id="js-operation">
-                            Add a new <a asp-controller="Items" asp-action="SearchGames" asp-route-shelfId="@Model.Id" class="btn btn-default text-light" title="item" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-cube"></i></a>,
+                            Add a new <a data-shelfId="@Model.Id" class="btn btn-default text-light js-add-item" title="item" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-cube"></i></a>,
                             <a asp-controller="Items" asp-action="Search" asp-route-shelfId="@Model.Id" class="btn btn-default text-light" title="book" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-book"></i></a>,
                             <a asp-controller="Items" asp-action="SearchGames" asp-route-shelfId="@Model.Id" class="btn btn-default text-light" title="game" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-gamepad"></i></a> or
 
@@ -33,13 +26,16 @@
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <button type="button" id="js-makePrivate-shelf" data-shelf-id="@Model.Id" aria-label="Hide" style="@(!Model.IsPublic ? "display: none;" : "")" class="dropdown-item text-dark">
+                                    <button type="button" id="js-rename-shelf" class="dropdown-item text-dark">
+                                        rename shelf
+                                    </button>
+                                    <button type="button" id="js-makePrivate-shelf" aria-label="Hide" style="@(!Model.IsPublic ? "display: none;" : "")" class="dropdown-item text-dark">
                                         make shelf private
                                     </button>
-                                    <button type="button" id="js-makePublic-shelf" data-shelf-id="@Model.Id" aria-label="Show" style="@(Model.IsPublic ? "display: none;" : "")" class="dropdown-item text-dark">
+                                    <button type="button" id="js-makePublic-shelf" aria-label="Show" style="@(Model.IsPublic ? "display: none;" : "")" class="dropdown-item text-dark">
                                         make shelf public
                                     </button>
-                                    <button type="button" id="js-remove-shelf" data-shelf-id="@Model.Id" data-user-name="@Model.CreatedBy.Name" class="dropdown-item text-dark">
+                                    <button type="button" id="js-remove-shelf" class="dropdown-item text-dark">
                                         remove shelf
                                     </button>
                                 </div>
@@ -107,8 +103,12 @@
 
 @section Scripts{
     <script>
-        $(document).ready(function () {
-            ShelfController.init();
+        $(document).ready(function() {
+            ShelfController.init({
+                title: "@Model.Title",
+                id: @Model.Id,
+                userName: "@Model.CreatedBy.Name"
+            });
         });
     </script>
 }

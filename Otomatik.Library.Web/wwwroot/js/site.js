@@ -7,6 +7,3 @@ $(function () {
     });
 
 });
-
-$.fn.editable.defaults.mode = "inline";
-$.fn.editableform.buttons = '<button type="submit" class="btn btn-info editable-submit">Save</button>' + '<button type="button" class="btn editable-cancel">Cancel</button>';

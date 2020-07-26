@@ -4,33 +4,6 @@
     ViewBag.Title = Model.Title;
 }
 
-@*@section Breadcrumb
-    {
-        <a asp-controller="Home" asp-action="Index">Library</a> >
-        <a asp-controller="Profiles" asp-action="Index" asp-route-userName="@Model.Shelf.CreatedBy.Name">@Model.Shelf.CreatedBy.Name's shelves</a> >
-        <a asp-controller="Shelves" asp-action="Detail" asp-route-shelfId="@Model.ShelfId">@Model.Shelf.Title</a>
-    }*@
-
-@*@section Featured
-    {
-        <div class="wrapper">
-            <img class="card-img-top img-fluid" src="@Html.Raw(Model.CoverImageUrl ?? "/images/book.jpg")" alt="@Model.Title" id="coverImage">
-        </div>
-        <div class="card-img-overlay">
-            <p class="card-text">
-                @if (Model.IsShelfOwner)
-                {
-                    <form method="post" id="myform" enctype="multipart/form-data">
-                        <input type="file" name="file" id="file" accept="image/*"/>
-                        <br/>
-                        <input type="submit" value="Change cover"/>
-                    </form>
-                }
-            </p>
-        </div>
-    }*@
-
-
 <header class="page-header page-header-dark bg-img-cover overlay overlay-80" style='background-image: url("@Html.Raw(Model.CoverImageUrl ?? "/images/book.jpg")")'>
     <div class="page-header-content py-5">
         <div class="container">
@@ -38,14 +11,7 @@
                 <div class="col-xl-8 col-lg-10 text-center">
                     <div data-aos="fade-up">
                         <h1 class="page-header-title">
-                            @if (Model.IsShelfOwner)
-                            {
-                                <span class="js-editable" data-type="text" data-pk="@Model.Id" data-url="@Url.Action("Edit", "Items")" data-title="Change title">@Model.Title</span>
-                            }
-                            else
-                            {
-                                @Model.Title
-                            }
+                            @Model.Title
                         </h1>
                         <p class="page-header-text">
                             @if (Model.BookDetail != null)
@@ -85,7 +51,7 @@
 </header>
 
 
-<section class="bg-white py-10">
+<section class="bg-white py-10 min-vh-100">
     <div class="container">
         @if (Model.BookDetail != null)
         {
@@ -98,6 +64,11 @@
         {
             <p>@Html.Raw(Model.GameDetail.Description)</p>
         }
+
+        <span class="js-editable" data-type="textarea" data-pk="@Model.Id"
+              data-url="@Url.Action("EditDescription", "Items")" data-title="Change description">
+            @(string.IsNullOrEmpty(Model.Description) ? "Item description" : Model.Description)
+        </span>
     </div>
 </section>
 

@@ -19,7 +19,7 @@
                 confirm: {
                     label: "Create",
                     className: 'btn-teal',
-                    callback: function() {
+                    callback: function () {
                         var form = $(container + " form")[0];
                         if (form.checkValidity() === false) {
                             form.classList.add('was-validated');
@@ -27,11 +27,11 @@
                         }
                         form.submit();
                     }
-    }
+                }
             },
-            onShown: function(e) {
+            onShown: function (e) {
                 $(container + " #Title").focus();
-            } 
+            }
         });
     }
 

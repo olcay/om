@@ -1,36 +1,52 @@
-﻿var ShelfController = function (itemService, shelfService) {
-    var username;
+﻿var ShelfController = function (itemService, shelfService, itemModule) {
+    var pageData;
 
-    var init = function () {
-        $.fn.editable.defaults.mode = "inline";
+    var fail = function () {
+        swal("Something failed!", "We could not process your request.", "error");
+    };
 
-        $(".js-editable").editable({
-            ajaxOptions: {
-                headers:
-                {
-                    RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-                }
-            }
-        });
-        
+    var init = function (data) {
+        pageData = data;
+        itemModule.init();
+
         $(".js-remove-book").click(removeBook);
         $("#js-remove-shelf").click(removeShelf);
+        $("#js-rename-shelf").click(renameShelf);
         $("#js-operation").on("click", "#js-makePublic-shelf", makeShelfPublic);
         $("#js-operation").on("click", "#js-makePrivate-shelf", makeShelfPrivate);
     };
 
-    var makeShelfPublic = function(e) {
+    var makeShelfPublic = function (e) {
         e.preventDefault();
-        var button = $("#js-makePublic-shelf");
 
-        shelfService.makePublic(button.data("shelf-id"), makeShelfPublicDone, fail);
+        shelfService.makePublic(pageData.id, makeShelfPublicDone, fail);
     };
 
     var makeShelfPrivate = function (e) {
         e.preventDefault();
-        var button = $("#js-makePrivate-shelf");
 
-        shelfService.makePrivate(button.data("shelf-id"), makeShelfPrivateDone, fail);
+        shelfService.makePrivate(pageData.id, makeShelfPrivateDone, fail);
+    };
+
+    var renameShelf = function (e) {
+        e.preventDefault();
+
+        bootbox.prompt({
+            title: "Rename Shelf",
+            onEscape: true,
+            backdrop: true,
+            value: pageData.title,
+            required: true,
+            callback: function (result) {
+                if (result) {
+                    shelfService.rename(pageData.id, result,
+                        function () {
+                            $("#spnTitle").html(result);
+                            pageData.title = result;
+                        }, fail);
+                }
+            }
+        });
     };
 
     var makeShelfPublicDone = function () {
@@ -47,7 +63,6 @@
 
     var removeShelf = function (e) {
         e.preventDefault();
-        var button = $(this);
 
         swal({
             title: "Are you sure?",
@@ -58,15 +73,13 @@
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    username = button.data("user-name");
-
-                    shelfService.remove(button.data("shelf-id"), removeShelfDone, fail);
+                    shelfService.remove(pageData.id, removeShelfDone, fail);
                 }
             });
     };
 
     var removeShelfDone = function () {
-        window.location = "/p/" + username;
+        window.location = "/p/" + pageData.userName;
     };
 
     var removedBook;
@@ -95,11 +108,7 @@
         });
     };
 
-    var fail = function () {
-        swal("Something failed!", "We could not process your request.", "error");
-    };
-
     return {
         init: init
     };
-}(ItemService, ShelfService);
+}(ItemService, ShelfService, ItemModule);

@@ -1,15 +1,5 @@
 ﻿var ItemController = function (itemService) {
     var init = function (itemId) {
-        
-        $(".js-editable").editable({
-            ajaxOptions: {
-                headers:
-                {
-                    RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-                }
-            }
-        });
-
         $("#file").change(function () {
             var fileName = $(this).val();
             if (fileName) {
@@ -19,7 +9,7 @@
 
         $('#frmUploadCover').on('submit', function (e) {
             e.preventDefault();
-            debugger
+
             var form = $(this);
             var formData = false;
             if (window.FormData) {

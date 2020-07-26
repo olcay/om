@@ -80,8 +80,7 @@ namespace Otomatik.Library.Web.Controllers.Api
             }
 
             if (string.IsNullOrWhiteSpace(viewModel.Title)
-                && string.IsNullOrWhiteSpace(viewModel.GBookId)
-                && viewModel.ShelfId == 0)
+                || viewModel.ShelfId == 0)
             {
                 return BadRequest();
             }

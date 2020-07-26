@@ -115,8 +115,8 @@ namespace Otomatik.Library.Web.Controllers.Api
         }
 
         [Authorize]
-        [HttpPost]
-        public IActionResult Edit(ShelfDto dto)
+        [HttpPatch("{shelfId}")]
+        public IActionResult Edit([FromRoute] int shelfId, [FromForm] string title)
         {
             if (!ModelState.IsValid)
             {
@@ -125,14 +125,14 @@ namespace Otomatik.Library.Web.Controllers.Api
 
             var userId = User.GetUserId();
 
-            var shelf = _unitOfWork.Shelves.GetShelf(dto.Id, userId);
+            var shelf = _unitOfWork.Shelves.GetShelf(shelfId, userId);
 
             if (shelf == null)
             {
                 return NotFound();
             }
 
-            shelf.SetTitle(dto.Title);
+            shelf.SetTitle(title);
 
             _unitOfWork.Complete();
 
